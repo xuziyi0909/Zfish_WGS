@@ -1,0 +1,32 @@
+<section id="effects" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 5 · Predict effects · snpEff</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">What does each change do to its gene?</h2>
+</div>
+<div style="display:flex;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Impact levels</h3>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:32%;color:#16202B">Impact</th><th style="width:68%;color:#16202B">Examples</th></tr>
+<tr><td style="color:#B04A18"><b>HIGH</b></td><td>Stop gained, frameshift, splice site, start or stop lost</td></tr>
+<tr><td style="color:#17697A"><b>MODERATE</b></td><td>Missense; in-frame insertion or deletion</td></tr>
+<tr><td><b>LOW</b></td><td>Silent: same amino acid</td></tr>
+<tr><td><b>MODIFIER</b></td><td>Introns, UTRs, between genes</td></tr>
+</table>
+<p style="font-size:24px;line-height:1.4;color:#5F6873">Only HIGH and MODERATE get a priority. Where a variant hits several transcripts, the most severe effect is shown.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Reading the notation</h3>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:42%;color:#16202B">Written</th><th style="width:58%;color:#16202B">Means</th></tr>
+<tr><td style="color:#16202B"><b>p.Arg370Trp</b></td><td>Arginine 370 becomes tryptophan</td></tr>
+<tr><td style="color:#16202B"><b>p.Ser320*</b></td><td>Serine 320 becomes a stop codon</td></tr>
+<tr><td style="color:#16202B"><b>p.His185fs</b></td><td>Reading frame shifts at histidine 185</td></tr>
+<tr><td style="color:#16202B"><b>p.Ter252Cysext*?</b></td><td>Stop codon lost; protein runs on</td></tr>
+<tr><td style="color:#16202B"><b>c.1108C&gt;T</b></td><td>The tmppe change at DNA level: C becomes T at coding position 1108</td></tr>
+</table>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Examples from our data: tmppe, SLC35F4, ENSDARG00000013153, si:dkey-1h4.4 · gene models: Ensembl 113 · 23</p>
+<aside>Step five predicts what each variant does, using Ensembl's gene models for GRCz11. Each variant gets an impact level. HIGH means the protein is probably broken; MODERATE means one amino acid changes, or a few are inserted or deleted in frame. A variant that touches several transcripts of a gene can have several effects; the tables show the most severe one. The right-hand table is how to read the protein notation in the tables. All four examples are real variants from our mutant: p dot means the protein, c dot the coding DNA, and the numbers are positions counted from the start codon.</aside>
+</section>

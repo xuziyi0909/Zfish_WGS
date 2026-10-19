@@ -13,7 +13,8 @@ of candidate mutations** and a **report you open in your web browser**.
 {: .fs-5 .fw-300 }
 
 [Start the step-by-step guide](run.html){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[What is WGS?](concepts.html){: .btn .fs-5 .mb-4 .mb-md-0 }
+[What is WGS?](concepts.html){: .btn .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Tutorial slides](tutorial.html){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 

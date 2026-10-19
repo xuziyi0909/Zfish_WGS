@@ -1,0 +1,29 @@
+<section id="trust" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Judging a variant</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Believe it more when the evidence stacks up</h2>
+</div>
+<div style="display:flex;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;gap:16px;align-items:center"><x-icon name="Check" style="color:#17697A;width:36px;height:36px"></x-icon><p style="font-size:28px">High confidence: the sibling was well covered</p></div>
+<div style="display:flex;gap:16px;align-items:center"><x-icon name="Check" style="color:#17697A;width:36px;height:36px"></x-icon><p style="font-size:28px">Five or more supporting reads in the mutant</p></div>
+<div style="display:flex;gap:16px;align-items:center"><x-icon name="Check" style="color:#17697A;width:36px;height:36px"></x-icon><p style="font-size:28px">Novel, with no warnings</p></div>
+<div style="display:flex;gap:16px;align-items:center"><x-icon name="Check" style="color:#17697A;width:36px;height:36px"></x-icon><p style="font-size:28px">The amino acid is conserved across species</p></div>
+<div style="display:flex;gap:16px;align-items:center"><x-icon name="Check" style="color:#17697A;width:36px;height:36px"></x-icon><p style="font-size:28px">Inside the homozygosity peak</p></div>
+<div style="display:flex;gap:16px;align-items:center"><x-icon name="Check" style="color:#17697A;width:36px;height:36px"></x-icon><p style="font-size:28px">The gene’s biology fits (check ZFIN)</p></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:36px 40px">
+<h3 style="font-size:36px;font-weight:600;color:#16202B">Look at it yourself in IGV</h3>
+<ol style="font-size:26px;line-height:1.45">
+<li>Open igv.org/app, choose Genome → Zebrafish (GRCz11)</li>
+<li>Load the .bam and .bai from results/alignments</li>
+<li>Type the location, e.g. chr7:29157506</li>
+<li>A real variant shows the same letter in many reads, on both strands</li>
+</ol>
+<hr style="border-top:1px solid #D9D5CA">
+<p style="font-size:26px;line-height:1.4;color:#16202B"><b>Then confirm at the bench:</b> PCR and Sanger in more mutants and siblings.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Warning sign: dozens of variants packed together usually means a repeat or mapping problem · 36</p>
+<aside>No single number decides. A variant becomes believable when several things line up: good coverage in both samples, several supporting reads, novel, no warnings, a conserved residue, inside the peak, and a gene whose expression or known phenotype fits. Always look at the top few in IGV before ordering primers; it takes two minutes. Real variants show the same changed letter in many independent reads from both strands. The final test is genetic: a causal recessive mutation is homozygous in every mutant and never homozygous in a wild-type sibling.</aside>
+</section>

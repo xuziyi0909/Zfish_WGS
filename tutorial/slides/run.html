@@ -1,0 +1,24 @@
+<section id="run" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 4 · Run</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Start it inside screen, then walk away</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:3;background:#16202B;border-radius:16px;padding:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.9;color:#F2F0EA">screen -S wgs   <span style="color:#7CC6D6"># a session that outlives logout</span><br>./run_wgs.sh    <span style="color:#7CC6D6"># checks, then runs everything</span><br>Ctrl+A, then D  <span style="color:#7CC6D6"># leave it running; log out</span><br>screen -r wgs   <span style="color:#7CC6D6"># later: come back to check</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#9ED9A8;padding:24px 0px 0px">Finished! Open this file in a web browser: results/report.html</p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:24px">
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:28px 32px">
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Stopped part-way?</h3>
+<p style="font-size:26px;line-height:1.4">Fix the cause and run ./run_wgs.sh again. Finished steps are skipped.</p>
+</div>
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:28px 32px">
+<h3 style="font-size:32px;font-weight:600;color:#16202B">How long?</h3>
+<p style="font-size:26px;line-height:1.4">About 2 hours for two samples; about 1 hour of alignment per 100 M reads.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Each run writes a full log to results/logs/ · 16</p>
+<aside>Running is one command. Start screen first, so the run keeps going after you close your laptop. The script first checks the software and the sample sheet, then runs every step. Press Control-A then D to detach, and log out. screen -r wgs reattaches. When it finishes it prints where the report is. If anything stops it, a power cut or a typo in the sample sheet, fix it and run the same command again: the pipeline remembers which steps are done.</aside>
+</section>

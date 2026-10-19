@@ -1,0 +1,19 @@
+<section id="filtered" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">False leads caught</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Strong-looking candidates the checks removed</h2>
+</div>
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:24%;color:#16202B">Variant</th><th style="width:22%;color:#16202B">Reads: mutant · sibling</th><th style="width:54%;color:#16202B">Why it is now priority 5</th></tr>
+<tr><td style="color:#16202B"><b>aldh1a2</b> P393A</td><td>3/3 · 2/5</td><td>Known (rs40833506); the zebrafish cDNA protein has A, like the mutant</td></tr>
+<tr><td style="color:#16202B"><b>slc39a13</b> A23P</td><td>4/4 · 0/4</td><td>Known polymorphism (rs507894324), despite a jaw phenotype in mice</td></tr>
+<tr><td style="color:#16202B"><b>lgr4</b> I745V</td><td>7/7 · 0/0</td><td>V is the residue in all six other vertebrates</td></tr>
+<tr><td style="color:#16202B"><b>mmp14a</b> N338D</td><td>3/3 · 1/1</td><td>Known (rs179907423); the zebrafish cDNA protein has D</td></tr>
+<tr><td style="color:#16202B"><b>b3gat3</b> S94A</td><td>9/9 · 3/3</td><td>Known (rs180151941); the sibling looks homozygous too</td></tr>
+</table>
+<div style="background:#ECEAE3;border-radius:16px;padding:24px 32px">
+<p style="font-size:28px;line-height:1.4;color:#16202B"><b>Each looked good on biology alone.</b> They stay in the Excel file, with the reason in the warnings column, so you can still check them.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Reads shown as reads with the variant / all reads at that position · 41</p>
+<aside>These are real examples from the chr7 region. Every one of them would have been on a list of jaw candidates by biology alone, and some of us spent time on them in the manual analysis. aldh1a2 and mmp14a: the reference genome carries a rare residue, and published zebrafish proteins already have the mutant's amino acid. slc39a13 has the best jaw biology but is a catalogued polymorphism. lgr4 changes to the residue every other vertebrate has. b3gat3 is known and the sibling shows it in all three reads, so the sibling is probably homozygous too. The pipeline now catches all of these automatically.</aside>
+</section>

@@ -1,0 +1,37 @@
+<section id="proteinhow" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 8 · How the protein check works</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Line up the proteins, read off one residue</h2>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">1 · Take the change</h3>
+<p style="font-size:24px;line-height:1.35">Missense only, e.g. p.Pro393Ala, in the zebrafish protein of its transcript</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:36px;height:20px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">2 · Line up</h3>
+<p style="font-size:24px;line-height:1.35">With up to 4 RefSeq proteins of the gene and the closest ortholog in 6 species</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:36px;height:20px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">3 · Read the residue</h3>
+<p style="font-size:24px;line-height:1.35">Trusted only if 30% of the 20 neighbouring residues match</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:36px;height:20px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">4 · Decide</h3>
+<p style="font-size:24px;line-height:1.35">The first rule below that applies</p>
+</div>
+</div>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:31%;color:#16202B">allele_check</th><th style="width:47%;color:#16202B">Rule</th><th style="width:22%;color:#16202B;text-align:right">Ours · action</th></tr>
+<tr><td style="color:#B04A18"><b>matches_zebrafish_refseq</b></td><td>A RefSeq protein has the mutant residue</td><td style="text-align:right">69 · priority 5</td></tr>
+<tr><td style="color:#B04A18"><b>…vertebrate_consensus</b></td><td>3+ species aligned; most have the mutant residue</td><td style="text-align:right">62 · priority 5</td></tr>
+<tr><td style="color:#16202B"><b>alt_seen_in_orthologs</b></td><td>At least one species has the mutant residue</td><td style="text-align:right">128 · kept</td></tr>
+<tr><td style="color:#17697A"><b>conserved</b></td><td>3+ species aligned; all have the reference residue</td><td style="text-align:right">38 · listed first</td></tr>
+<tr><td style="color:#16202B"><b>variable</b> / <b>no_orthologs</b></td><td>Species differ / only RefSeq could be compared</td><td style="text-align:right">493 / 198</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Counts: our 1,192 high-confidence protein-changing variants (151 not_checked, 53 not missense) · 29</p>
+<aside>Here is the method behind the aldh1a2 example. For each missense change the pipeline takes the zebrafish protein of the annotated transcript and checks that the reference amino acid really sits at that position. It aligns that protein with up to four NCBI RefSeq proteins of the same gene, preferring curated ones, and with the closest Ensembl Compara ortholog in each of six species: human, rat, chicken, frog, medaka and fugu. It reads the residue lined up with the variant, but only trusts it when the surrounding twenty residues align reasonably well, so a poorly aligned region cannot give a false answer. The rules are applied in this order. Only the first two move a variant to priority 5; conserved changes are listed first within their priority.</aside>
+</section>

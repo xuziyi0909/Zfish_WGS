@@ -1,0 +1,31 @@
+<section id="transfer" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 1 · Your sequencing files</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Put the FASTQ files in data/raw</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:36px">
+<h3 style="font-size:36px;font-weight:600;color:#16202B">From your computer</h3>
+<ol style="font-size:26px;line-height:1.45">
+<li>Open Cyberduck or FileZilla</li>
+<li>Connect with SFTP, using your server login</li>
+<li>Go to my_wgs_project/data/raw</li>
+<li>Drag the .fastq.gz files in</li>
+</ol>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:36px">
+<h3 style="font-size:36px;font-weight:600;color:#16202B">Already on the server</h3>
+<p style="font-size:26px;line-height:1.45">For example, a zip from the sequencing core:</p>
+<div style="background:#16202B;border-radius:12px;padding:20px 24px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.6;color:#F2F0EA">mkdir -p data/raw<br>unzip "/path/to/file.zip" -d data/raw<br>ls data/raw</p>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#ECEAE3;border-radius:16px;padding:24px 32px">
+<p style="font-size:26px;color:#16202B"><b>Keep R1 and R2 in the file names.</b> You need to know which file is read 1 and which is read 2.</p>
+<p style="font-size:26px;color:#16202B"><b>One sample on several lanes?</b> Join the lanes, keeping R1 and R2 apart:</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#16202B">cat S1_L001_R1_001.fastq.gz S1_L002_R1_001.fastq.gz &gt; S1_R1.fastq.gz</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Avoid spaces in file names: rename with mv "my file.fastq.gz" my_file.fastq.gz · 11</p>
+<aside>Step one is getting the raw files into the data/raw folder of your copy. From your own computer, a file-transfer program like Cyberduck or FileZilla is easiest: connect with SFTP using the same login, then drag the files in. If the core delivered a zip that is already on the server, unzip it straight into data/raw. Two things to watch: keep R1 and R2 in the names, and if one sample was sequenced on several lanes, join the lane files first, read 1 with read 1 and read 2 with read 2. Gzipped files can simply be concatenated.</aside>
+</section>

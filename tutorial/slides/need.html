@@ -1,0 +1,30 @@
+<section id="need" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Before you start</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Three things to have ready</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:40px">
+<x-icon name="Database" style="color:#17697A;width:56px;height:56px"></x-icon>
+<h3 style="font-size:40px;font-weight:600;color:#16202B">Sequencing files</h3>
+<p style="font-size:28px;line-height:1.4">The .fastq.gz files from the core, for at least one mutant and one control. Paired-end (R1 + R2) is best; single-end works.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:40px">
+<x-icon name="Key" style="color:#17697A;width:56px;height:56px"></x-icon>
+<h3 style="font-size:40px;font-weight:600;color:#16202B">A server login</h3>
+<p style="font-size:28px;line-height:1.4">Log in to the lab server with ssh (Terminal on a Mac, PowerShell on Windows). All the software is already installed there.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:40px">
+<x-icon name="Code" style="color:#17697A;width:56px;height:56px"></x-icon>
+<h3 style="font-size:40px;font-weight:600;color:#16202B">Your own copy</h3>
+<p style="font-size:28px;line-height:1.4">One pipeline folder per experiment. Copy the FASTQ files into its data/raw folder (Cyberduck or FileZilla work well).</p>
+</div>
+</div>
+<div style="display:flex;gap:48px;background:#ECEAE3;border-radius:16px;padding:24px 40px">
+<p style="font-size:28px;color:#16202B"><b>Your time:</b> about 15 minutes</p>
+<p style="font-size:28px;color:#16202B"><b>Computer time:</b> about 2 hours, longer for deeper data</p>
+<p style="font-size:28px;color:#16202B"><b>First run only:</b> about 1 hour of downloads</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Step-by-step instructions: the pipeline guide, “First-time setup” · 9</p>
+<aside>Three things. First, the FASTQ files: these are the raw reads from the sequencing core. Ask the core for both read files, R1 and R2, of every sample; in our example only one file per sample was available, which halves the data. Second, a login to the lab server. Third, your own copy of the pipeline: one folder per experiment, so results never mix. The very first run in a new folder also downloads the zebrafish genome, the list of known variants and protein sequences from other species; if you copy the reference folder from an earlier project, that step is skipped.</aside>
+</section>

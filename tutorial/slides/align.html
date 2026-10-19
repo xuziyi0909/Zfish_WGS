@@ -1,0 +1,30 @@
+<section id="align" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Steps 2–3 · Align and mark duplicates · bwa-mem2, samtools</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Place each read, then count each fragment once</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:36px">
+<h3 style="font-size:36px;font-weight:600;color:#16202B">2 · Align</h3>
+<p style="font-size:26px;line-height:1.45">Each read is matched to its best place in GRCz11, about 1.4 billion letters.</p>
+<p style="font-size:26px;line-height:1.45">Each placement gets a <b>mapping quality</b>: how sure it is. Reads in repeats score low; variant calling ignores reads below 20.</p>
+<hr style="border-top:1px solid #D9D5CA">
+<p style="font-size:24px;color:#5F6873">Ours: 98.4% of reads placed</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:36px">
+<h3 style="font-size:36px;font-weight:600;color:#16202B">3 · Mark duplicates</h3>
+<p style="font-size:26px;line-height:1.45">Reads that start at the same place on the same strand are PCR copies of one fragment. All but one are flagged.</p>
+<p style="font-size:26px;line-height:1.45">Without this, one PCR error copied ten times could pose as a real variant.</p>
+<hr style="border-top:1px solid #D9D5CA">
+<p style="font-size:24px;color:#5F6873">Ours: 12.8–13.2% duplicates (fine)</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#ECEAE3;border-radius:16px;padding:36px">
+<h3 style="font-size:36px;font-weight:600;color:#16202B">Usable coverage</h3>
+<p style="font-size:26px;line-height:1.45">Counting only well-placed, non-duplicate reads:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;color:#B04A18">2.8× · 3.4×</p>
+<p style="font-size:24px;color:#5F6873">sibling · mutant (15× is the goal)</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Output: results/alignments/&lt;sample&gt;.bam + .bai (open in IGV); depth per chromosome feeds report sections 1–2 · 21</p>
+<aside>Step two places every read on the reference genome with bwa-mem2. Each placement comes with a mapping quality, a measure of how sure the aligner is. A read from a repeat could belong to several places, so it scores low; the variant caller ignores reads below 20. Step three marks duplicates: during library PCR one DNA fragment can be copied many times, and the copies all start at the same position. Only one is counted, so a PCR error cannot masquerade as a variant supported by many reads. After both steps, usable coverage is what is left: 2.8-fold and 3.4-fold here.</aside>
+</section>

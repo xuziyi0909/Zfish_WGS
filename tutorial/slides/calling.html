@@ -1,0 +1,38 @@
+<section id="calling" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 4 · Call variants · bcftools</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Examine every position in all fish at once</h2>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Split</h3>
+<p style="font-size:24px;line-height:1.35">Genome cut into 30 pieces, run in parallel</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:36px;height:20px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Pile up</h3>
+<p style="font-size:24px;line-height:1.35">Reads stacked per position; mapping and base quality ≥ 20</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:36px;height:20px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Call</h3>
+<p style="font-size:24px;line-height:1.35">Genotype of every fish, decided jointly</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:36px;height:20px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Tidy</h3>
+<p style="font-size:24px;line-height:1.35">One change per line, indels left-aligned, quality ≥ 30</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;color:#16202B"><b>What is stored for each variant and each fish</b> (tmppe, chr7:29,157,506 C&gt;T):</p>
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:28%;color:#16202B">Fish</th><th style="width:24%;color:#16202B">Genotype</th><th style="width:24%;color:#16202B;text-align:right">Reads with T</th><th style="width:24%;color:#16202B;text-align:right">Reads with C</th></tr>
+<tr><td>Mutant 0039</td><td>homozygous</td><td style="text-align:right">5</td><td style="text-align:right">0</td></tr>
+<tr><td>Sibling 0038</td><td>reference</td><td style="text-align:right">0</td><td style="text-align:right">6</td></tr>
+</table>
+</div>
+<p style="font-size:26px;line-height:1.4"><b>Why jointly?</b> The sibling’s 6 reads were looked at and show no T. “Absent” means checked and not seen, not merely “not reported”.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Result: 14.1 million variants in our two samples · results/variants/all_samples.annotated.vcf.gz · 22</p>
+<aside>Step four finds the differences. To use all the cores, the genome is cut into 30 pieces processed in parallel. For each position, reads are stacked up, ignoring poorly placed reads and low-quality letters. Then all fish are genotyped together, which is important: for every variant we get the read counts in every fish, including fish that do not carry it. That is how we know the sibling's six reads at the tmppe position all show C. Finally the calls are tidied so that each line holds one change and insertions and deletions are written in a standard way, which the known-variant matching needs, and calls below quality 30 are dropped.</aside>
+</section>

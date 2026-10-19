@@ -1,0 +1,34 @@
+<section id="recessive" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Recessive genetics</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Wild-type-looking siblings can carry the mutation</h2>
+</div>
+<p style="font-size:30px">Two carriers (+/m × +/m) give mutants and siblings. Share of reads that show the mutation:</p>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:2px solid #B04A18;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Mutant (m/m)</h3>
+<p style="font-size:24px">25% of the clutch</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:600;color:#B04A18">100%</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Carrier sibling (+/m)</h3>
+<p style="font-size:24px">50% of the clutch</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:600;color:#17697A">≈ 50%</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Non-carrier sibling (+/+)</h3>
+<p style="font-size:24px">25% of the clutch</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:600;color:#17697A">0%</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Pool of siblings</h3>
+<p style="font-size:24px">2 of 3 are carriers</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:600;color:#17697A">≈ 33%</p>
+</div>
+</div>
+<div style="background:#ECEAE3;border-radius:16px;padding:24px 32px">
+<p style="font-size:30px;color:#16202B"><b>So a sibling control can show the mutation in some reads.</b> Requiring it to be completely absent can throw the real mutation away. That is why the pipeline has a sibling mode.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Zebrafish WGS tutorial · 6</p>
+<aside>This is the most important genetic point in the tutorial. Siblings are the best controls because they share most of the background with the mutant. But two thirds of wild-type-looking siblings carry one copy of a recessive mutation. A carrier shows the mutation in about half its reads; a pool of siblings in about a third. If the analysis demanded zero reads in the control, it would discard the causal mutation two times out of three. What a sibling can never be is homozygous for it, because then it would be a mutant.</aside>
+</section>

@@ -1,0 +1,24 @@
+<section id="excel" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">mutant_specific_variants.xlsx</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">The columns worth knowing</h2>
+</div>
+<div style="display:flex;gap:16px;align-items:center">
+<p style="font-size:24px;color:#5F6873">Sheets:</p>
+<p style="font-size:24px;font-weight:600;color:#16202B;background:#ECEAE3;border-radius:8px;padding:6px 16px">README</p>
+<p style="font-size:24px;font-weight:600;color:#F7F6F2;background:#17697A;border-radius:8px;padding:6px 16px">Likely damaging</p>
+<p style="font-size:24px;font-weight:600;color:#16202B;background:#ECEAE3;border-radius:8px;padding:6px 16px">Candidate genes</p>
+<p style="font-size:24px;font-weight:600;color:#16202B;background:#ECEAE3;border-radius:8px;padding:6px 16px">Summary</p>
+</div>
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:30%;color:#16202B">Column</th><th style="width:70%;color:#16202B">Meaning</th></tr>
+<tr><td style="color:#16202B"><b>priority</b>, <b>category</b></td><td>1 (strongest) to 5 (flagged); mutant-specific, mutant-enriched or low confidence</td></tr>
+<tr><td style="color:#16202B"><b>gene</b>, <b>hgvs_p</b></td><td>The gene and the protein change, e.g. p.Arg370Trp (Arg 370 becomes Trp)</td></tr>
+<tr><td style="color:#16202B"><b>warnings</b></td><td>In plain words, why a variant was moved to priority 5</td></tr>
+<tr><td style="color:#16202B"><b>novel</b>, <b>known_id</b></td><td>TRUE if not a known variant; otherwise its rs number</td></tr>
+<tr><td style="color:#16202B"><b>allele_check</b></td><td>The protein check: conserved, variable, matches RefSeq, …</td></tr>
+<tr><td style="color:#16202B"><b>&lt;fish&gt;_alt_reads</b></td><td>Reads with the variant in that fish (_ref_reads: reads without)</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Try: Data → Filter · priority 1–2, novel = TRUE, allele_check = conserved · 35</p>
+<aside>The Excel workbook is where most of the work happens. The Likely damaging sheet has every HIGH and MODERATE candidate, sorted by priority; the README sheet explains every column. The columns on this slide are the ones to know; ortholog_residues next to allele_check shows the amino acid in each species. A good first filter is priority one or two, novel true, and allele check conserved: in our data that leaves 22 variants genome-wide, and only two of them, in tmppe and TJP1, inside the chr7 peak. The read-count columns let you judge the evidence yourself: 5 of 5 reads in the mutant and 0 of 6 in the sibling is much stronger than 2 of 2 and 0 of 1.</aside>
+</section>

@@ -1,0 +1,23 @@
+<section id="sheetcheck" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 2 · Edit and check the sheet</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">The check tells you exactly what to fix</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-size:34px;font-weight:600;color:#16202B">Editing in nano</h3>
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:45%;color:#16202B">Key</th><th style="width:55%;color:#16202B">Does</th></tr>
+<tr><td style="color:#16202B"><b>Tab</b></td><td>Next column</td></tr>
+<tr><td style="color:#16202B"><b>Ctrl+O</b>, Enter</td><td>Save</td></tr>
+<tr><td style="color:#16202B"><b>Ctrl+X</b></td><td>Exit</td></tr>
+</table>
+<p style="font-size:26px;line-height:1.45">Open it with nano config/samples.tsv. <b>Or use Excel:</b> Save As “Tab delimited text (.txt)”, upload as config/samples.tsv.</p>
+</div>
+<div style="flex:3;background:#16202B;border-radius:16px;padding:28px 36px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F0EA">$ ./run_wgs.sh --check<br>== Step 2/3: checking the sample sheet<br>  ok   control_0038  control  single-end<br>  ok   mutant_0039   mutant   single-end<br><span style="color:#9ED9A8">Setup looks good.</span><br><br><span style="color:#7CC6D6"># a sheet with spaces instead of Tabs:</span><br><span style="color:#F0A57E">  Problems found in config/samples.tsv<br>   - missing column 'group' (columns<br>     must be separated by TABs, not spaces)</span><br><br><span style="color:#7CC6D6"># a wrong path:</span><br><span style="color:#F0A57E">   - mut1: file not found: data/raw/...</span></p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Our example used single-end data: fastq_2 left empty for both samples · 13</p>
+<aside>Edit the sample sheet with nano, a simple text editor in the terminal: arrow keys to move, Tab between columns, Control-O then Enter to save, Control-X to leave. If you prefer Excel, fill in the four columns there and save as tab-delimited text. Then run the check. It prints one ok line per sample, with single-end or paired-end, so you can confirm the files were understood. If something is wrong it says exactly what: the two most common messages are a missing column, which almost always means spaces instead of tabs, and file not found, which means a typo in the path.</aside>
+</section>

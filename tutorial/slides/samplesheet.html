@@ -1,0 +1,24 @@
+<section id="samplesheet" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 2 · config/samples.tsv</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Tell the pipeline which fish is which</h2>
+</div>
+<table style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#16202B;background:#FDFDFB">
+<tr style="background:#ECEAE3"><th style="width:12%">sample</th><th style="width:10%">group</th><th style="width:39%">fastq_1</th><th style="width:39%">fastq_2</th></tr>
+<tr><td>wt_sib1</td><td>control</td><td>data/raw/WT1_S1_L001_R1_001.fastq.gz</td><td>data/raw/WT1_S1_L001_R2_001.fastq.gz</td></tr>
+<tr><td>wt_sib2</td><td>control</td><td>data/raw/WT2_S2_L001_R1_001.fastq.gz</td><td>data/raw/WT2_S2_L001_R2_001.fastq.gz</td></tr>
+<tr><td>mut1</td><td>mutant</td><td>data/raw/MUT1_S3_L001_R1_001.fastq.gz</td><td>data/raw/MUT1_S3_L001_R2_001.fastq.gz</td></tr>
+<tr><td>mut2</td><td>mutant</td><td>data/raw/MUT2_S4_L001_R1_001.fastq.gz</td><td>data/raw/MUT2_S4_L001_R2_001.fastq.gz</td></tr>
+</table>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 48px">
+<p style="font-size:28px"><b>Separate columns with Tab</b>, never spaces</p>
+<p style="font-size:28px"><b>group</b> is either control or mutant</p>
+<p style="font-size:28px"><b>Single-end data:</b> leave fastq_2 empty</p>
+<p style="font-size:28px"><b>Sample names:</b> short, no spaces or slashes</p>
+</div>
+<div style="background:#16202B;border-radius:12px;padding:20px 32px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#F2F0EA">./run_wgs.sh --check   <span style="color:#7CC6D6"># one “ok” line per sample</span></p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Edit with nano, or in Excel and save as “Tab delimited text” · 12</p>
+<aside>The sample sheet is the only file most people ever edit. Four columns: a short sample name, the group, and the paths to read 1 and read 2. Paths start with data/raw. The most common mistake is spaces instead of tabs between columns; the check command catches it and tells you exactly what is wrong. If one sample was sequenced on several lanes, join the lane files first, keeping R1 and R2 separate. Excel works too: fill in the four columns and save as tab-delimited text.</aside>
+</section>

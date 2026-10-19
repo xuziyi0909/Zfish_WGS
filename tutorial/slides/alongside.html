@@ -1,0 +1,34 @@
+<section id="alongside" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Alongside the eight steps</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Genome-wide plots and large rearrangements</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:2px solid #B04A18;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Variant density · peak</h3>
+<p style="font-size:24px;line-height:1.4">Homozygous high-confidence candidates per 1 Mb. Peak: the tallest window, extended while neighbours stay above 25% of it.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Homozygosity</h3>
+<p style="font-size:24px;line-height:1.4">Share of sites (4+ reads) homozygous in each fish, 5 Mb running mean; then mutant minus control.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Manhattan</h3>
+<p style="font-size:24px;line-height:1.4">Per variant, a one-sided Fisher test: do mutant reads carry it more often than control reads?</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Coverage</h3>
+<p style="font-size:24px;line-height:1.4">Depth in 500 kb windows. Mutant/control ratio: −1 (log2) = one copy lost, +0.58 = one copy gained.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Structural variants</h3>
+<p style="font-size:24px;line-height:1.4">DELLY: deletions, duplications, inversions. Kept if they pass, are in the mutant and in no control.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Ours</h3>
+<p style="font-size:24px;line-height:1.4">228 structural variants (214 deletions), 148 touching a gene. Single-end reads miss many.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">All figures are saved as PNG (slides) and PDF (papers) in results/plots/ · 31</p>
+<aside>Besides the eight steps, the pipeline builds genome-wide views. The variant-density plot is the homozygosity mapping from Part 1: it counts homozygous high-confidence candidates in one-megabase windows, and the peak is the tallest window extended along the chromosome while its neighbours stay above a quarter of its height. The homozygosity plot and the Manhattan plot look at the same signal in two other ways. The coverage plot can reveal large deletions or duplications. Structural variants are called with DELLY and kept only if they pass its filters, are present in the mutant and absent from every control. With single-end reads only split reads can be used, so many larger events are missed.</aside>
+</section>

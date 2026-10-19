@@ -1,0 +1,45 @@
+<section id="protein" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 8 · Protein check</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Is the mutant residue actually normal?</h2>
+</div>
+<div style="display:flex;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:32px 40px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B04A18">aldh1a2, residue 393</p>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0px;border-bottom:1px solid #D9D5CA">
+<p style="font-size:28px">Reference genome (GRCz11)</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:44px;font-weight:600;color:#16202B">P</p>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0px;border-bottom:1px solid #D9D5CA">
+<p style="font-size:28px">Our mutant</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:44px;font-weight:600;color:#B04A18">A</p>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0px;border-bottom:1px solid #D9D5CA">
+<p style="font-size:28px"><b>Zebrafish cDNA protein</b> (RefSeq NP_571925)</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:44px;font-weight:600;color:#B04A18">A</p>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0px">
+<p style="font-size:28px">Human, rat, chicken, frog, medaka, fugu</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:44px;font-weight:600;color:#16202B">G</p>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#16202B;padding:12px 0px 0px">Verdict: the reference genome carries the rare residue; the mutant is normal.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;line-height:1.4">Each missense change is aligned to published zebrafish proteins and to the same protein in six other vertebrates.</p>
+<div style="display:flex;flex-direction:column;gap:4px;border-left:4px solid #B04A18;padding:4px 0px 4px 24px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Matches zebrafish RefSeq</h3>
+<p style="font-size:24px">Reference error or common allele: priority 5</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;border-left:4px solid #B04A18;padding:4px 0px 4px 24px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Matches the vertebrate consensus</h3>
+<p style="font-size:24px">Probably harmless (lgr4 I745V: V in all six): priority 5</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;border-left:4px solid #17697A;padding:4px 0px 4px 24px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Conserved in every species</h3>
+<p style="font-size:24px">Change more likely damaging: listed first</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Columns: allele_check, refseq_residues, ortholog_residues · Species: human, rat, chicken, frog, medaka, fugu · 28</p>
+<aside>This check came straight from a mistake we nearly made. aldh1a2 looked like a great jaw candidate with three missense changes. But the reference genome itself carries rare residues there; published zebrafish cDNAs have exactly what our mutant has. So the mutant is normal and the reference is odd. The pipeline now lines up every missense change with RefSeq proteins, which are built from cDNAs of other fish, and with the same protein in six other vertebrates. If the mutant residue is in a zebrafish RefSeq protein, or is what most vertebrates have, it is moved to priority 5. If the reference residue is identical in every species, the change is more likely to matter, and it is listed first within its priority.</aside>
+</section>

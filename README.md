@@ -5,6 +5,7 @@ but absent from **control** fish, starting from raw `.fastq.gz` files. The pipel
 is built for people with no coding or WGS experience.
 
 📖 **Full step-by-step guide: https://xuziyi0909.github.io/Zfish_WGS/**
+🎓 **Tutorial slides: https://xuziyi0909.github.io/Zfish_WGS/slides/**
 
 ## Quick start
 
@@ -48,5 +49,6 @@ config/samples.tsv         sample sheet
 workflow/Snakefile         pipeline definition
 workflow/rules/*.smk       pipeline steps
 workflow/scripts/          helper scripts (comparison, report, SVs)
-docs/                      GitHub Pages user guide
+docs/                      GitHub Pages user guide (docs/slides/ is built from tutorial/)
+tutorial/                  tutorial slide sources; rebuild with python3 tutorial/build_slides.py
 ```

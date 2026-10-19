@@ -1,0 +1,20 @@
+<section id="settings" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 3 · Other settings (optional)</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">The defaults suit most runs; change these when…</h2>
+</div>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:37%;color:#16202B">Setting</th><th style="width:12%;color:#16202B">Default</th><th style="width:51%;color:#16202B">Change it when</th></tr>
+<tr><td style="color:#16202B"><b>min_alt_reads_mutant</b></td><td>2</td><td>Coverage is high (over 20×): raise to 3–5</td></tr>
+<tr><td style="color:#16202B"><b>min_depth_control</b></td><td>4</td><td>Coverage is high: raise to 8–10 for stricter calls</td></tr>
+<tr><td style="color:#16202B"><b>mutant_rule</b></td><td>any</td><td>Several mutants must all share the mutation: all</td></tr>
+<tr><td style="color:#16202B"><b>min_alt_fraction_mutant</b></td><td>0.9</td><td>Sibling mode, mutant pool with a few mis-sorted fish: 0.8</td></tr>
+<tr><td style="color:#16202B"><b>demote_flagged</b></td><td>true</td><td>You want known and flagged variants at their normal priority</td></tr>
+<tr><td style="color:#16202B"><b>min_qual</b></td><td>30</td><td>You want more sensitive but noisier calls: 20</td></tr>
+<tr><td style="color:#16202B"><b>structural_variants: enabled</b></td><td>true</td><td>You want to skip the slowest step: false</td></tr>
+<tr><td style="color:#16202B"><b>known_variants, protein_check</b></td><td>true</td><td>The server has no internet access: false</td></tr>
+<tr><td style="color:#16202B"><b>output_dir</b></td><td>results</td><td>You want runs side by side, e.g. results_run2</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Edit with nano config/config.yaml; each setting has a comment. Re-running redoes only the affected steps · 15</p>
+<aside>You can leave every other setting alone for a first run. The ones on this slide are the ones worth knowing. At higher coverage, ask for more supporting reads and better control coverage, which cuts false positives. With several mutant samples that should all carry the same mutation, set mutant_rule to all. To compare settings, set a new output folder, so both runs stay side by side. After editing, run ./run_wgs.sh again; the pipeline works out which steps are affected and redoes only those. Changing comparison settings, for example, takes about 20 minutes.</aside>
+</section>

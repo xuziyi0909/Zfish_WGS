@@ -1,0 +1,30 @@
+<section id="runtime" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 4 · While it runs</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">About two hours for two samples</h2>
+</div>
+<div style="display:flex;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:72%;color:#16202B">Stage</th><th style="width:28%;color:#16202B;text-align:right">Time</th></tr>
+<tr><td>Download reference data (first run only)</td><td style="text-align:right">~1 h</td></tr>
+<tr><td>Clean and align, samples in parallel</td><td style="text-align:right">~45 min</td></tr>
+<tr><td>Call variants</td><td style="text-align:right">~10 min</td></tr>
+<tr><td>Structural variants, alongside</td><td style="text-align:right">~25 min</td></tr>
+<tr><td>Annotate, compare, check, report</td><td style="text-align:right">~35 min</td></tr>
+<tr><td style="color:#16202B"><b>Total</b></td><td style="text-align:right;color:#16202B"><b>~2 h</b></td></tr>
+</table>
+<p style="font-size:24px;color:#5F6873">Example data: 61 M and 74 M reads, 48 cores. Plan on about 1 hour of alignment per 100 M reads.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-size:34px;font-weight:600;color:#16202B">Checking on it</h3>
+<div style="background:#16202B;border-radius:12px;padding:24px 28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.55;color:#F2F0EA">screen -r wgs<br><span style="color:#7CC6D6">...</span><br>28 of 41 steps (68%) done</p>
+</div>
+<p style="font-size:26px;line-height:1.45">The full log is saved as results/logs/run_&lt;date&gt;.log, so you can also read it without screen.</p>
+<p style="font-size:26px;line-height:1.45"><b>Done</b> when it prints <span style="color:#17697A"><b>Finished!</b></span> and the path to report.html.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">A run can be stopped with Ctrl+C and resumed later with the same command · 17</p>
+<aside>Here is what to expect while it runs. The first run in a new folder spends about an hour downloading the genome, the known-variant list and protein sequences; later runs skip that. Cleaning and alignment take the longest and scale with the number of reads. The last block, annotation, comparison, the checks and the report, takes about half an hour. To check progress, reattach with screen -r wgs: Snakemake prints how many steps are done. The step count shown is an example. Every run also writes a complete log in results/logs.</aside>
+</section>

@@ -1,0 +1,19 @@
+<section id="priority" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Ranking</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Every protein-changing variant gets a priority</h2>
+</div>
+<table style="font-size:28px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:13%;color:#16202B">Priority</th><th style="width:69%;color:#16202B">Rule</th><th style="width:18%;color:#16202B;text-align:right">In our data</th></tr>
+<tr><td style="color:#B04A18"><b>1</b></td><td>HIGH impact, high confidence, homozygous in the mutant</td><td style="text-align:right">21</td></tr>
+<tr><td style="color:#B04A18"><b>2</b></td><td>HIGH impact on one copy, or MODERATE impact homozygous (high confidence)</td><td style="text-align:right">503</td></tr>
+<tr><td style="color:#16202B"><b>3</b></td><td>Any other high-confidence protein change</td><td style="text-align:right">3</td></tr>
+<tr><td style="color:#16202B"><b>4</b></td><td>Protein-changing, but low confidence: the control had too few reads</td><td style="text-align:right">3,268</td></tr>
+<tr><td style="color:#5F6873"><b>5</b></td><td>Flagged: a known variant, or the mutant amino acid is normal elsewhere</td><td style="text-align:right">8,124</td></tr>
+</table>
+<div style="background:#ECEAE3;border-radius:16px;padding:24px 32px">
+<p style="font-size:28px;line-height:1.4;color:#16202B"><b>Priority ignores location.</b> The causal change inside the homozygosity peak may be “only” priority 2, while a priority 1 far away is background. Weigh both.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Priority 0 = not protein-changing (kept in the full table) · 30</p>
+<aside>Each HIGH or MODERATE variant gets a priority from 1 to 5. One is the classic recessive loss of function: a broken protein on both copies. Two covers strong but less complete evidence, and in a sibling-mode run most missense candidates land here, because sibling mode already requires homozygosity; that is why priority 3 is nearly empty. Four is low confidence. Five is everything the checks flagged: it stays in the tables with the reason written out, but should not be your first PCR. Most important: priority is scored one variant at a time. Always look at where the homozygosity peak is as well.</aside>
+</section>

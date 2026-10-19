@@ -1,0 +1,61 @@
+<section id="flow" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Overview</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Eight steps from raw reads to ranked candidates</h2>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-weight:600;color:#17697A">1</p>
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Clean reads</h3>
+<p style="font-size:24px;color:#5F6873">fastp</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:40px;height:22px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-weight:600;color:#17697A">2</p>
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Align to the genome</h3>
+<p style="font-size:24px;color:#5F6873">bwa-mem2</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:40px;height:22px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-weight:600;color:#17697A">3</p>
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Mark duplicates</h3>
+<p style="font-size:24px;color:#5F6873">samtools</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:40px;height:22px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-weight:600;color:#17697A">4</p>
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Call variants</h3>
+<p style="font-size:24px;color:#5F6873">bcftools</p>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-weight:600;color:#17697A">5</p>
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Predict effects</h3>
+<p style="font-size:24px;color:#5F6873">snpEff</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:40px;height:22px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:2px solid #B04A18;border-radius:16px;padding:24px 28px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-weight:600;color:#B04A18">6 · new</p>
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Known variants</h3>
+<p style="font-size:24px;color:#5F6873">Ensembl / dbSNP</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:40px;height:22px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:2px solid #B04A18;border-radius:16px;padding:24px 28px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-weight:600;color:#B04A18">7</p>
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Mutant vs control</h3>
+<p style="font-size:24px;color:#5F6873">absent or sibling mode</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:40px;height:22px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:2px solid #B04A18;border-radius:16px;padding:24px 28px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-weight:600;color:#B04A18">8 · new</p>
+<h3 style="font-size:32px;font-weight:600;color:#16202B">Protein check</h3>
+<p style="font-size:24px;color:#5F6873">RefSeq + 6 species</p>
+</div>
+</div>
+<div style="background:#ECEAE3;border-radius:16px;padding:20px 32px">
+<p style="font-size:26px;color:#16202B"><b>Alongside:</b> structural variants (DELLY), plots, QC report. <b>Out:</b> report.html and an Excel workbook.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Orange outline: steps added or extended after the jaw-mutant analysis · 19</p>
+<aside>Here is the whole pipeline on one slide. The first four steps turn raw reads into a list of variants for every sample; they are standard for any sequencing project. Steps five to eight decide which variants matter. Step six and step eight are new: they came directly out of the jaw-mutant analysis, where we found that several convincing candidates were really known strain variants or errors in the reference genome. Step seven now has the sibling mode. The next slides go through the steps in order.</aside>
+</section>

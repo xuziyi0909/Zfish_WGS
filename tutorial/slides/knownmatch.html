@@ -1,0 +1,31 @@
+<section id="knownmatch" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 6 · How the matching works</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Same place and same change, or it is novel</h2>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Download once</h3>
+<p style="font-size:24px;line-height:1.35">Ensembl 113 list: 18.3 million zebrafish variants (194 MB)</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:36px;height:20px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Rewrite like ours</h3>
+<p style="font-size:24px;line-height:1.35">95,094 multi-change sites split; 470,839 indels shifted left</p>
+</div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:36px;height:20px"></x-shape>
+<div style="flex:1;align-self:stretch;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Look up each call</h3>
+<p style="font-size:24px;line-height:1.35">Chromosome, position, reference and new letters must all agree</p>
+</div>
+</div>
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:58%;color:#16202B">Our variant vs the list</th><th style="width:42%;color:#16202B">Result</th></tr>
+<tr><td>Same position, same change</td><td style="color:#B04A18"><b>Known</b>, e.g. slc39a13 A23P = rs507894324</td></tr>
+<tr><td>Same position, a different change</td><td style="color:#17697A"><b>Novel</b>: a new allele at a variable site</td></tr>
+<tr><td>Same indel, written at a shifted position</td><td style="color:#B04A18"><b>Known</b>, thanks to the rewrite</td></tr>
+<tr><td>Not in the list at all</td><td style="color:#17697A"><b>Novel</b></td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Stored as novel (TRUE/FALSE) and known_id (the rs number) in every table · 25</p>
+<aside>Matching sounds trivial but has two traps. First, an insertion or deletion inside a repeat, such as one extra A in a run of A's, can be written at several equivalent positions. Our caller always writes it at the leftmost one, but the Ensembl list often does not; without rewriting, 470,839 known indels would never match. Second, a position can carry several different changes. We require the same change, not just the same position, because a new ENU allele can arise at a site that is already variable in other strains, and it should still count as novel.</aside>
+</section>
