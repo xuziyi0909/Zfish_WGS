@@ -1,0 +1,83 @@
+"""
+Zebrafish whole-genome sequencing (WGS) pipeline.
+
+FASTQ -> trimming/QC (fastp) -> alignment (bwa-mem2) -> duplicate marking
+(samtools) -> joint variant calling (bcftools) -> annotation (snpEff, known Ensembl variants)
+-> mutant vs control comparison (+ protein check of missense alleles) -> structural variants (DELLY, optional)
+-> HTML report + MultiQC.
+
+Run through ./run_wgs.sh rather than calling snakemake directly.
+"""
+
+import os
+import pandas as pd
+
+configfile: "config/config.yaml"
+
+
+# ---------------------------------------------------------------- samples
+SAMPLES_DF = pd.read_csv(config["samples"], sep="\t", dtype=str, comment="#").fillna("")
+SAMPLES_DF.columns = [c.strip() for c in SAMPLES_DF.columns]
+for col in ("sample", "group", "fastq_1"):
+    if col not in SAMPLES_DF.columns:
+        raise ValueError(f"Sample sheet {config['samples']} is missing the column '{col}'")
+if "fastq_2" not in SAMPLES_DF.columns:
+    SAMPLES_DF["fastq_2"] = ""
+SAMPLES_DF = SAMPLES_DF.apply(lambda s: s.str.strip())
+SAMPLES_DF["group"] = SAMPLES_DF["group"].str.lower()
+SAMPLES_DF = SAMPLES_DF.set_index("sample", drop=False)
+
+SAMPLES = list(SAMPLES_DF["sample"])
+CONTROLS = list(SAMPLES_DF.query("group == 'control'")["sample"])
+MUTANTS = list(SAMPLES_DF.query("group == 'mutant'")["sample"])
+
+
+def is_paired(sample):
+    return SAMPLES_DF.loc[sample, "fastq_2"] != ""
+
+
+# ---------------------------------------------------------------- paths
+OUT = config["output_dir"]
+REF_DIR = config["reference"]["dir"]
+REF_NAME = config["reference"]["name"]
+GENOME = f"{REF_DIR}/genome.fa"
+GTF = f"{REF_DIR}/genes.gtf"
+SNPEFF_DIR = f"{REF_DIR}/snpeff"
+SNPEFF_CONFIG = f"{SNPEFF_DIR}/snpEff.config"
+SNPEFF_DB = f"{SNPEFF_DIR}/{REF_NAME}/snpEffectPredictor.bin"
+
+THREADS = int(config["resources"]["threads_per_job"])
+N_CHUNKS = 30  # genome is split into this many pieces for parallel variant calling
+CHUNKS = [f"{i:02d}" for i in range(N_CHUNKS)]
+SV_ENABLED = bool(config["structural_variants"]["enabled"])
+KNOWN_ENABLED = bool(config.get("known_variants", {}).get("enabled", False))
+KNOWN_VCF = f"{REF_DIR}/known_variants/known.vcf.gz"
+PROTEIN_CHECK = bool(config.get("protein_check", {}).get("enabled", False))
+PROTEIN_DIR = f"{REF_DIR}/protein"
+PROTEIN_REFS = {
+    "zf_pep": f"{PROTEIN_DIR}/zebrafish_pep.fa.gz",
+    "orthologs": f"{PROTEIN_DIR}/orthologs.tsv",
+    "orth_pep": f"{PROTEIN_DIR}/ortholog_pep.fa.gz",
+    "refseq": f"{PROTEIN_DIR}/refseq.tsv",
+    "refseq_pep": f"{PROTEIN_DIR}/refseq_pep.fa.gz",
+}
+COMPARISON_MODE = str(config["comparison"].get("mode", "absent")).lower()
+if COMPARISON_MODE not in ("absent", "sibling"):
+    raise ValueError(f"comparison: mode must be 'absent' or 'sibling' (found '{COMPARISON_MODE}')")
+
+wildcard_constraints:
+    sample="|".join(SAMPLES),
+    chunk=r"\d+",
+
+
+include: "rules/reference.smk"
+include: "rules/qc_align.smk"
+include: "rules/variants.smk"
+include: "rules/plots.smk"
+include: "rules/report.smk"
+
+
+rule all:
+    input:
+        f"{OUT}/report.html",
+        f"{OUT}/qc/multiqc_report.html",

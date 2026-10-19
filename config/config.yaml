@@ -1,0 +1,82 @@
+# =====================================================================
+#  Zebrafish WGS pipeline - settings
+#  Most users only need to edit `samples` and `output_dir`.
+#  Lines starting with "#" are comments and are ignored.
+# =====================================================================
+
+# Table listing your samples (see docs: "Prepare your sample sheet").
+samples: config/samples.tsv
+
+# Folder where all results are written.
+output_dir: results
+
+# ---------------------------------------------------------------------
+# Reference genome (downloaded automatically the first time).
+# Default: zebrafish GRCz11, Ensembl release 113.
+# ---------------------------------------------------------------------
+reference:
+  dir: reference
+  name: GRCz11.113
+  fasta_url: https://ftp.ensembl.org/pub/release-113/fasta/danio_rerio/dna/Danio_rerio.GRCz11.dna.primary_assembly.fa.gz
+  gtf_url: https://ftp.ensembl.org/pub/release-113/gtf/danio_rerio/Danio_rerio.GRCz11.113.gtf.gz
+
+# ---------------------------------------------------------------------
+# Advanced settings - the defaults are sensible for most experiments.
+# ---------------------------------------------------------------------
+trimming:
+  min_length: 50            # discard reads shorter than this after trimming
+
+alignment:
+  min_mapping_quality: 20   # ignore reads that could map to several places
+
+variant_calling:
+  min_base_quality: 20      # ignore low-confidence bases
+  min_qual: 30              # minimum variant QUAL score to keep
+  min_depth: 3              # minimum total reads at the site in a sample
+
+comparison:
+  # What kind of control did you sequence? (see docs: "Choose a comparison mode")
+  #   absent  - an unrelated wild-type fish/line. A variant is "mutant-specific"
+  #             when it is present in the mutant(s) and absent from every control.
+  #   sibling - wild-type-looking siblings (one fish or a pool) of a recessive mutant.
+  #             Siblings can carry one copy of the mutation, so the control may show
+  #             the variant in some reads; the mutant must carry it in (nearly) all reads.
+  mode: sibling
+  min_alt_reads_mutant: 2   # mutant must show at least this many supporting reads
+  min_depth_control: 4      # control must be covered by this many reads to judge it
+  # "any": present in at least one mutant sample; "all": present in every mutant sample
+  mutant_rule: any
+  # sibling mode only:
+  min_alt_fraction_mutant: 0.9    # share of mutant reads that must carry the variant
+  max_alt_fraction_control: 0.6   # control may carry it in at most this share of reads
+                                  # (expected: 0.5 for a carrier sibling, ~0.33 for a sibling pool)
+  # Move variants that are probably not the mutation to priority 5 (known variants,
+  # and missense alleles that match a published zebrafish protein or the vertebrate consensus).
+  demote_flagged: true
+
+# ---------------------------------------------------------------------
+# Known zebrafish variation (Ensembl/dbSNP). Variants listed here are common
+# strain differences; a new mutation (e.g. from ENU) is almost always novel.
+# ---------------------------------------------------------------------
+known_variants:
+  enabled: true
+  url: https://ftp.ensembl.org/pub/release-113/variation/vcf/danio_rerio/danio_rerio.vcf.gz
+
+# ---------------------------------------------------------------------
+# Protein check for amino-acid changes: compares the mutant amino acid with
+# (1) published zebrafish proteins from cDNA (NCBI RefSeq), which reveals errors
+#     or rare alleles in the reference genome, and
+# (2) the same protein in other vertebrates (Ensembl Compara orthologs).
+# ---------------------------------------------------------------------
+protein_check:
+  enabled: true
+  ensembl_ftp: https://ftp.ensembl.org/pub/release-113
+  species: [homo_sapiens, rattus_norvegicus, gallus_gallus, xenopus_tropicalis, oryzias_latipes, takifugu_rubripes]
+  refseq_xref_url: https://ftp.ensembl.org/pub/release-113/tsv/danio_rerio/Danio_rerio.GRCz11.113.refseq.tsv.gz
+  refseq_protein_url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/GCF_000002035.6_GRCz11/GCF_000002035.6_GRCz11_protein.faa.gz
+
+structural_variants:
+  enabled: true             # call large deletions/duplications/inversions with DELLY
+
+resources:
+  threads_per_job: 16       # CPU threads for alignment and other heavy steps

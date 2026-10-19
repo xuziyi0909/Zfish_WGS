@@ -1,0 +1,235 @@
+category	chrom	pos	ref	alt	type	gene	gene_id	effect	impact	hgvs_p	mutant_0039_ref_reads	mutant_0039_alt_reads	control_0038_ref_reads	control_0038_alt_reads	known	candidate	known_id
+control_only	7	20379411	GAC	G	indel	zgc:194312	ENSDARG00000077414	frameshift_variant	HIGH	p.Ser5fs	0	2	1	1	True	True	rs505864424
+low_evidence	7	20498669	G	A	SNV	ENSDARG00000061850	ENSDARG00000061850	missense_variant	MODERATE	p.Ser410Asn	0	2	0	0	True	True	rs179908129
+mutant_specific	7	20498746	A	C	SNV	ENSDARG00000061850	ENSDARG00000061850	missense_variant	MODERATE	p.Ile436Leu	0	4	5	0	True	True	rs515473082
+low_evidence	7	20577834	A	C	SNV	zpax4	ENSDARG00000079034	missense_variant	MODERATE	p.Ser829Ala	0	2	3	0	False	True	
+shared	7	20579835	G	A	SNV	zpax4	ENSDARG00000079034	missense_variant	MODERATE	p.Thr516Met	0	3	4	1	True	True	rs501499542
+mutant_specific	7	21924395	C	T	SNV	ENSDARG00000073844	ENSDARG00000073844	splice_acceptor_variant, intron_variant	HIGH		0	5	5	0	True	True	rs510770627
+mutant_specific_low_confidence	7	21932705	G	A	SNV	si:dkey-85k7.12	ENSDARG00000078731	missense_variant	MODERATE	p.Ala63Thr	0	4	2	0	True	True	rs515432872
+mutant_specific_low_confidence	7	21934253	G	A	SNV	si:dkey-85k7.12	ENSDARG00000078731	missense_variant	MODERATE	p.Ala512Thr	0	3	3	0	True	True	rs507032553
+shared	7	21934650	T	C	SNV	si:dkey-85k7.12	ENSDARG00000078731	missense_variant	MODERATE	p.Ile644Thr	0	3	2	2	True	True	rs512933160
+control_only	7	21934680	T	C	SNV	si:dkey-85k7.12	ENSDARG00000078731	missense_variant	MODERATE	p.Ile654Thr	0	2	4	2	True	True	rs509242498
+mutant_specific	7	21935283	A	C	SNV	si:dkey-85k7.12	ENSDARG00000078731	missense_variant	MODERATE	p.Lys855Thr	0	5	4	0	True	True	rs511681311
+mutant_specific_low_confidence	7	21936510	G	C	SNV	si:dkey-85k7.12	ENSDARG00000078731	missense_variant	MODERATE	p.Cys1264Ser	0	6	0	0	True	True	rs505999223
+control_only	7	22311113	C	A	SNV	ENSDARG00000114045	ENSDARG00000114045	splice_donor_variant, intron_variant	HIGH		0	2	3	1	True	True	rs515532864
+mutant_specific	7	22544108	G	A	SNV	chrnb1	ENSDARG00000069660	missense_variant	MODERATE	p.Ala18Thr	0	13	4	0	True	True	rs506943051
+shared	7	22595739	G	A	SNV	chrnb1l	ENSDARG00000022532	missense_variant	MODERATE	p.Gly371Glu	0	5	6	1	True	True	rs507684148
+control_only	7	22678348	C	T	SNV	ENSDARG00000116684	ENSDARG00000116684	missense_variant, splice_region_variant	MODERATE	p.Asp37Asn	0	2	1	1	False	True	
+shared	7	22699676	C	T	SNV	ENSDARG00000116684	ENSDARG00000116684	missense_variant	MODERATE	p.Cys14Tyr	0	6	2	1	False	True	
+shared	7	22699688	C	A	SNV	ENSDARG00000116684	ENSDARG00000116684	missense_variant	MODERATE	p.Gly10Val	0	8	3	1	False	True	
+mutant_specific_low_confidence	7	22699698	A	T	SNV	ENSDARG00000116684	ENSDARG00000116684	missense_variant	MODERATE	p.Trp7Arg	0	8	2	0	False	True	
+mutant_specific_low_confidence	7	22747937	G	A	SNV	fxr2	ENSDARG00000016260	missense_variant	MODERATE	p.Arg8Gln	0	3	2	0	False	True	
+low_evidence	7	22748056	T	C	SNV	fxr2	ENSDARG00000016260	missense_variant	MODERATE	p.Leu500Pro	0	2	0	0	False	True	
+mutant_specific_low_confidence	7	22805551	A	G	SNV	rbm4.1	ENSDARG00000036386	missense_variant	MODERATE	p.Met252Val	0	3	1	0	True	True	rs514822698
+shared	7	22816078	G	A	SNV	sf1	ENSDARG00000008188	missense_variant	MODERATE	p.Arg76His	0	5	4	1	True	True	rs504538062
+shared	7	22855118	G	A	SNV	clcn5b	ENSDARG00000022466	missense_variant	MODERATE	p.Asp2Asn	0	4	4	1	True	True	rs510274042
+mutant_specific	7	22974818	C	T	SNV	si:dkey-171c9.3	ENSDARG00000102228	missense_variant	MODERATE	p.Glu398Lys	0	4	4	0	False	True	
+mutant_specific	7	22974819	C	T	SNV	si:dkey-171c9.3	ENSDARG00000102228	missense_variant	MODERATE	p.Met397Ile	0	4	4	0	True	True	rs504006675
+mutant_specific	7	22974857	C	T	SNV	si:dkey-171c9.3	ENSDARG00000102228	missense_variant	MODERATE	p.Glu385Lys	0	6	5	0	True	True	rs508695367
+shared	7	23699505	A	C	SNV	si:dkey-172j4.3	ENSDARG00000074183	missense_variant	MODERATE	p.Thr642Pro	0	3	3	1	True	True	rs179588339
+mutant_specific_low_confidence	7	23718924	A	G	SNV	si:dkey-172j4.3	ENSDARG00000074183	missense_variant	MODERATE	p.Asn998Ser	0	6	3	0	True	True	rs180151878
+shared	7	23943622	C	T	SNV	si:dkey-183c6.7	ENSDARG00000102029	missense_variant	MODERATE	p.Pro9Leu	0	5	5	4	True	True	rs506181593
+shared	7	24004274	A	C	SNV	si:dkey-183c6.9	ENSDARG00000105607	missense_variant	MODERATE	p.Cys229Gly	0	6	1	1	True	True	rs501395212
+shared	7	24004332	T	G	SNV	si:dkey-183c6.9	ENSDARG00000105607	missense_variant	MODERATE	p.Lys209Asn	0	6	2	1	True	True	rs506279853
+shared	7	24019106	T	C	SNV	cideb	ENSDARG00000012640	missense_variant	MODERATE	p.Glu90Gly	0	6	4	2	True	True	rs515075002
+shared	7	24059328	T	G	SNV	efs	ENSDARG00000088835	missense_variant	MODERATE	p.Ser525Ala	0	3	2	1	True	True	rs502185719
+low_evidence	7	24076630	C	T	SNV	acin1b	ENSDARG00000026842	missense_variant	MODERATE	p.Thr633Ile	0	2	0	0	True	True	rs515232988
+control_only	7	24274473	C	G	SNV	svep1	ENSDARG00000013526	missense_variant	MODERATE	p.Gln177Glu	0	2	4	1	False	True	
+control_only	7	24298511	A	C	SNV	svep1	ENSDARG00000013526	missense_variant	MODERATE	p.Ile473Leu	0	2	2	1	True	True	rs503710319
+mutant_specific_low_confidence	7	24339160	A	G	SNV	svep1	ENSDARG00000013526	missense_variant	MODERATE	p.Lys2229Arg	0	3	0	0	True	True	rs179883094
+control_only	7	24377030	T	A	SNV	ptgr1.1	ENSDARG00000024877	missense_variant	MODERATE	p.Glu269Val	0	2	3	1	True	True	rs502339883
+shared	7	24526712	C	G	SNV	btr09	ENSDARG00000054805	missense_variant	MODERATE	p.Leu360Val	0	4	3	1	False	True	
+shared	7	24581643	C	A	SNV	si:dkeyp-75h12.7	ENSDARG00000105583	missense_variant	MODERATE	p.Asn58Lys	0	3	4	1	True	True	rs499712240
+shared	7	24652951	A	G	SNV	gba2	ENSDARG00000061472	missense_variant	MODERATE	p.Ile229Val	0	5	2	2	True	True	rs506303095
+shared	7	24655261	A	G	SNV	gba2	ENSDARG00000061472	missense_variant	MODERATE	p.Lys366Arg	0	5	5	2	True	True	rs512806018
+mutant_specific_low_confidence	7	24717322	T	G	SNV	cmtr2	ENSDARG00000036345	missense_variant	MODERATE	p.Glu44Ala	0	10	1	0	True	True	rs509408558
+low_evidence	7	24792752	C	T	SNV	shroom4	ENSDARG00000079900	missense_variant	MODERATE	p.Ala111Val	0	2	5	0	True	True	rs512660116
+shared	7	24794009	G	A	SNV	shroom4	ENSDARG00000079900	missense_variant	MODERATE	p.Ser227Asn	0	4	4	1	True	True	rs510858968
+shared	7	24794204	A	G	SNV	shroom4	ENSDARG00000079900	missense_variant	MODERATE	p.Lys292Arg	0	6	2	2	True	True	rs499578888
+mutant_specific	7	24794528	T	G	SNV	shroom4	ENSDARG00000079900	missense_variant	MODERATE	p.Phe400Cys	0	6	5	0	True	True	rs511700149
+shared	7	24801920	G	T	SNV	shroom4	ENSDARG00000079900	missense_variant	MODERATE	p.Ala1163Ser	0	7	3	1	True	True	rs505848691
+low_evidence	7	24830010	T	G	SNV	cskmt	ENSDARG00000054856	missense_variant	MODERATE	p.Ile124Met	0	2	7	0	True	True	rs179695358
+shared	7	24830038	A	C	SNV	cskmt	ENSDARG00000054856	missense_variant	MODERATE	p.Lys134Gln	0	4	5	1	True	True	rs179694888
+mutant_specific_low_confidence	7	24830110	C	T	SNV	cskmt	ENSDARG00000054856	missense_variant	MODERATE	p.Pro158Ser	0	5	2	0	True	True	rs508399966
+shared	7	24830776	A	G	SNV	fam113	ENSDARG00000002685	missense_variant	MODERATE	p.Leu384Ser	0	5	5	1	True	True	rs179695009
+shared	7	24863328	A	C	SNV	adad2	ENSDARG00000105626	missense_variant	MODERATE	p.Leu462Val	0	5	2	2	True	True	rs499642451
+mutant_specific	7	24883877	C	G	SNV	krcp	ENSDARG00000040224	missense_variant, splice_region_variant	MODERATE	p.Asp99Glu	0	3	4	0	True	True	rs40640412
+control_only	7	25121384	G	A	SNV	MAJIN	ENSDARG00000105594	missense_variant	MODERATE	p.Thr129Ile	0	2	7	2	False	True	
+shared	7	26015595	C	A	SNV	pelp1	ENSDARG00000079313	missense_variant	MODERATE	p.Arg547Ser	0	4	3	1	True	True	rs514566703
+mutant_specific_low_confidence	7	26341486	A	G	SNV	zanl	ENSDARG00000056781	missense_variant	MODERATE	p.Asn2753Asp	0	3	3	0	True	True	rs510920679
+low_evidence	7	26496228	C	G	SNV	sox19b	ENSDARG00000040266	missense_variant	MODERATE	p.Ala220Pro	0	2	1	0	True	True	rs41238422
+mutant_specific_low_confidence	7	26497577	C	A	SNV	sox19b	ENSDARG00000040266	missense_variant	MODERATE	p.Gly38Val	0	5	0	0	True	True	rs40714412
+mutant_specific	7	26561334	A	C	SNV	tnk1	ENSDARG00000069433	missense_variant	MODERATE	p.Gln581Pro	0	5	4	0	True	True	rs505537913
+mutant_specific	7	26561336	G	C	SNV	tnk1	ENSDARG00000069433	missense_variant	MODERATE	p.Ala582Pro	0	5	5	0	True	True	rs512706312
+mutant_specific_low_confidence	7	26577380	A	C	SNV	si:dkey-62k3.6	ENSDARG00000091614	missense_variant	MODERATE	p.Ile95Met	0	3	1	0	False	True	
+shared	7	26577822	A	C	SNV	si:dkey-62k3.6	ENSDARG00000091614	missense_variant	MODERATE	p.Asp34Glu	0	3	2	2	False	True	
+shared	7	26629286	G	A	SNV	hsbp1a	ENSDARG00000069425	missense_variant	MODERATE	p.Val14Ile	0	6	6	1	False	True	
+shared	7	27010306	T	TAGC	indel	caprin1a	ENSDARG00000009346	disruptive_inframe_insertion	MODERATE	p.Ser281dup	0	3	4	1	False	True	
+mutant_specific	7	27020670	A	T	SNV	caprin1a	ENSDARG00000009346	missense_variant	MODERATE	p.Tyr655Phe	0	3	4	0	False	True	
+shared	7	27025607	C	G	SNV	nucb2a	ENSDARG00000036299	missense_variant	MODERATE	p.Ala457Pro	0	7	5	1	False	True	
+mutant_specific	7	27028779	A	G	SNV	nucb2a	ENSDARG00000036299	missense_variant	MODERATE	p.Leu418Pro	0	6	4	0	True	True	rs515240784
+mutant_specific_low_confidence	7	27153046	G	A	SNV	PLEKHA7	ENSDARG00000062220	missense_variant	MODERATE	p.Ala133Thr	0	6	3	0	False	True	
+shared	7	27221657	C	T	SNV	PLEKHA7	ENSDARG00000062220	missense_variant	MODERATE	p.Pro94Ser	0	7	2	1	False	True	
+low_evidence	7	28049674	CTCT	C	indel	ric3a	ENSDARG00000105549	disruptive_inframe_deletion	MODERATE	p.Glu394del	0	2	1	0	False	True	
+shared	7	28049963	T	C	SNV	ric3a	ENSDARG00000105549	missense_variant	MODERATE	p.Glu298Gly	0	6	2	2	False	True	
+mutant_specific_low_confidence	7	28058291	G	A	SNV	ric3a	ENSDARG00000105549	missense_variant	MODERATE	p.Ser38Leu	0	3	2	0	False	True	
+mutant_specific_low_confidence	7	28378292	C	T	SNV	stk33	ENSDARG00000054318	missense_variant	MODERATE	p.Gly386Ser	0	6	0	0	True	True	rs503559656
+shared	7	28430664	G	T	SNV	trim66	ENSDARG00000054332	missense_variant	MODERATE	p.Asp705Glu	0	4	5	1	False	True	
+mutant_specific_low_confidence	7	28430717	G	C	SNV	trim66	ENSDARG00000054332	missense_variant	MODERATE	p.Gln688Glu	0	5	1	0	False	True	
+mutant_specific	7	28466180	A	T	SNV	dennd2b	ENSDARG00000037363	missense_variant	MODERATE	p.Ile1128Lys	0	4	4	0	False	True	
+shared	7	28615592	A	C	SNV	slc7a6os	ENSDARG00000010596	missense_variant	MODERATE	p.Leu9Phe	0	6	4	1	True	True	rs513830456
+shared	7	28615604	C	A	SNV	slc7a6os	ENSDARG00000010596	missense_variant	MODERATE	p.Asp13Glu	0	5	3	1	True	True	rs502282482
+mutant_specific_low_confidence	7	28615618	C	T	SNV	slc7a6os	ENSDARG00000010596	missense_variant	MODERATE	p.Ser18Leu	0	6	2	0	True	True	rs509358785
+shared	7	28641561	G	T	SNV	slc7a6	ENSDARG00000054423	missense_variant	MODERATE	p.Pro14Thr	0	7	4	2	True	True	rs180152561
+shared	7	28641591	T	C	SNV	slc7a6	ENSDARG00000054423	missense_variant	MODERATE	p.Asn4Asp	0	7	4	3	True	True	rs511483353
+mutant_specific_low_confidence	7	28653060	T	C	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Asn377Asp	0	5	2	0	False	True	
+mutant_specific_low_confidence	7	28653066	A	C	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Tyr375Asp	0	5	2	0	False	True	
+mutant_specific_low_confidence	7	28653078	G	A	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Pro371Ser	0	4	2	0	True	True	rs514509409
+shared	7	28654328	T	G	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Glu305Ala	0	5	2	2	False	True	
+shared	7	28654347	T	C	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Thr299Ala	0	7	2	1	False	True	
+mutant_specific_low_confidence	7	28655089	G	A	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Pro251Ser	0	4	3	0	False	True	
+mutant_specific_low_confidence	7	28657507	G	T	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Thr76Lys	0	5	3	0	False	True	
+mutant_specific_low_confidence	7	28657508	T	G	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Thr76Pro	0	5	2	0	False	True	
+mutant_specific_low_confidence	7	28657526	T	C	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Ile70Val	0	7	2	0	False	True	
+mutant_specific_low_confidence	7	28657552	C	T	SNV	si:dkey-181f22.4	ENSDARG00000105643	missense_variant	MODERATE	p.Gly61Glu	0	6	1	0	False	True	
+mutant_specific	7	28675511	G	A	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Ser494Phe	0	5	4	0	True	True	rs504926269
+mutant_specific	7	28675512	A	G	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Ser494Pro	0	5	4	0	True	True	rs507925537
+mutant_specific	7	28675523	C	A	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Ser490Ile	0	5	4	0	True	True	rs514773958
+mutant_specific_low_confidence	7	28675663	A	G	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Leu472Pro	0	7	2	0	False	True	
+shared	7	28675769	A	T	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Leu437Ile	0	8	7	1	True	True	rs511531039
+shared	7	28675781	T	C	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Thr433Ala	0	9	9	1	False	True	
+shared	7	28675786	T	C	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Asn431Ser	0	9	9	1	False	True	
+shared	7	28678592	A	G	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Ile293Thr	0	3	4	2	True	True	rs514506733
+shared	7	28679776	T	A	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Arg180Ser	0	3	4	1	True	True	rs505226549
+shared	7	28680233	T	G	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Glu58Asp	0	10	3	1	False	True	
+low_evidence	7	28681690	C	T	SNV	adgrg1	ENSDARG00000027222	missense_variant	MODERATE	p.Ala6Thr	0	2	1	0	True	True	rs515447078
+mutant_specific	7	28781815	A	G	SNV	ccdc102a	ENSDARG00000003872	missense_variant	MODERATE	p.Thr276Ala	0	5	7	0	False	True	
+control_only	7	29006045	C	CT	indel	ENSDARG00000103445	ENSDARG00000103445	frameshift_variant	HIGH	p.Leu144fs	0	2	5	2	False	True	
+shared	7	29006375	G	A	SNV	ENSDARG00000103445	ENSDARG00000103445	missense_variant	MODERATE	p.Glu252Lys	0	6	3	1	False	True	
+shared	7	29006381	A	C	SNV	ENSDARG00000103445	ENSDARG00000103445	missense_variant	MODERATE	p.Ser254Arg	0	6	3	1	False	True	
+mutant_specific_low_confidence	7	29013364	C	T	SNV	dnaaf1	ENSDARG00000012030	missense_variant	MODERATE	p.Ser44Leu	0	4	1	0	False	True	
+mutant_specific_low_confidence	7	29015311	A	C	SNV	dnaaf1	ENSDARG00000012030	missense_variant	MODERATE	p.Gln422Pro	0	6	2	0	False	True	
+mutant_specific_low_confidence	7	29015317	C	A	SNV	dnaaf1	ENSDARG00000012030	missense_variant	MODERATE	p.Pro424Gln	0	5	2	0	True	True	rs509663667
+control_only	7	29016850	C	T	SNV	dnaaf1	ENSDARG00000012030	missense_variant	MODERATE	p.Arg486Cys	0	2	3	1	False	True	
+shared	7	29051376	A	G	SNV	gfod2	ENSDARG00000061145	missense_variant	MODERATE	p.Thr286Ala	0	3	3	1	True	True	rs41139565
+mutant_specific	7	29083800	C	A	SNV	acd	ENSDARG00000078055	missense_variant	MODERATE	p.Leu130Ile	0	4	4	0	True	True	rs509459278
+mutant_specific	7	29083801	T	C	SNV	acd	ENSDARG00000078055	missense_variant	MODERATE	p.Leu130Pro	0	4	4	0	True	True	rs514481508
+shared	7	29086221	A	G	SNV	acd	ENSDARG00000078055	missense_variant	MODERATE	p.Thr288Ala	0	6	4	2	False	True	
+shared	7	29096363	G	A	SNV	ogfod1	ENSDARG00000036061	missense_variant	MODERATE	p.Val36Ile	0	6	3	4	False	True	
+shared	7	29100179	T	G	SNV	ogfod1	ENSDARG00000036061	missense_variant	MODERATE	p.Cys177Gly	0	6	3	1	True	True	rs514404058
+shared	7	29100180	G	T	SNV	ogfod1	ENSDARG00000036061	missense_variant	MODERATE	p.Cys177Phe	0	6	3	1	True	True	rs505171934
+shared	7	29100181	T	G	SNV	ogfod1	ENSDARG00000036061	missense_variant	MODERATE	p.Cys177Trp	0	6	3	1	True	True	rs509954119
+shared	7	29102401	A	G	SNV	ogfod1	ENSDARG00000036061	missense_variant	MODERATE	p.Met195Val	0	6	3	1	True	True	rs508020565
+mutant_specific_low_confidence	7	29106801	G	A	SNV	ogfod1	ENSDARG00000036061	missense_variant	MODERATE	p.Gly376Ser	0	6	2	0	False	True	
+mutant_specific_low_confidence	7	29106827	G	C	SNV	ogfod1	ENSDARG00000036061	missense_variant	MODERATE	p.Glu384Asp	0	6	2	0	True	True	rs500758095
+shared	7	29111212	G	A	SNV	fbxl8	ENSDARG00000054222	missense_variant	MODERATE	p.His367Tyr	0	3	8	2	True	True	rs510678337
+control_only	7	29111223	C	G	SNV	fbxl8	ENSDARG00000054222	missense_variant	MODERATE	p.Cys363Ser	0	2	7	1	False	True	
+control_only	7	29111704	G	C	SNV	fbxl8	ENSDARG00000054222	missense_variant	MODERATE	p.Gln203Glu	0	2	6	1	False	True	
+mutant_specific_low_confidence	7	29148825	G	A	SNV	mtbl	ENSDARG00000102051	missense_variant	MODERATE	p.Asp5Asn	0	4	3	0	False	True	
+mutant_specific	7	29157506	C	T	SNV	tmppe	ENSDARG00000036059	missense_variant	MODERATE	p.Arg370Trp	0	5	6	0	False	True	
+low_evidence	7	29163898	G	T	SNV	SLC38A8	ENSDARG00000054196	stop_gained	HIGH	p.Glu43*	0	2	3	0	True	True	rs40830198
+control_only	7	29167718	A	AT	indel	SLC38A8	ENSDARG00000054196	splice_acceptor_variant, intron_variant	HIGH		0	2	2	1	False	True	
+shared	7	29171627	T	C	SNV	SLC38A8	ENSDARG00000054196	missense_variant	MODERATE	p.Cys209Arg	0	8	3	1	False	True	
+low_evidence	7	29182342	T	C	SNV	aph1b	ENSDARG00000005612	missense_variant	MODERATE	p.Tyr119His	0	2	4	0	False	True	
+low_evidence	7	29203141	C	CAT	indel	HERC1	ENSDARG00000077901	splice_donor_variant, intron_variant	HIGH		0	2	3	0	False	True	
+shared	7	29205415	C	T	SNV	HERC1	ENSDARG00000077901	missense_variant	MODERATE	p.Ala3893Thr	0	3	2	1	False	True	
+shared	7	29205418	T	A	SNV	HERC1	ENSDARG00000077901	missense_variant	MODERATE	p.Met3892Leu	0	3	1	1	False	True	
+mutant_specific	7	29211339	C	A	SNV	HERC1	ENSDARG00000077901	missense_variant	MODERATE	p.Gln3550His	0	7	5	0	False	True	
+mutant_specific_low_confidence	7	29229328	T	A	SNV	HERC1	ENSDARG00000077901	missense_variant	MODERATE	p.Gln2467Leu	0	4	1	0	False	True	
+mutant_specific	7	29245795	A	T	SNV	HERC1	ENSDARG00000077901	missense_variant	MODERATE	p.Ser1415Thr	0	3	4	0	True	True	rs507565434
+shared	7	29251906	G	T	SNV	HERC1	ENSDARG00000077901	missense_variant	MODERATE	p.Asp1201Glu	0	6	9	1	False	True	
+mutant_specific_low_confidence	7	29281880	C	A	SNV	dapk2a	ENSDARG00000061096	missense_variant	MODERATE	p.Val357Leu	0	5	1	0	False	True	
+mutant_specific_low_confidence	7	29282086	G	A	SNV	dapk2a	ENSDARG00000061096	missense_variant	MODERATE	p.Pro288Leu	0	7	3	0	False	True	
+shared	7	29297052	G	A	SNV	sh2d7	ENSDARG00000088167	missense_variant	MODERATE	p.Ala345Thr	0	3	1	1	False	True	
+shared	7	29314054	C	T	SNV	trpm1a	ENSDARG00000011259	missense_variant	MODERATE	p.Ala1319Thr	0	6	3	1	True	True	rs512678298
+shared	7	29333350	G	C	SNV	trpm1a	ENSDARG00000011259	missense_variant	MODERATE	p.Ser358Cys	0	5	3	1	False	True	
+mutant_specific_low_confidence	7	29513217	T	G	SNV	itln4	ENSDARG00000053630	missense_variant	MODERATE	p.His61Gln	0	4	0	0	False	True	
+control_only	7	29663122	T	A	SNV	VPS13C	ENSDARG00000074465	missense_variant	MODERATE	p.Gln2040Leu	0	2	4	1	False	True	
+shared	7	29664373	A	G	SNV	VPS13C	ENSDARG00000074465	missense_variant	MODERATE	p.Val1974Ala	0	5	4	1	False	True	
+shared	7	29666245	G	A	SNV	VPS13C	ENSDARG00000074465	missense_variant	MODERATE	p.Ser1897Leu	0	6	7	2	False	True	
+mutant_specific	7	29912739	T	C	SNV	tln2a	ENSDARG00000017901	missense_variant	MODERATE	p.Val695Ala	0	3	4	0	True	True	rs180152840
+low_evidence	7	30063864	G	A	SNV	pstpip1b	ENSDARG00000053568	missense_variant	MODERATE	p.Gly288Ser	0	2	2	0	False	True	
+mutant_specific	7	30116868	C	G	SNV	ENSDARG00000105630	ENSDARG00000105630	missense_variant	MODERATE	p.Glu1310Asp	0	3	7	0	False	True	
+mutant_specific	7	30116890	A	T	SNV	ENSDARG00000105630	ENSDARG00000105630	missense_variant	MODERATE	p.Leu1303Gln	0	3	6	0	False	True	
+shared	7	30120349	G	A	SNV	ENSDARG00000105630	ENSDARG00000105630	missense_variant	MODERATE	p.Pro886Leu	0	3	5	2	False	True	
+shared	7	30120526	G	A	SNV	ENSDARG00000105630	ENSDARG00000105630	missense_variant	MODERATE	p.Thr827Met	0	3	2	2	False	True	
+shared	7	30142655	G	T	SNV	frmd5b	ENSDARG00000079622	missense_variant	MODERATE	p.Ala69Asp	0	6	4	1	False	True	
+mutant_specific_low_confidence	7	30147901	T	C	SNV	frmd5b	ENSDARG00000079622	missense_variant	MODERATE	p.Gln263Arg	0	6	1	0	False	True	
+low_evidence	7	30179623	G	A	SNV	si:ch211-107o10.3	ENSDARG00000008491	missense_variant	MODERATE	p.Asp48Asn	0	2	5	0	True	True	rs41031585
+shared	7	30183672	C	A	SNV	si:ch211-107o10.3	ENSDARG00000008491	missense_variant	MODERATE	p.Leu171Met	0	4	5	1	False	True	
+low_evidence	7	30202340	A	G	SNV	wdr76	ENSDARG00000053554	missense_variant	MODERATE	p.Arg45Gly	0	2	2	0	True	True	rs500587688
+mutant_specific_low_confidence	7	30204296	T	G	SNV	wdr76	ENSDARG00000053554	missense_variant	MODERATE	p.Asp224Glu	0	3	3	0	False	True	
+mutant_specific	7	30208176	C	G	SNV	wdr76	ENSDARG00000053554	missense_variant	MODERATE	p.Ser461Arg	0	4	4	0	True	True	rs40966303
+shared	7	30256936	A	G	SNV	sema4bb	ENSDARG00000076104	missense_variant	MODERATE	p.Asn333Ser	0	4	3	1	False	True	
+shared	7	30263244	A	G	SNV	sema4bb	ENSDARG00000076104	missense_variant	MODERATE	p.Thr589Ala	0	7	4	1	False	True	
+shared	7	30263253	G	C	SNV	sema4bb	ENSDARG00000076104	missense_variant	MODERATE	p.Glu592Gln	0	7	4	1	True	True	rs503870180
+shared	7	30263277	A	G	SNV	sema4bb	ENSDARG00000076104	missense_variant	MODERATE	p.Ile600Val	0	5	4	1	False	True	
+mutant_specific_low_confidence	7	30283477	G	C	SNV	polr2m	ENSDARG00000074968	missense_variant	MODERATE	p.Ser118Thr	0	5	3	0	True	True	rs179467095
+mutant_specific	7	30283576	G	T	SNV	polr2m	ENSDARG00000074968	missense_variant	MODERATE	p.Gly151Val	0	6	6	0	True	True	rs179467244
+mutant_specific_low_confidence	7	30284680	C	G	SNV	polr2m	ENSDARG00000074968	missense_variant	MODERATE	p.His238Gln	0	4	3	0	True	True	rs513628440
+shared	7	30330667	G	C	SNV	aldh1a2	ENSDARG00000053493	missense_variant	MODERATE	p.Pro393Ala	0	3	3	2	True	True	rs40833506
+control_only	7	30352252	A	C	SNV	aldh1a2	ENSDARG00000053493	missense_variant	MODERATE	p.Ser72Ala	0	2	2	2	True	True	rs3378643808
+low_evidence	7	30396449	A	G	SNV	lipca	ENSDARG00000053476	missense_variant	MODERATE	p.Lys35Arg	0	2	4	0	True	True	rs180152947
+shared	7	30396509	T	C	SNV	lipca	ENSDARG00000053476	missense_variant	MODERATE	p.Ile55Thr	0	3	1	1	True	True	rs510245417
+shared	7	30402536	A	T	SNV	lipca	ENSDARG00000053476	missense_variant	MODERATE	p.Thr375Ser	0	6	6	1	False	True	
+shared	7	30425897	T	C	SNV	adam10a	ENSDARG00000053468	missense_variant	MODERATE	p.Met194Val	0	7	6	2	True	True	rs511027031
+shared	7	30494089	G	A	SNV	mindy2	ENSDARG00000017431	missense_variant	MODERATE	p.Ala136Thr	0	5	2	1	False	True	
+mutant_specific_low_confidence	7	30553356	C	T	SNV	sltm	ENSDARG00000052728	missense_variant	MODERATE	p.Gly245Ser	0	4	2	0	False	True	
+shared	7	30553368	T	C	SNV	sltm	ENSDARG00000052728	missense_variant	MODERATE	p.Lys241Glu	0	4	5	1	True	True	rs40720034
+mutant_specific	7	30578818	C	T	SNV	rnf111	ENSDARG00000078802	missense_variant	MODERATE	p.Gly461Ser	0	4	4	0	False	True	
+mutant_specific	7	30604833	T	G	SNV	rnf111	ENSDARG00000078802	missense_variant	MODERATE	p.Glu69Asp	0	8	4	0	True	True	rs503095656
+mutant_specific	7	30627192	T	C	SNV	ccnb2	ENSDARG00000036180	missense_variant	MODERATE	p.Phe128Ser	0	6	4	0	True	True	rs511345102
+mutant_specific	7	30644309	T	C	SNV	myo1ea	ENSDARG00000036179	missense_variant	MODERATE	p.Met758Val	0	4	5	0	True	True	rs513394603
+mutant_specific	7	30768165	C	G	SNV	mtmr10	ENSDARG00000010601	missense_variant	MODERATE	p.Ala691Gly	0	6	6	0	True	True	rs504714036
+shared	7	30778520	G	T	SNV	mphosph10	ENSDARG00000012495	missense_variant	MODERATE	p.Thr205Lys	0	3	7	1	True	True	rs40959838
+shared	7	30778703	C	G	SNV	mphosph10	ENSDARG00000012495	missense_variant	MODERATE	p.Gly144Ala	0	8	3	1	True	True	rs500244131
+shared	7	30778717	C	A	SNV	mphosph10	ENSDARG00000012495	missense_variant	MODERATE	p.Glu139Asp	0	8	2	1	False	True	
+shared	7	30867550	G	T	SNV	apba2b	ENSDARG00000060639	missense_variant	MODERATE	p.Glu181Asp	0	6	5	1	True	True	rs501764237
+shared	7	30867731	A	G	SNV	apba2b	ENSDARG00000060639	missense_variant	MODERATE	p.Ser242Gly	0	3	5	2	True	True	rs505057921
+mutant_specific_low_confidence	7	30923842	T	C	SNV	sord	ENSDARG00000053405	missense_variant	MODERATE	p.Thr277Ala	0	6	2	0	True	True	rs510729119
+shared	7	30926438	G	C	SNV	si:dkey-1h4.4	ENSDARG00000105548	missense_variant	MODERATE	p.Gly24Ala	0	4	1	1	False	True	
+shared	7	30929805	A	T	SNV	si:dkey-1h4.4	ENSDARG00000105548	stop_lost	HIGH	p.Ter252Cysext*?	0	4	3	1	False	True	
+mutant_specific_low_confidence	7	30929931	A	G	SNV	terb2	ENSDARG00000039477	missense_variant	MODERATE	p.Leu198Ser	0	4	1	0	True	True	rs180153090
+mutant_specific_low_confidence	7	30930155	T	A	SNV	terb2	ENSDARG00000039477	missense_variant	MODERATE	p.Thr150Ser	0	4	3	0	True	True	rs506118980
+shared	7	31126090	C	T	SNV	TJP1	ENSDARG00000077506	missense_variant	MODERATE	p.Pro1240Leu	0	3	6	2	False	True	
+mutant_specific	7	31195342	A	T	SNV	ENSDARG00000109937	ENSDARG00000109937	missense_variant	MODERATE	p.Phe134Leu	0	3	8	0	True	True	rs500428802
+mutant_specific_low_confidence	7	31230399	C	A	SNV	ENSDARG00000109937	ENSDARG00000109937	splice_donor_variant, intron_variant	HIGH		0	3	1	0	False	True	
+shared	7	31306235	T	C	SNV	ENSDARG00000109937	ENSDARG00000109937	missense_variant	MODERATE	p.Asn31Ser	0	5	5	2	True	True	rs514802447
+shared	7	31326862	T	C	SNV	fam189a1	ENSDARG00000053380	missense_variant	MODERATE	p.Val456Ala	0	6	2	1	True	True	rs505196765
+mutant_specific	7	31331967	A	C	SNV	fam189a1	ENSDARG00000053380	missense_variant	MODERATE	p.Ser583Arg	0	5	4	0	False	True	
+control_only	7	31339423	G	A	SNV	golm2	ENSDARG00000074490	missense_variant	MODERATE	p.Ser89Asn	0	2	4	1	False	True	
+low_evidence	7	31339455	G	A	SNV	golm2	ENSDARG00000074490	missense_variant	MODERATE	p.Ala100Thr	0	2	4	0	False	True	
+mutant_specific	7	31356903	G	A	SNV	golm2	ENSDARG00000074490	missense_variant	MODERATE	p.Arg198His	0	5	8	0	False	True	
+mutant_specific	7	31399061	G	A	SNV	strc1	ENSDARG00000079336	missense_variant	MODERATE	p.Asp383Asn	0	3	6	0	False	True	
+mutant_specific	7	31417372	T	A	SNV	strc1	ENSDARG00000079336	missense_variant	MODERATE	p.Phe1392Tyr	0	4	5	0	False	True	
+shared	7	31417566	A	T	SNV	strc1	ENSDARG00000079336	missense_variant	MODERATE	p.Glu1421Asp	0	5	2	1	False	True	
+mutant_specific_low_confidence	7	31419885	G	T	SNV	strc1	ENSDARG00000079336	missense_variant	MODERATE	p.Val1596Leu	0	3	2	0	False	True	
+mutant_specific_low_confidence	7	31422049	G	A	SNV	strc1	ENSDARG00000079336	missense_variant	MODERATE	p.Ala1777Thr	0	3	3	0	False	True	
+mutant_specific_low_confidence	7	31504393	C	T	SNV	IGDCC3	ENSDARG00000075158	missense_variant	MODERATE	p.Ser690Asn	0	5	1	0	False	True	
+mutant_specific_low_confidence	7	31794372	C	G	SNV	nap1l4b	ENSDARG00000068868	splice_donor_variant, intron_variant	HIGH		0	7	3	0	True	True	rs505061006
+mutant_specific_low_confidence	7	31844395	G	A	SNV	mybpc3	ENSDARG00000011615	missense_variant	MODERATE	p.Ala25Thr	0	5	2	0	False	True	
+mutant_specific	7	31885654	C	T	SNV	mybpc3	ENSDARG00000011615	missense_variant	MODERATE	p.Thr1013Met	0	4	5	0	False	True	
+mutant_specific	7	31984442	C	G	SNV	kif18a	ENSDARG00000008022	missense_variant	MODERATE	p.Gln650His	0	6	7	0	True	True	rs507896280
+mutant_specific_low_confidence	7	32455924	A	G	SNV	lgr4	ENSDARG00000060542	missense_variant	MODERATE	p.Ile745Val	0	7	0	0	False	True	
+control_only	7	32629832	T	C	SNV	si:ch73-314g15.3	ENSDARG00000000423	missense_variant	MODERATE	p.Phe30Leu	0	2	1	1	True	True	rs500952030
+control_only	7	32629837	G	T	SNV	si:ch73-314g15.3	ENSDARG00000000423	missense_variant	MODERATE	p.Lys31Asn	0	2	1	1	True	True	rs40675977
+mutant_specific	7	32695925	G	C	SNV	slc39a13	ENSDARG00000000442	missense_variant	MODERATE	p.Ala23Pro	0	4	4	0	True	True	rs507894324
+shared	7	32979595	G	A	SNV	pkp3b	ENSDARG00000079438	missense_variant	MODERATE	p.Leu61Phe	0	7	4	1	False	True	
+mutant_specific	7	32988489	C	T	SNV	cd81a	ENSDARG00000036080	missense_variant	MODERATE	p.Glu193Lys	0	6	4	0	False	True	
+mutant_specific_low_confidence	7	32988492	T	A	SNV	cd81a	ENSDARG00000036080	missense_variant	MODERATE	p.Thr192Ser	0	6	3	0	False	True	
+mutant_specific_low_confidence	7	32988597	G	A	SNV	cd81a	ENSDARG00000036080	missense_variant	MODERATE	p.Ala187Val	0	4	2	0	False	True	
+mutant_specific_low_confidence	7	32988600	T	C	SNV	cd81a	ENSDARG00000036080	missense_variant	MODERATE	p.Asn186Ser	0	4	2	0	False	True	
+shared	7	33133467	A	T	SNV	zgc:153219	ENSDARG00000054054	missense_variant	MODERATE	p.Asn255Tyr	0	7	2	2	True	True	rs504890816
+low_evidence	7	33146009	C	T	SNV	itln2	ENSDARG00000036084	missense_variant	MODERATE	p.Ala5Val	0	2	3	0	False	True	
+low_evidence	7	33147418	C	T	SNV	itln2	ENSDARG00000036084	missense_variant	MODERATE	p.Ala234Val	0	2	3	0	False	True	
+shared	7	33147477	A	T	SNV	itln2	ENSDARG00000036084	missense_variant	MODERATE	p.Ser254Cys	0	3	1	1	False	True	
+low_evidence	7	33154077	A	T	SNV	si:ch211-194p6.10	ENSDARG00000105568	missense_variant	MODERATE	p.Ile312Leu	0	2	0	0	True	True	rs3379105075
+low_evidence	7	33188609	C	T	SNV	itga11a	ENSDARG00000036086	missense_variant	MODERATE	p.Ala980Thr	0	2	4	0	False	True	
+control_only	7	33193173	G	T	SNV	itga11a	ENSDARG00000036086	missense_variant	MODERATE	p.His881Asn	0	2	1	1	True	True	rs512407301
+mutant_specific_low_confidence	7	33194099	G	C	SNV	itga11a	ENSDARG00000036086	missense_variant	MODERATE	p.His800Gln	0	3	1	0	False	True	
+shared	7	33328477	G	A	SNV	coro2ba	ENSDARG00000079440	missense_variant	MODERATE	p.Gly120Ser	0	3	4	4	False	True	
+shared	7	33328487	G	C	SNV	coro2ba	ENSDARG00000079440	missense_variant	MODERATE	p.Arg123Thr	0	3	4	5	False	True	
+mutant_specific_low_confidence	7	34261980	A	AT	indel	si:ch211-98n17.5	ENSDARG00000105641	frameshift_variant	HIGH	p.Phe34fs	0	6	0	0	False	True	
+mutant_specific_low_confidence	7	34293754	C	T	SNV	ENSDARG00000111781	ENSDARG00000111781	missense_variant	MODERATE	p.Gly229Ser	0	6	0	0	True	True	rs511823484
+mutant_specific_low_confidence	7	34294385	GAC	G	indel	ENSDARG00000111781	ENSDARG00000111781	frameshift_variant	HIGH	p.Ser67fs	0	3	0	0	True	True	rs499902390
+shared	7	34965177	T	A	SNV	ddx28	ENSDARG00000060411	missense_variant	MODERATE	p.Met439Lys	0	5	5	2	True	True	rs180001406
