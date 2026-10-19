@@ -51,10 +51,11 @@ usable coverage. 15× or more is ideal.
 14.1 million variants passed the quality filter. That's normal for zebrafish: lab
 strains are far more genetically diverse than mice or humans.
 
-Fish 0038 is a wild-type-looking **sibling** of the mutant, so the run uses
+Sample 0038 comes from wild-type-looking **siblings** of the mutant, so the run uses
 `mode: sibling` ([why](settings.html#choose-a-comparison-mode)). A candidate must be
 carried in at least 90% of the mutant's reads. The sibling may carry it in up to 60%
-of its reads, because it may carry one copy.
+of its reads, because it may carry one copy. (Whether each sample was one fish or a
+pool of fish was not recorded; the thresholds suit both.)
 
 | Category | Variants | HIGH impact | MODERATE impact |
 |---|---:|---:|---:|
@@ -155,8 +156,8 @@ missed.
 ## What this example teaches
 
 {: .warning }
-With **one fish per group at about 3× coverage**, most "mutant-specific" variants
-are ordinary differences between two individuals, plus variants missed in the
+With **one sample per group at about 3× coverage**, many "mutant-specific" variants
+are ordinary differences between the fish sampled, plus variants missed in the
 thinly covered control. The pipeline flags all of this in the report.
 
 To get a much cleaner answer from the next experiment:

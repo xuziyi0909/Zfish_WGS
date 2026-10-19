@@ -356,7 +356,7 @@ if peak.get("found"):
         f'{peak["start_mb"]}–{peak["end_mb"]} Mb.</b> This region holds {share:.0f}% of all homozygous '
         f'mutant-specific variants (up to {peak["peak_per_mb"]:,} per Mb vs a genome average of '
         f'{peak["genome_mean_per_mb"]}). Regions like this usually surround a recessive mutation, but they can '
-        f'also be a stretch the two fish simply inherited differently. '
+        f'also be a stretch the two samples simply inherited differently. '
         + (f'{len(cands)} priority 1–2 variant(s) fall inside it: {clist}. Check these first.'
            if cands else 'No priority 1–2 variants fall inside it; look at priority 3 variants and '
                          'structural variants in this region, or in genes poorly covered by the reads.')
@@ -376,9 +376,9 @@ if low:
                     "also be present in the control. Prioritise <i>homozygous</i>, high-confidence hits and "
                     "confirm candidates by PCR/Sanger sequencing.")
 if len(summary["controls"]) < 2 or len(mutants) < 2:
-    warnings.append("With one fish per group, many mutant-specific variants are ordinary inherited differences "
-                    "between two individuals, not the causal mutation. More controls (or pooled siblings) "
-                    "remove most of this background.")
+    warnings.append("With one sample per group, many mutant-specific variants are ordinary inherited differences "
+                    "between the fish sampled, not the causal mutation, unless each sample is a large pool. "
+                    "More controls (or pooled siblings) remove most of this background.")
 if sibling:
     warnings.append("Comparison mode <b>sibling</b>: candidates must be carried in (nearly) all mutant reads "
                     f"(≥ {cfg['comparison'].get('min_alt_fraction_mutant', 0.9):g}), while the sibling control may "

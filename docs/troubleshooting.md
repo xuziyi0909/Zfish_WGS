@@ -65,7 +65,7 @@ rm -rf results
 
 ## I have hundreds of mutant-specific variants. Which is the one?
 
-That's normal, especially with one fish per group or low coverage. To narrow it down:
+That's normal, especially with one sample per group or low coverage. To narrow it down:
 
 1. Start with the **Candidate genes** sheet: HIGH-impact, high-confidence,
    homozygous hits first.

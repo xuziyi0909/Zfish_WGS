@@ -10,7 +10,7 @@ back_to_top: true
 back_to_top_text: "Back to top"
 aux_links:
   "View on GitHub":
-    - "https://github.com/OWNER/REPO"
+    - "https://github.com/xuziyi0909/Zfish_WGS"
 footer_content: "Questions? Open an issue on GitHub or contact the Gray lab."
 callouts:
   note:

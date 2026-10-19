@@ -58,5 +58,5 @@ See the [step-by-step guide](run.html) for the details.
 
 ## Example results
 
-The pipeline was set up and tested on a real dataset: one control fish and one
-mutant fish. [See what the results look like](example.html).
+The pipeline was set up and tested on a real dataset: one mutant sample and one
+sibling control sample. [See what the results look like](example.html).

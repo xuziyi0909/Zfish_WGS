@@ -33,7 +33,7 @@ If you're not sure of your username or the server address, ask the lab manager.
 
 ```bash
 cd /stor/work/Gray/projects
-git clone https://github.com/OWNER/REPO.git my_wgs_project
+git clone https://github.com/xuziyi0909/Zfish_WGS.git my_wgs_project
 cd my_wgs_project
 ```
 

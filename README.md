@@ -4,12 +4,12 @@ Find DNA changes (SNVs, indels, structural variants) present in **mutant** zebra
 but absent from **control** fish, starting from raw `.fastq.gz` files. The pipeline
 is built for people with no coding or WGS experience.
 
-📖 **Full step-by-step guide: https://OWNER.github.io/REPO/**
+📖 **Full step-by-step guide: https://xuziyi0909.github.io/Zfish_WGS/**
 
 ## Quick start
 
 ```bash
-git clone https://github.com/OWNER/REPO.git my_project && cd my_project
+git clone https://github.com/xuziyi0909/Zfish_WGS.git my_project && cd my_project
 # 1. copy your FASTQ files into data/raw/
 # 2. list them in config/samples.tsv (sample, group = control|mutant, fastq_1, fastq_2)
 ./run_wgs.sh --check     # checks software and the sample sheet
@@ -54,5 +54,6 @@ docs/                      GitHub Pages user guide
 ## Publishing the guide
 
 In the GitHub repository go to **Settings → Pages**, set *Source* to
-*Deploy from a branch*, choose branch `main` and folder `/docs`. Then replace
-`OWNER/REPO` in `README.md`, `docs/_config.yml` and `docs/setup.md`.
+*Deploy from a branch*, choose branch `main` and folder `/docs`. The guide then
+appears at https://xuziyi0909.github.io/Zfish_WGS/ (Pages on a private repository
+needs a paid GitHub plan; otherwise make the repository public).
