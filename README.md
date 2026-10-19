@@ -50,10 +50,3 @@ workflow/rules/*.smk       pipeline steps
 workflow/scripts/          helper scripts (comparison, report, SVs)
 docs/                      GitHub Pages user guide
 ```
-
-## Publishing the guide
-
-In the GitHub repository go to **Settings → Pages**, set *Source* to
-*Deploy from a branch*, choose branch `main` and folder `/docs`. The guide then
-appears at https://xuziyi0909.github.io/Zfish_WGS/ (Pages on a private repository
-needs a paid GitHub plan; otherwise make the repository public).
