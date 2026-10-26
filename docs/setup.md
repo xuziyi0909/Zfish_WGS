@@ -78,4 +78,11 @@ folder from a previous project:
 
 ```bash
 cp -r /stor/work/Gray/projects/Zfish_WGS/reference ./
+find reference -type f -exec touch -d "$(date -R)" {} +
+sed -i "s|^data.dir = .*|data.dir = $PWD/reference/snpeff|" reference/snpeff/snpEff.config
 ```
+
+The copy takes a few minutes. Run all three lines. The second line marks the copied
+files as up to date, otherwise the pipeline sees them as older than its own scripts
+and rebuilds the genome index (about an hour). The third points the annotation tool at
+your copy instead of the original folder.
