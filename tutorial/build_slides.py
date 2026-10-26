@@ -84,7 +84,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 #stage section.slide:not(.active){display:none!important}
 #stage section.slide.active{animation:fade .3s ease-out}
 @keyframes fade{from{opacity:0}}
-#stage section div{display:flex;flex-direction:column;min-width:0}
+#stage section div{min-width:0}
 #stage h1{font-size:96px;font-weight:600;line-height:1.1}
 #stage h2{font-size:64px;font-weight:600;line-height:1.15}
 #stage h3{font-size:44px;font-weight:600;line-height:1.2}
