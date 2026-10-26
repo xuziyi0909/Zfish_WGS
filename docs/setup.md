@@ -26,9 +26,6 @@ ssh YOUR_USERNAME@SERVER_ADDRESS
 
 Type your password when asked. The screen won't show it as you type; that's normal.
 
-{: .note }
-If you're not sure of your username or the server address, ask the lab manager.
-
 ## 2. Get your own copy of the pipeline
 
 ```bash
