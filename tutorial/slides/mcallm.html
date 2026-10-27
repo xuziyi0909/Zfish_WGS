@@ -24,6 +24,6 @@
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Model: Danecek et al., samtools.github.io/bcftools/call-m.pdf · \(a_n\): Watterson’s estimator · 60</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Model: Danecek et al., samtools.github.io/bcftools/call-m.pdf · \(a_n\): Watterson’s estimator · 62</p>
 <aside>The multiallelic caller, the -m in our command, splits the problem in two. First, which alleles exist at this site at all? It estimates each allele's frequency from the quality-weighted evidence in each sample, averages over samples, and then for every candidate set of alleles computes the likelihood of all samples together, summing over the genotypes each sample could have. A prior on the allele set comes from population genetics: Watterson's harmonic number says how many variable sites to expect among n chromosome copies for a mutation rate theta. With our two diploid samples, four copies, about one site in five hundred is expected to vary. Second, once the allele set is chosen, each sample is genotyped using only those alleles. Joint calling matters because evidence is pooled: several samples with weak support can together show that an allele is real. QUAL is the Phred-scaled posterior that only the reference allele is present: 138 for tmppe, overwhelming. But QUAL is a site property; one sample's genotype can still be uncertain.</aside>
 </section>

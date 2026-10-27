@@ -113,15 +113,59 @@ them inside the chr7 peak: *tmppe* R370W and *TJP1* P1240L.
 
 ### The mapping signal: chromosome 7
 
-![Variant density](assets/variant_density.png)
+Three plots look at the same signal in different ways. The first two **count**
+variants in 1 Mb windows; only the third, the Manhattan plot, shows a p value.
+
+**1. Variant density** (y axis: variants per Mb). How many high-confidence candidate
+variants fall in each 1 Mb window: all of them on top, only those homozygous in the
+mutant below. This is the homozygosity-mapping plot.
+
+![Variant density: high-confidence candidate variants per Mb, with one tall peak on chromosome 7](assets/variant_density.png)
 
 The clearest result isn't any single variant but a **region**. Chromosome 7,
 **22–33 Mb**, reaches up to 2,582 homozygous candidate variants per Mb, about 20
-times the genome average of 125. It holds 14,867 of them. The homozygosity
-difference track and the Manhattan plot peak at the same place, and the region
-shows no change in copy number.
+times the genome average of 125. It holds 14,867 of them. The region shows no
+change in copy number.
 
-![Homozygosity](assets/homozygosity.png)
+**2. Homozygosity** (y axis: share of sites that are homozygous). Each sample's
+share of homozygous sites per window, and below it mutant minus sibling.
+
+![Homozygosity: share of homozygous sites per sample, and the mutant-minus-sibling difference, highest on chromosome 7](assets/homozygosity.png)
+
+**3. Manhattan plot** (y axis: −log10 p). One dot per variant; its height is a
+p value from **Fisher's exact test** on that variant's reads.
+
+How one dot is calculated, using *tmppe* (chr7:29,157,506 C>T):
+
+1. **Count the reads.** The mutant has 5 reads, all T; the sibling has 6, all C.
+   Together: 11 reads, 5 of them T.
+2. **Assume nothing is going on.** If T had nothing to do with which sample a read
+   came from, the 5 T reads would be scattered at random over the 11 reads, like
+   dealing 11 cards (5 marked) into a hand of 5 for the mutant and 6 for the sibling.
+3. **Count every possible deal.** There are 462. Most give the mutant 2 or 3 T reads;
+   only 1 gives it all 5.
+4. **p is the share of deals at least as extreme as what we saw:** 1 in 462, so
+   p = 0.0022. It is *one-sided*: only deals where the mutant has more T reads count.
+5. **Plot −log10 p:** −log10 0.0022 = **2.66**, the height of the dot. A height of 2
+   means p = 0.01, 3 means p = 0.001.
+
+Three things follow:
+
+- **Depth sets a ceiling.** Even the perfect pattern (every mutant read new, every
+  sibling read reference) scores only 1.3 with 3 reads each, 2.4 with 5 each, and
+  5.3 with 10 each. At our ~3× coverage the highest dot in the genome is 5.2.
+- **Dots sit in horizontal bands**, because read counts are small whole numbers and
+  only a few p values are possible.
+- **The chr7 tower is a matter of numbers, not height.** Dots of 2 or more are 81
+  times more frequent per Mb inside the peak (487 per Mb) than elsewhere (6 per Mb).
+  It is the same linked region the density plot counts, seen one variant at a time.
+
+There are 13 million tests and the p values are not corrected; a Bonferroni cut-off
+would need 8.4, which no variant reaches. So read the plot for the **tower**, not for
+any single dot. Slides [36–38]({{ '/slides/#36' | relative_url }}) work through the
+calculation.
+
+![Manhattan plot: −log10 p of mutant enrichment per variant, with a tower of dots on chromosome 7 at 22–33 Mb](assets/manhattan.png)
 
 That's the expected footprint of a **recessive mutation**: the mutant carries two
 identical copies of the chromosome segment around it, while the sibling doesn't.
@@ -143,8 +187,6 @@ change; *thap11* has a novel 5′ UTR variant. The full write-up is in
 Genotyping a few chr7 variants (for example *HERC1* Q3550H, plus markers near 22 and
 33 Mb) in about 20 mutants and 20 siblings will quickly show whether the region is
 linked to the phenotype, and narrow it down.
-
-![Manhattan plot](assets/manhattan.png)
 
 ### Structural variants
 

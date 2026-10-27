@@ -14,7 +14,7 @@
 <div style="flex:1;display:flex;flex-direction:column;gap:18px">
 <div style="display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
 <h3 style="font-size:26px;font-weight:600;color:#16202B">What our pipeline does instead</h3>
-<p style="font-size:23px;line-height:1.4">Counts hard homozygous calls per 1 Mb window (slide 37). Simple and robust, but each call counts fully, even with 3 reads.</p>
+<p style="font-size:23px;line-height:1.4">Counts hard homozygous calls per 1 Mb window (slide 39). Simple and robust, but each call counts fully, even with 3 reads.</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
 <h3 style="font-size:26px;font-weight:600;color:#16202B">What the HMM adds</h3>
@@ -22,6 +22,6 @@
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">RR, RA, AA = reference, heterozygous, alternate · forward–backward gives per-site probabilities · Narasimhan et al. 2016 · 63</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">RR, RA, AA = reference, heterozygous, alternate · forward–backward gives per-site probabilities · Narasimhan et al. 2016 · 65</p>
 <aside>Our homozygosity peak can also be found with a proper statistical model. bcftools roh walks along the chromosome with two hidden states. In an autozygous stretch, both copies come from the same ancestor, so every site must be homozygous: the reads are explained by reference-reference or alternate-alternate only. In an ordinary stretch, all three genotypes are possible with Hardy–Weinberg weights. The chance of switching state between two sites grows with the genetic distance between them. The Viterbi algorithm finds the most likely sequence of states, and the forward-backward algorithm gives each site a probability of lying in a run. The advantage over our window count is that the HMM works with the genotype likelihoods, so a homozygous call from three reads counts less than one from ten. It is not part of the pipeline yet; it would be a natural addition for low-coverage data.</aside>
 </section>

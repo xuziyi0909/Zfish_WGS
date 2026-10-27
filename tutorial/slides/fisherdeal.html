@@ -1,0 +1,32 @@
+<section id="fisherdeal" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Fisher’s exact test, step by step</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:60px;font-weight:600;line-height:1.1;color:#16202B">Deal the reads out again at random, and count</h2>
+</div>
+<div style="display:flex;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:24px;line-height:1.4"><span style="color:#B04A18;font-weight:600">1 · Pool the reads.</span> tmppe has 11 reads: 5 show T, 6 show C.</p>
+<p style="font-size:24px;line-height:1.4"><span style="color:#B04A18;font-weight:600">2 · Assume nothing is going on.</span> If T had nothing to do with which sample a read came from, the 5 T reads would be scattered at random: like dealing 11 cards, 5 of them marked, into a hand of 5 (mutant) and a hand of 6 (sibling).</p>
+<p style="font-size:24px;line-height:1.4"><span style="color:#B04A18;font-weight:600">3 · List every possible deal.</span> There are \(\binom{11}{5}=462\). The chart counts how many give the mutant 0, 1, … 5 T reads.</p>
+<p style="font-size:24px;line-height:1.4"><span style="color:#B04A18;font-weight:600">4 · p = share of deals at least as extreme as what we saw.</span> We saw 5 of 5: only 1 deal in 462. <i>p</i> = 0.0022.</p>
+<p style="font-size:24px;line-height:1.4"><span style="color:#B04A18;font-weight:600">5 · Plot it.</span> −log<sub>10</sub> 0.0022 = <b>2.66</b> is the height of tmppe’s dot.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 32px">
+<p style="font-size:24px;font-weight:600;color:#16202B">Deals giving the mutant <i>x</i> T reads (of 462)</p>
+<div style="display:flex;align-items:flex-end;gap:16px;height:330px;border-bottom:2px solid #5F6873;padding:0px 8px">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px">6</p><div style="width:100%;height:9px;background:#B9B4A8;border-radius:4px 4px 0px 0px"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px">75</p><div style="width:100%;height:105px;background:#B9B4A8;border-radius:4px 4px 0px 0px"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px">200</p><div style="width:100%;height:280px;background:#B9B4A8;border-radius:4px 4px 0px 0px"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px">150</p><div style="width:100%;height:210px;background:#B9B4A8;border-radius:4px 4px 0px 0px"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px">30</p><div style="width:100%;height:42px;background:#B9B4A8;border-radius:4px 4px 0px 0px"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px;font-weight:600;color:#B04A18">1 ← seen</p><div style="width:100%;height:4px;background:#B04A18;border-radius:4px 4px 0px 0px"></div></div>
+</div>
+<div style="display:flex;gap:16px;padding:0px 8px">
+<p style="flex:1;font-size:22px;text-align:center">0</p><p style="flex:1;font-size:22px;text-align:center">1</p><p style="flex:1;font-size:22px;text-align:center">2</p><p style="flex:1;font-size:22px;text-align:center">3</p><p style="flex:1;font-size:22px;text-align:center">4</p><p style="flex:1;font-size:22px;text-align:center;color:#B04A18"><b>5</b></p>
+</div>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">deals with \(x\) T reads \(=\binom{5}{x}\binom{6}{5-x}\), e.g. \(x=2\): \(10\times20=200\)</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">“Exact”: every deal is counted, no approximation, so it works with a handful of reads · “one-sided”: only deals favouring the mutant count · 37</p>
+<aside>Here is Fisher's exact test without the formula. At the tmppe position there are eleven reads, five showing T and six showing C. Suppose the T had nothing to do with which sample a read came from. Then which reads went to the mutant is like dealing cards: eleven cards, five of them marked, dealt into a hand of five for the mutant and six for the sibling. There are 462 different ways to deal them. The chart shows how many of those deals give the mutant zero, one, two, up to five marked cards: most deals give it two or three, as you would expect by chance. We observed the most extreme outcome, all five T reads in the mutant, and only one deal in 462 does that. So p is one in 462, 0.0022, and minus log ten of that, 2.66, is the height of tmppe's dot on the Manhattan plot. The test is called exact because every deal is counted, so it is valid even with very few reads, and one-sided because we only count outcomes where the mutant has more T reads, not fewer. If the mutant had shown four of five, we would add the 30 deals with four and the one with five, so p would be 31 in 462.</aside>
+</section>

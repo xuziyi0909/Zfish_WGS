@@ -24,6 +24,6 @@
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">bcftools view -r 7:29157506 results/variants/all_samples.raw.vcf.gz · differences: the real letters are not all exactly Q30 · 58</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">bcftools view -r 7:29157506 results/variants/all_samples.raw.vcf.gz · differences: the real letters are not all exactly Q30 · 60</p>
 <aside>The VCF does not store raw likelihoods but PL: each genotype's log-likelihood relative to the best one, times minus ten, rounded. The best genotype is always zero, and every ten points means ten times less likely. Here is the check against our own file. For the tmppe mutant, five T reads, the VCF says 177, 15, 0; the hand calculation from the previous slide with every letter at Q30 gives 174, 15, 0. For the sibling's six C reads, 0, 18, 202 against 209. The small differences come from the real base qualities, which are not all exactly 30, and from mpileup's error model. The middle number is the useful one at low coverage: for n reads that all show the new letter, the heterozygote is penalised by only about three points per read. With TJP1's three reads it is 9, meaning one copy is still one eighth as likely as two. PL is a likelihood, not a probability; to get a probability we need a prior.</aside>
 </section>

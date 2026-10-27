@@ -1,0 +1,29 @@
+<section id="manhattanread" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Reading the Manhattan plot</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:60px;font-weight:600;line-height:1.1;color:#16202B">The tower is many strong dots, not one high dot</h2>
+</div>
+<div style="display:flex;gap:36px;align-items:flex-start">
+<div style="background:#FFFFFF;border:1px solid #D9D5CA;border-radius:16px;padding:12px">
+<img src="../assets/manhattan.png" alt="Manhattan plot: minus log10 p for every variant along chromosomes 1 to 25; most dots below 3, a dense tower on chromosome 7 reaching about 5" style="width:1040px;height:379px;object-fit:contain">
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:23px;line-height:1.4"><b>One dot = one variant</b>, height = −log<sub>10</sub> p from the previous slide. 13 million tests; most dots below 1 are thinned out for drawing.</p>
+<p style="font-size:23px;line-height:1.4"><b>Orange</b> = priority 1–2 candidates. <b>Shaded</b> = the homozygosity peak.</p>
+<p style="font-size:23px;line-height:1.4"><b>Horizontal bands:</b> read counts are small whole numbers, so only a few p values are possible.</p>
+</div>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:18px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">The ceiling is set by depth</h3>
+<p style="font-size:22px;line-height:1.4">Best possible: all <i>n</i> mutant reads new, all <i>m</i> sibling reads reference, \(-\log_{10}p=\log_{10}\binom{n+m}{n}\)</p>
+<p style="font-size:22px;line-height:1.4">3·3 reads → 1.30 · 5·5 → 2.40 · 10·10 → 5.27 · 15·15 → 8.19</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:18px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">Why chr7 towers</h3>
+<p style="font-size:22px;line-height:1.4">Dots ≥ 2: <b>487 per Mb</b> in the peak vs 6 elsewhere (81×). Dots ≥ 3: 48 vs 0.2. The linked region is full of “all new in the mutant, none in the sibling” sites.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Same signal as the density plot, seen per variant: highest dot 5.2 at chr7:29,041,013 (11 reads · 9 reads) · 38</p>
+<aside>Now we can read the plot itself. Every dot is one variant, and its height is the Fisher score we just calculated. Three things to notice. First, the dots sit in horizontal bands. That is not an artefact: read counts are small whole numbers, so only a limited set of p values can occur. Second, there is a ceiling. The best a variant can do is when every mutant read shows the new letter and every sibling read shows the reference; then minus log ten p is the log of n plus m choose n. With three reads each that is only 1.3; with ten each, 5.3; with fifteen each, 8.2. At our coverage most variants simply cannot score high, however real they are. Third, the tower on chromosome 7. It is not one exceptional dot: the highest dot in the genome is 5.2, and similar dots exist elsewhere. What is exceptional is how many: scores of two or more are about eighty times more frequent per megabase inside the peak than outside, and scores of three or more about 250 times. In the linked region the mutant is homozygous and the sibling usually is not, so the perfect pattern is common there. That is the same signal the density plot counts, seen one variant at a time.</aside>
+</section>
