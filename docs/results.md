@@ -88,6 +88,7 @@ All plots are also saved in `results/plots/` as PNG (for slides) and PDF (for pa
 | **Candidate map** | Where the priority 1–2 variants and gene-hitting structural variants sit on the chromosomes. The shaded box is the homozygosity peak. |
 | **Variant density** | A tall, isolated tower of mutant-specific variants, especially homozygous ones. That's the chromosome segment the mutant inherited differently from the control. For a recessive mutation, the causal change is usually inside it. |
 | **Homozygosity** | Red blocks in the difference track are regions where the mutant has lost variation but the control hasn't. That's the footprint of a recessive mutation. |
+| **Runs of homozygosity** | Found with `bcftools roh`, a hidden Markov model that weighs every genotype call along the chromosome. The top track is the share of each 1 Mb window that lies in a run, per sample; both samples share many runs from the lab strain's background. The red block in the difference track is where the mutant is in runs and the control isn't. At low coverage single runs are fragmented, so read the window shares, not individual runs. |
 | **Manhattan plot** | Each dot is one variant; higher means its reads favour the mutant more strongly. Look for a *tower* of dots rather than single tall points. At low coverage the maximum height is limited. |
 | **Coverage / copy number** | A step to about −1 in the bottom track suggests the mutant lost one copy of a large region; about +0.58 suggests a duplication. Dips in *both* samples are just hard-to-sequence regions. |
 | **Summary** | Variant categories, kinds of protein changes, allele fractions (0.5 = one copy, 1.0 = both), structural-variant sizes. |
@@ -210,11 +211,13 @@ results/
 │   ├── candidate_genes.tsv
 │   ├── mutant_specific_variants.tsv.gz   every mutant-specific variant, incl. non-coding (large)
 │   └── mutant_specific_variants.vcf.gz   same, as VCF (for IGV)
+├── homozygosity/
+│   └── roh_runs.tsv                      runs of homozygosity per sample (bcftools roh)
 ├── structural_variants/
 │   └── mutant_specific_sv.tsv
 ├── plots/                            figures (PNG + PDF) and the per-window tables behind them
-│   ├── manhattan / variant_density / homozygosity / coverage / candidate_map / summary
-│   ├── windows_1Mb.tsv                   variant counts and homozygosity per 1 Mb
+│   ├── manhattan / variant_density / homozygosity / homozygosity_runs / coverage / candidate_map / summary
+│   ├── windows_1Mb.tsv                   variant counts, homozygosity and runs of homozygosity per 1 Mb
 │   └── coverage_500kb_ratio.tsv          depth and mutant/control ratio per 500 kb
 ├── variants/
 │   ├── all_samples.annotated.vcf.gz      all variants, all samples

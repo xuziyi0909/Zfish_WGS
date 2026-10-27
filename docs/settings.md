@@ -24,6 +24,9 @@ You don't need to change anything for a normal run. Open the file with
 | `protein_check.species` | human, rat, chicken, frog, medaka, fugu | Other Ensembl species names to compare with, e.g. `lepisosteus_oculatus` (spotted gar). (Ensembl 113 has no zebrafish–mouse orthologs, so rat stands in for rodents.) |
 | `variant_calling.min_qual` | 30 | Lower to 20 for more sensitive (but noisier) calls |
 | `variant_calling.min_depth` | 3 | Minimum reads at a site in the mutant |
+| `homozygosity_runs.enabled` | `true` | Set to `false` to skip the runs-of-homozygosity step (`bcftools roh`) |
+| `homozygosity_runs.min_reads`, `min_reads_each_allele` | `3`, `2` | Genotype calls with fewer reads, or "heterozygous" calls resting on a single read of one allele, are ignored before the run search. At ~3× coverage these single error-prone reads otherwise break every run |
+| `homozygosity_runs.az_to_hw` | `1e-10` | Chance of a run ending between two sites; lower gives longer runs |
 | `structural_variants.enabled` | `true` | Set to `false` to skip the slowest step |
 | `resources.threads_per_job` | 16 | CPU threads for alignment |
 | `reference.*` | GRCz11, Ensembl 113 | Only to use a different genome build |

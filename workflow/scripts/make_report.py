@@ -302,6 +302,12 @@ PLOT_TEXT = {
         "Top: fraction of variant sites that are homozygous in each sample. Bottom: mutant minus control. "
         "Red blocks are regions where the mutant has lost variation (both copies identical) but the control "
         "has not – the expected footprint of a recessive mutation."),
+    "homozygosity_runs": ("Runs of homozygosity",
+        "Runs where both chromosome copies are identical, found with bcftools roh (a hidden Markov model "
+        "that weighs every genotype call along the chromosome). Top: share of each 1 Mb window inside a run, "
+        "per sample. Bottom: mutant minus control; the shaded block is the strongest stretch where the "
+        "mutant is in runs and the control is not. At low coverage runs come out fragmented, so read the "
+        "window shares rather than single runs (homozygosity/roh_runs.tsv)."),
     "manhattan": ("Manhattan plot",
         "Every dot is one variant; the higher it is, the more strongly its reads favour the mutant over the "
         "control (one-sided Fisher exact test). Look for towers of dots rather than single high points. "
@@ -340,11 +346,21 @@ for name, (title, text) in PLOT_TEXT.items():
         plots_html += (f'<div class="card fig"><h3>{title}</h3><p class="sub">{text}</p>'
                        f'<img alt="{title}" src="data:image/png;base64,{b64}">'
                        f'<div class="sub">plots/{name}.png · plots/{name}.pdf</div></div>')
-        if name == "homozygosity":
+        if name == ("homozygosity_runs" if "homozygosity_runs" in plot_by_name else "homozygosity"):
             plots_html += peak_table
 
 peak = json.load(open(inp.peak))
 peak_html = ""
+roh_peak = peak.get("runs_of_homozygosity")
+roh_sentence = ""
+if roh_peak:
+    agrees = (peak.get("found") and str(roh_peak["chrom"]) == str(peak["chrom"])
+              and roh_peak["start_mb"] < peak["end_mb"] and roh_peak["end_mb"] > peak["start_mb"])
+    roh_sentence = (
+        f' Runs of homozygosity {"agree" if agrees else "point elsewhere"}: the strongest stretch where the '
+        f'mutant is homozygous and the control is not is chromosome {esc(str(roh_peak["chrom"]))}, '
+        f'{roh_peak["start_mb"]}–{roh_peak["end_mb"]} Mb (mutant in runs over '
+        f'{100 * roh_peak["mutant_share"]:.0f}% of it, control {100 * roh_peak["control_share"]:.0f}%).')
 if peak.get("found"):
     share = 100 * peak["homozygous_variants_in_peak"] / max(peak["homozygous_variants_total"], 1)
     cands = peak["candidates"]
@@ -362,7 +378,8 @@ if peak.get("found"):
                          'structural variants in this region, or in genes poorly covered by the reads.')
         + ' Priority (1–5) is scored one variant at a time and ignores location, so the top-priority '
           'variants elsewhere in the genome can rank above variants in this region; weigh both. '
-          'See the plots and the table of variants inside the peak in section 4.</div>')
+          'See the plots and the table of variants inside the peak in section 4.'
+        + roh_sentence + '</div>')
 
 # ------------------------------------------------------------------ warnings
 warnings = []
@@ -445,6 +462,7 @@ files = [
     ("mutant_specific/candidate_genes.tsv", "One row per gene hit by a protein-changing mutant-specific variant."),
     ("mutant_specific/mutant_specific_variants.tsv.gz", "Every mutant-specific variant, including non-coding ones (compressed text table; often too large for Excel)."),
     ("mutant_specific/mutant_specific_variants.vcf.gz", "Same variants in VCF format (for IGV or other tools)."),
+    ("homozygosity/roh_runs.tsv", "Runs of homozygosity in each sample (bcftools roh): start, end, length."),
     ("structural_variants/mutant_specific_sv.tsv", "Large deletions, duplications, inversions found only in the mutant."),
     ("variants/all_samples.annotated.vcf.gz", "All variants in all samples, with gene annotation."),
     ("alignments/", "Aligned reads (BAM). Open in IGV to look at a variant by eye."),
@@ -473,6 +491,16 @@ if summary.get("protein_check"):
                         "(Biopython, BLOSUM62) to the NCBI RefSeq proteins of the same gene and to the Ensembl "
                         f"Compara ortholog in each of {esc(sp)}, and the aligned residues were compared with the "
                         "reference and mutant amino acids.")
+methods_roh = ""
+if roh_peak is not None or "homozygosity_runs" in plot_by_name:
+    rc = cfg.get("homozygosity_runs", {})
+    methods_roh = (
+        f" Runs of homozygosity were detected with bcftools roh on SNP genotypes (genotype-only mode, "
+        f"-G {rc.get('genotype_error_phred', 30)}, allele frequency {rc.get('allele_frequency', 0.4)}, "
+        f"AZ→HW transition {rc.get('az_to_hw', 1e-10):g}, hom-ref calls ignored), after setting calls with fewer "
+        f"than {rc.get('min_reads', 3)} reads, or heterozygous calls with fewer than "
+        f"{rc.get('min_reads_each_allele', 2)} reads of either allele, to missing; the share of each 1 Mb "
+        f"window in runs was compared between mutant and control.")
 page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>WGS Variant Report</title>
 <style>{CSS}</style></head><body><main>
@@ -533,7 +561,7 @@ Full list: <code>mutant_specific/candidate_genes.tsv</code>.</p>
 aligned to {esc(cfg['reference']['name'])} with bwa-mem2, and PCR duplicates were marked with samtools markdup.
 Small variants were called jointly across all samples with bcftools mpileup/call (MAPQ ≥ {cfg['alignment']['min_mapping_quality']},
 base quality ≥ {vc['min_base_quality']}), normalised, filtered to QUAL ≥ {vc['min_qual']} and annotated with snpEff.
-{methods_compare} Structural variants were called with DELLY.</div>
+{methods_compare}{methods_roh} Structural variants were called with DELLY.</div>
 </main></body></html>"""
 
 open(snakemake.output[0], "w").write(page)

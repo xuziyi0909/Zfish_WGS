@@ -28,6 +28,11 @@ the default settings; if you changed any, use your values from `config/config.ya
 > and to Ensembl Compara orthologs from human, rat, chicken, *Xenopus tropicalis*,
 > medaka and fugu. Variants that were known, or whose mutant residue was present in
 > a zebrafish RefSeq protein or in the majority of orthologs, were deprioritised.
+> Runs of homozygosity were detected with bcftools roh (genotype-only mode, -G [30],
+> allele frequency [0.4], AZ→HW transition [1e-10], hom-ref genotypes ignored) on SNP
+> genotypes, after setting calls with fewer than [3] reads, or heterozygous calls with
+> fewer than [2] reads of either allele, to missing; the share of each 1 Mb window in
+> runs was compared between mutant and control.
 > Structural variants were called
 > with DELLY and retained when they passed filters, were non-reference in the mutant
 > and homozygous-reference in all controls.
@@ -37,6 +42,7 @@ the default settings; if you changed any, use your values from `config/config.ya
 * **fastp**: Chen S, et al. *Bioinformatics* 2018;34:i884–i890.
 * **bwa-mem2**: Vasimuddin M, et al. *IEEE IPDPS* 2019.
 * **SAMtools / BCFtools**: Danecek P, et al. *GigaScience* 2021;10:giab008.
+* **bcftools roh**: Narasimhan V, et al. *Bioinformatics* 2016;32:1749–1751.
 * **snpEff**: Cingolani P, et al. *Fly* 2012;6:80–92.
 * **DELLY**: Rausch T, et al. *Bioinformatics* 2012;28:i333–i339.
 * **MultiQC**: Ewels P, et al. *Bioinformatics* 2016;32:3047–3048.

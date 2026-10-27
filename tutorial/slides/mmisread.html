@@ -32,6 +32,6 @@
 <div style="background:#ECEAE3;border-left:8px solid #B04A18;border-radius:16px;padding:20px 32px">
 <p style="font-size:25px;line-height:1.4;color:#16202B"><b>And our own pipeline:</b> the sibling-mode cut-offs (90% / 60%) and the homozygosity windows are decision rules on read counts, applied after calling. Slide 30 shows what they cost at 3×.</p>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">The core of it all: \(P(G\mid D)\propto P(D\mid G)\,P(G)\), with care about which reads count as independent · 66</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">The core of it all: \(P(G\mid D)\propto P(D\mid G)\,P(G)\), with care about which reads count as independent · 67</p>
 <aside>To close the appendix, six misreadings that the mathematics helps avoid. Allele depths are raw counts; the genotype likelihoods contain more information because they weigh each letter. PL values are likelihoods without a prior, so they overstate the case for a rare allele. GQ and QUAL answer different questions. High depth is only strong evidence if the reads are independent. A genotype call is not simply a share of reads. And filters only select; they do not improve calls. Finally, be honest about our own steps: the sibling-mode cut-offs and the window counts are rules applied to read counts after calling, not part of the likelihood model, and slide 30 shows how often they can misclassify at our coverage.</aside>
 </section>

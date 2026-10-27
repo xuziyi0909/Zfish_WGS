@@ -58,6 +58,33 @@ rule filter_calls:
         """
 
 
+rule homozygosity_runs:
+    """Runs of homozygosity per sample (bcftools roh), on SNP genotypes with weak calls removed."""
+    input:
+        f"{OUT}/variants/all_samples.filtered.vcf.gz",
+    output:
+        ROH_TSV,
+    params:
+        min_reads=config.get("homozygosity_runs", {}).get("min_reads", 3),
+        min_allele=config.get("homozygosity_runs", {}).get("min_reads_each_allele", 2),
+        af=config.get("homozygosity_runs", {}).get("allele_frequency", 0.4),
+        gt_error=config.get("homozygosity_runs", {}).get("genotype_error_phred", 30),
+        az_to_hw=config.get("homozygosity_runs", {}).get("az_to_hw", 1e-10),
+    log:
+        f"{OUT}/logs/homozygosity_runs.log",
+    shell:
+        # setGT: a call with too few reads, or a "heterozygote" resting on a single read of one
+        # allele (usually an error-prone or misplaced read), is set to missing before the HMM
+        """
+        (bcftools view -v snps -Ou {input} \
+          | bcftools +setGT -Ou - -- -t q -n . \
+              -i 'FMT/DP<{params.min_reads} | (GT="het" & (FMT/AD[:0]<{params.min_allele} | FMT/AD[:1]<{params.min_allele}))' \
+          | bcftools roh --AF-dflt {params.af} -G {params.gt_error} --ignore-homref -H {params.az_to_hw} -O r - \
+          | awk -v OFS='\\t' 'BEGIN {{print "sample", "chrom", "start", "end", "length", "sites", "quality"}}
+                              $1 == "RG" {{print $2, $3, $4, $5, $6, $7, $8}}' > {output}) 2> {log}
+        """
+
+
 rule annotate:
     input:
         vcf=f"{OUT}/variants/all_samples.filtered.vcf.gz",

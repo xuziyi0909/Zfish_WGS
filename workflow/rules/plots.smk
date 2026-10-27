@@ -1,6 +1,9 @@
-# Genome-wide figures: Manhattan, variant density, homozygosity, coverage, candidate map.
+# Genome-wide figures: Manhattan, variant density, homozygosity, runs of homozygosity, coverage,
+# candidate map.
 
 PLOTS = ["manhattan", "variant_density", "homozygosity", "coverage", "candidate_map", "summary"]
+if ROH_ENABLED:
+    PLOTS.insert(3, "homozygosity_runs")
 
 
 rule coverage_windows:
@@ -33,6 +36,7 @@ rule plots:
         coverage=f"{OUT}/plots/coverage_500kb.tsv",
         fai=f"{GENOME}.fai",
         sv=f"{OUT}/structural_variants/mutant_specific_sv.tsv" if SV_ENABLED else [],
+        roh=ROH_TSV if ROH_ENABLED else [],
     output:
         png=expand(f"{OUT}/plots/{{name}}.png", name=PLOTS),
         pdf=expand(f"{OUT}/plots/{{name}}.pdf", name=PLOTS),

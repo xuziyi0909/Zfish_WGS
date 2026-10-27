@@ -5,7 +5,7 @@ nav_order: 1.5
 
 # Tutorial slides
 
-A 66-slide lab tutorial on the whole process: the ideas behind the analysis, running
+A 67-slide lab tutorial on the whole process: the ideas behind the analysis, running
 the pipeline, what each step does, reading the results, and a worked example on our
 jaw mutant. Every slide has speaker notes, so anyone can present it.
 
@@ -35,8 +35,8 @@ To make a PDF or print handouts, open the slides and use your browser's **Print*
 | 2. Running it | 8–17 | Setup, copying files, the sample sheet, comparison mode, settings, running |
 | 3. Inside the pipeline | 18–39 | Each of the eight steps, the checks, the math behind each test, and the priority 1–5 ranking |
 | 4. Reading the results | 40–44 | Files, the report, the Excel workbook, judging a variant |
-| 5. Worked example | 45–53 | The jaw mutant: data, peak, false leads, remaining leads, next steps |
-| 6. Appendix: the math | 54–66 | Error models, genotype likelihoods, PL, Bayes, the bcftools caller, depth, homozygosity HMM |
+| 5. Worked example | 45–54 | The jaw mutant: data, peak, runs of homozygosity, false leads, remaining leads, next steps |
+| 6. Appendix: the math | 55–67 | Error models, genotype likelihoods, PL, Bayes, the bcftools caller, depth, homozygosity HMM |
 
 ## The math behind each test
 
@@ -59,18 +59,18 @@ own VCF (the tmppe variant):
 
 | Slide | Explains |
 |---|---|
-| [55]({{ '/slides/#55' | relative_url }}) | The big picture: likelihood × prior = posterior, then decision rules |
-| [56]({{ '/slides/#56' | relative_url }}) | Five Phred numbers (base quality, MAPQ, PL, GQ, QUAL) and what each means |
-| [57]({{ '/slides/#57' | relative_url }}) | Three error sources: base quality, mapping quality, base alignment quality (BAQ) |
-| [58]({{ '/slides/#58' | relative_url }}) | Genotype likelihoods from single reads |
-| [59]({{ '/slides/#59' | relative_url }}) | Why an allele-fraction cut-off is not the calling model; correlated errors |
-| [60]({{ '/slides/#60' | relative_url }}) | PL values, checked against our VCF |
-| [61]({{ '/slides/#61' | relative_url }}) | Bayes' rule, Hardy–Weinberg priors and genotype quality (GQ) |
-| [62]({{ '/slides/#62' | relative_url }}) | The bcftools multiallelic caller, its prior and site QUAL |
-| [63]({{ '/slides/#63' | relative_url }}) | Depth: DP vs AD, and Poisson coverage at 3× |
-| [64]({{ '/slides/#64' | relative_url }}) | Duplicates, indel normalisation and filters: rules, not probabilities |
-| [65]({{ '/slides/#65' | relative_url }}) | Runs of homozygosity as a hidden Markov model |
-| [66]({{ '/slides/#66' | relative_url }}) | Six common ways to misread a VCF |
+| [56]({{ '/slides/#56' | relative_url }}) | The big picture: likelihood × prior = posterior, then decision rules |
+| [57]({{ '/slides/#57' | relative_url }}) | Five Phred numbers (base quality, MAPQ, PL, GQ, QUAL) and what each means |
+| [58]({{ '/slides/#58' | relative_url }}) | Three error sources: base quality, mapping quality, base alignment quality (BAQ) |
+| [59]({{ '/slides/#59' | relative_url }}) | Genotype likelihoods from single reads |
+| [60]({{ '/slides/#60' | relative_url }}) | Why an allele-fraction cut-off is not the calling model; correlated errors |
+| [61]({{ '/slides/#61' | relative_url }}) | PL values, checked against our VCF |
+| [62]({{ '/slides/#62' | relative_url }}) | Bayes' rule, Hardy–Weinberg priors and genotype quality (GQ) |
+| [63]({{ '/slides/#63' | relative_url }}) | The bcftools multiallelic caller, its prior and site QUAL |
+| [64]({{ '/slides/#64' | relative_url }}) | Depth: DP vs AD, and Poisson coverage at 3× |
+| [65]({{ '/slides/#65' | relative_url }}) | Duplicates, indel normalisation and filters: rules, not probabilities |
+| [66]({{ '/slides/#66' | relative_url }}) | Runs of homozygosity as a hidden Markov model, and how the pipeline runs `bcftools roh` |
+| [67]({{ '/slides/#67' | relative_url }}) | Six common ways to misread a VCF |
 
 ## Updating the slides
 

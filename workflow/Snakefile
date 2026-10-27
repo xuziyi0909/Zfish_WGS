@@ -61,6 +61,8 @@ PROTEIN_REFS = {
     "refseq": f"{PROTEIN_DIR}/refseq.tsv",
     "refseq_pep": f"{PROTEIN_DIR}/refseq_pep.fa.gz",
 }
+ROH_ENABLED = bool(config.get("homozygosity_runs", {}).get("enabled", False))
+ROH_TSV = f"{OUT}/homozygosity/roh_runs.tsv"
 COMPARISON_MODE = str(config["comparison"].get("mode", "absent")).lower()
 if COMPARISON_MODE not in ("absent", "sibling"):
     raise ValueError(f"comparison: mode must be 'absent' or 'sibling' (found '{COMPARISON_MODE}')")

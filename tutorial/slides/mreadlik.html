@@ -26,6 +26,6 @@
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">\(n_a(G)\) = copies of allele \(a\) in genotype \(G\): for AG, \(n_A=n_G=1\) each · 58</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">\(n_a(G)\) = copies of allele \(a\) in genotype \(G\): for AG, \(n_A=n_G=1\) each · 59</p>
 <aside>Here is the measurement model step by step. For one letter, if the true allele matches, the chance of seeing it is one minus the error rate; otherwise it is the error rate divided by three, assuming an error is equally likely to produce any other letter. For a genotype, each read comes from one of the two chromosome copies, so we average over the alleles the genotype contains: a heterozygote mixes the two with weight one half. Assuming reads are independent given the genotype, the likelihood of all reads is the product, which in practice is a sum of logs. In the example, five A and five G reads at Q30: the heterozygote explains them with probability one half to the tenth, while either homozygote has to explain five reads as errors, which costs about fourteen orders of magnitude. The PL column is the same comparison on the Phred scale, which the next slides use.</aside>
 </section>

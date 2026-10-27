@@ -113,8 +113,8 @@ them inside the chr7 peak: *tmppe* R370W and *TJP1* P1240L.
 
 ### The mapping signal: chromosome 7
 
-Three plots look at the same signal in different ways. The first two **count**
-variants in 1 Mb windows; only the third, the Manhattan plot, shows a p value.
+Four plots look at the same signal in different ways. The first three summarise
+1 Mb windows; only the last, the Manhattan plot, shows a p value.
 
 **1. Variant density** (y axis: variants per Mb). How many high-confidence candidate
 variants fall in each 1 Mb window: all of them on top, only those homozygous in the
@@ -132,7 +132,22 @@ share of homozygous sites per window, and below it mutant minus sibling.
 
 ![Homozygosity: share of homozygous sites per sample, and the mutant-minus-sibling difference, highest on chromosome 7](assets/homozygosity.png)
 
-**3. Manhattan plot** (y axis: −log10 p). One dot per variant; its height is a
+**3. Runs of homozygosity** (y axis: share of each 1 Mb window inside a run).
+`bcftools roh` walks along each chromosome and decides, site by site, whether both
+copies are identical. Both samples share many short runs from the lab strain's
+background (top). The difference (bottom) has one clear block: **chromosome 7,
+27–31 Mb**, where the mutant is in runs over 92% of the region and the sibling over
+12%. No other window in the genome reaches half that difference.
+
+![Runs of homozygosity: share of each 1 Mb window in runs per sample, and the mutant-minus-sibling difference, with one block on chromosome 7 at 27–31 Mb](assets/homozygosity_runs.png)
+
+This narrows the 22–33 Mb density peak to its cleanest core. *tmppe* (29.2 Mb),
+*HERC1* (29.2 Mb) and *si:dkey-1h4.4* (30.9 Mb) lie inside it; *TJP1* (31.1 Mb) is
+just past its edge, where the mutant is in runs over 44% of the window. At 24–25 Mb,
+inside the density peak, the mutant looks heterozygous again; whether that is a
+recombination or a mapping problem needs checking.
+
+**4. Manhattan plot** (y axis: −log10 p). One dot per variant; its height is a
 p value from **Fisher's exact test** on that variant's reads.
 
 How one dot is calculated, using *tmppe* (chr7:29,157,506 C>T):

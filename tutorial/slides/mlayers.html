@@ -33,6 +33,6 @@
 <p style="font-size:23px;line-height:1.4">\(\hat G=\arg\max_G P(G\mid D)\), then filters (QUAL ≥ 30) and our sibling-mode rules.</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873"><i>D</i> = the reads at one position · <i>G</i> = a genotype: 0/0 (reference), 0/1 (one copy), 1/1 (two copies) · 55</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873"><i>D</i> = the reads at one position · <i>G</i> = a genotype: 0/0 (reference), 0/1 (one copy), 1/1 (two copies) · 56</p>
 <aside>Calling is not one formula but a chain. The aligner places reads, samtools sorts and cleans them, mpileup stacks them at each position and computes genotype likelihoods, and bcftools call turns those into genotypes and a site quality. Everything rests on Bayes’ rule. The likelihood, P of D given G, is the measurement model: how compatible the reads are with each genotype, given what we know about sequencing and alignment errors. The prior, P of G, is biology: how often positions differ at all. Their product, normalised, is the posterior. Then come decision rules: pick the most probable genotype, apply filters, and finally our own sibling-mode rules. Keeping these three layers apart avoids most misreadings of a VCF.</aside>
 </section>

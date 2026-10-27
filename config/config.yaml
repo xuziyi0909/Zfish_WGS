@@ -75,6 +75,21 @@ protein_check:
   refseq_xref_url: https://ftp.ensembl.org/pub/release-113/tsv/danio_rerio/Danio_rerio.GRCz11.113.refseq.tsv.gz
   refseq_protein_url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/035/GCF_000002035.6_GRCz11/GCF_000002035.6_GRCz11_protein.faa.gz
 
+# ---------------------------------------------------------------------
+# Runs of homozygosity (bcftools roh): a hidden Markov model that finds stretches
+# where both copies of a chromosome are identical. Reported as the share of each
+# 1 Mb window that lies in a run, per sample, and mutant minus control.
+# The defaults are tuned for low coverage (~3x): weak genotype calls are ignored
+# first, because single error-prone reads otherwise break every run.
+# ---------------------------------------------------------------------
+homozygosity_runs:
+  enabled: true
+  min_reads: 3              # ignore a sample's genotype call with fewer reads
+  min_reads_each_allele: 2  # ignore a heterozygous call unless both alleles have this many reads
+  allele_frequency: 0.4     # assumed allele frequency (too few samples to estimate it)
+  genotype_error_phred: 30  # how much each genotype call is trusted (bcftools roh -G)
+  az_to_hw: 1.0e-10         # chance of a run ending between sites (lower = longer runs)
+
 structural_variants:
   enabled: true             # call large deletions/duplications/inversions with DELLY
 

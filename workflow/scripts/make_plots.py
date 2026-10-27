@@ -3,6 +3,7 @@
 manhattan        per-variant -log10 p that the mutant carries more alt reads than the control
 variant_density  high-confidence mutant-specific variants per Mb
 homozygosity     fraction of homozygous variant calls per Mb, per sample
+homozygosity_runs share of each 1 Mb window in runs of homozygosity (bcftools roh), per sample
 coverage         normalised read depth and mutant/control depth ratio (large deletions/duplications)
 candidate_map    chromosomes with priority 1-2 variants and structural variants marked
 summary          variant categories, effect types, allele fractions, SV sizes
@@ -246,8 +247,74 @@ else:
 fig.tight_layout()
 save(fig, "homozygosity")
 
+# ================================================================ 3b. runs of homozygosity (bcftools roh)
+ROH_PEAK = None
+roh = None
+if inp.roh:
+    runs = pd.read_csv(inp.roh, sep="\t", dtype={"chrom": str, "sample": str})
+    runs = runs[runs["chrom"].isin(OFFSET) & runs["sample"].isin(samples)]
+    roh = pd.DataFrame([(c, w) for c in CHROMS for w in range(-(-LENGTH[c] // 1_000_000))],
+                       columns=["chrom", "win"])
+    win_size = (np.minimum((roh["win"] + 1) * 1_000_000, roh["chrom"].map(LENGTH))
+                - roh["win"] * 1_000_000)
+    # base pairs of each run that fall into each 1 Mb window
+    parts = [(r.sample, r.chrom, w, min(r.end, (w + 1) * 1_000_000) - max(r.start, w * 1_000_000))
+             for r in runs.itertuples()
+             for w in range(r.start // 1_000_000, (r.end - 1) // 1_000_000 + 1)]
+    parts = pd.DataFrame(parts, columns=["sample", "chrom", "win", "bp"])
+    for s in samples:
+        bp = parts[parts["sample"] == s].groupby(["chrom", "win"])["bp"].sum().rename(s).reset_index()
+        roh = roh.merge(bp, on=["chrom", "win"], how="left")
+        roh[s] = (roh[s].fillna(0) / win_size).clip(0, 1)
+    roh["x"] = genome_x(roh["chrom"], roh["win"] * 1_000_000 + 500_000)
+
+    fig, axes = plt.subplots(2, 1, figsize=(13, 5.6), sharex=True,
+                             gridspec_kw={"height_ratios": [1.3, 1]})
+    for s in (controls + mutants)[:4]:          # mutants drawn last = on top
+        color = ORANGE if s in mutants else BLUE
+        for c in CHROMS:
+            d = roh[roh["chrom"] == c]
+            axes[0].plot(d["x"], d[s].rolling(3, center=True, min_periods=1).mean(), color=color, lw=1.4,
+                         label=s if c == CHROMS[0] else None)
+    axes[0].set_ylim(0, 1.02)
+    axes[0].set_ylabel("share of window in runs")
+    axes[0].set_title("Runs of homozygosity (bcftools roh): share of each 1 Mb window, 3 Mb running mean")
+    axes[0].legend(frameon=False, fontsize=8, loc="upper right", ncol=len(samples[:3]))
+    chrom_axis(axes[0])
+    axes[0].set_xlabel("")
+    if controls:
+        roh["mutant_minus_control"] = roh[mutants].mean(axis=1) - roh[controls].mean(axis=1)
+        diff = roh["mutant_minus_control"]
+        axes[1].bar(roh["x"], diff, width=900_000, linewidth=0, color=np.where(diff >= 0, POS, NEG))
+        axes[1].axhline(0, color=INK2, lw=0.8)
+        axes[1].set_ylim(-1.05, 1.05)
+        axes[1].set_ylabel("mutant − control")
+        axes[1].set_title("Difference: red = the mutant is in runs where the control is not")
+        chrom_axis(axes[1])
+        # strongest block: the highest window, extended while neighbours stay above half of it
+        c0, s0, e0, top_ = peak_region(roh, "mutant_minus_control", frac=0.5)
+        if top_ >= 0.3:
+            inside = roh[(roh["chrom"] == c0) & (roh["win"] >= s0) & (roh["win"] < e0)]
+            ROH_PEAK = {"chrom": c0, "start_mb": int(s0), "end_mb": int(e0),
+                        "max_difference": round(float(top_), 2),
+                        "mutant_share": round(float(inside[mutants].mean(axis=1).mean()), 2),
+                        "control_share": round(float(inside[controls].mean(axis=1).mean()), 2)}
+            axes[1].axvspan(OFFSET[c0] + s0 * 1e6, OFFSET[c0] + e0 * 1e6, color="#fbd5c4", zorder=0, lw=0)
+            axes[1].annotate(f"chr{c0} {s0}–{e0} Mb", (OFFSET[c0] + e0 * 1e6, top_), xytext=(6, -4),
+                             textcoords="offset points", ha="left", va="top", fontsize=8.5,
+                             color=INK, fontweight="bold")
+    else:
+        note(axes[1], "Difference track needs a control sample.")
+    fig.tight_layout()
+    save(fig, "homozygosity_runs")
+
 win = win.merge(hzdf.drop(columns="x").rename(columns={s: f"{s}_fraction_homozygous" for s in samples}),
                 on=["chrom", "win"], how="left")
+if roh is not None:
+    roh_cols = list(samples) + (["mutant_minus_control"] if controls else [])
+    win = win.merge(roh[["chrom", "win"] + roh_cols].rename(
+        columns={**{s: f"{s}_fraction_in_runs" for s in samples},
+                 "mutant_minus_control": "runs_mutant_minus_control"}), on=["chrom", "win"], how="left")
 win.insert(1, "start", win.pop("win") * 1_000_000)
 win.insert(2, "end", win["start"] + 1_000_000)
 win.round(3).to_csv(out.windows, sep="\t", index=False)
@@ -428,5 +495,6 @@ if PEAK[0] is not None:
     }
 if not peak["found"]:
     pd.DataFrame(columns=["priority", "chrom", "pos", "gene"]).to_csv(out.peak_candidates, sep="\t", index=False)
+peak["runs_of_homozygosity"] = ROH_PEAK
 with open(out.peak, "w") as fh:
     json.dump(peak, fh, indent=1, default=str)
