@@ -5,7 +5,7 @@ nav_order: 1.5
 
 # Tutorial slides
 
-A 51-slide lab tutorial on the whole process: the ideas behind the analysis, running
+A 64-slide lab tutorial on the whole process: the ideas behind the analysis, running
 the pipeline, what each step does, reading the results, and a worked example on our
 jaw mutant. Every slide has speaker notes, so anyone can present it.
 
@@ -27,7 +27,7 @@ Each slide has its own address (for example `slides/#20`), so you can link to a 
 To make a PDF or print handouts, open the slides and use your browser's **Print**
 (choose *Save as PDF*): every slide becomes one page.
 
-## The five parts
+## The parts
 
 | Part | Slides | Covers |
 |---|---|---|
@@ -36,6 +36,7 @@ To make a PDF or print handouts, open the slides and use your browser's **Print*
 | 3. Inside the pipeline | 18–37 | Each of the eight steps, the checks, the math behind each test, and the priority 1–5 ranking |
 | 4. Reading the results | 38–42 | Files, the report, the Excel workbook, judging a variant |
 | 5. Worked example | 43–51 | The jaw mutant: data, peak, false leads, remaining leads, next steps |
+| 6. Appendix: the math | 52–64 | Error models, genotype likelihoods, PL, Bayes, the bcftools caller, depth, homozygosity HMM |
 
 ## The math behind each test
 
@@ -51,10 +52,30 @@ work through each calculation with a real variant from our data:
 | [36]({{ '/slides/#36' | relative_url }}) | The Fisher test behind the Manhattan plot's −log10 p |
 | [37]({{ '/slides/#37' | relative_url }}) | Window statistics: the peak, homozygosity and copy number |
 
+Part 6 is an optional appendix with the full derivations, again checked against our
+own VCF (the tmppe variant):
+
+| Slide | Explains |
+|---|---|
+| [53]({{ '/slides/#53' | relative_url }}) | The big picture: likelihood × prior = posterior, then decision rules |
+| [54]({{ '/slides/#54' | relative_url }}) | Five Phred numbers (base quality, MAPQ, PL, GQ, QUAL) and what each means |
+| [55]({{ '/slides/#55' | relative_url }}) | Three error sources: base quality, mapping quality, base alignment quality (BAQ) |
+| [56]({{ '/slides/#56' | relative_url }}) | Genotype likelihoods from single reads |
+| [57]({{ '/slides/#57' | relative_url }}) | Why an allele-fraction cut-off is not the calling model; correlated errors |
+| [58]({{ '/slides/#58' | relative_url }}) | PL values, checked against our VCF |
+| [59]({{ '/slides/#59' | relative_url }}) | Bayes' rule, Hardy–Weinberg priors and genotype quality (GQ) |
+| [60]({{ '/slides/#60' | relative_url }}) | The bcftools multiallelic caller, its prior and site QUAL |
+| [61]({{ '/slides/#61' | relative_url }}) | Depth: DP vs AD, and Poisson coverage at 3× |
+| [62]({{ '/slides/#62' | relative_url }}) | Duplicates, indel normalisation and filters: rules, not probabilities |
+| [63]({{ '/slides/#63' | relative_url }}) | Runs of homozygosity as a hidden Markov model |
+| [64]({{ '/slides/#64' | relative_url }}) | Six common ways to misread a VCF |
+
 ## Updating the slides
 
 The slides live in `tutorial/slides/`, one HTML file per slide, in the order listed
-in `tutorial/deck.json`. After editing them, rebuild this page and commit:
+in `tutorial/deck.json`. Formulas are written in LaTeX between `\(` and `\)` (inline)
+or `\[` and `\]` (on their own line) and typeset by KaTeX when the page opens.
+After editing the slides, rebuild this page and commit:
 
 ```bash
 python3 tutorial/build_slides.py

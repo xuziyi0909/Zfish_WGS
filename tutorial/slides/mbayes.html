@@ -1,0 +1,29 @@
+<section id="mbayes" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Bayes and the prior</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Likelihood × prior = posterior</h2>
+</div>
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:4px 32px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:30px;color:#16202B">\[P(G\mid D)=\frac{P(D\mid G)\,P(G)}{\sum_H P(D\mid H)\,P(H)}\qquad P(0/0)=(1-f)^2,\;\;P(0/1)=2f(1-f),\;\;P(1/1)=f^2\]</p>
+</div>
+<div style="display:flex;gap:36px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:24px;line-height:1.4;color:#16202B"><b>9 A + 1 G at Q30</b> (likelihood favours AG ×2.9), with Hardy–Weinberg priors at allele frequency <i>f</i>:</p>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:40%;color:#16202B"><i>f</i></th><th style="width:30%;color:#16202B;text-align:right">P(AA | D)</th><th style="width:30%;color:#16202B;text-align:right">P(AG | D)</th></tr>
+<tr><td>0.5 (common)</td><td style="text-align:right">15%</td><td style="text-align:right"><b>85%</b></td></tr>
+<tr><td>0.01</td><td style="text-align:right"><b>94%</b></td><td style="text-align:right">6%</td></tr>
+<tr><td>0.001 (rare)</td><td style="text-align:right"><b>99.4%</b></td><td style="text-align:right">0.6%</td></tr>
+</table>
+<p style="font-size:24px;line-height:1.4">\(\arg\max_G P(D\mid G)\) need not equal \(\arg\max_G P(G\mid D)\): weak evidence for a rare allele loses to the prior.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#ECEAE3;border-radius:16px;padding:22px 30px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Genotype quality, GQ</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[GQ=-10\log_{10}\big[1-P(\hat G\mid D)\big]\]</p>
+<p style="font-size:23px;line-height:1.4">Our run does not write GQ. A rough stand-in is the second-smallest PL (it ignores the prior):</p>
+<p style="font-size:23px;line-height:1.4">tmppe mutant: 15 → about 3% chance the genotype is wrong. TJP1 mutant: 9 → about 13%.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Priors can also come from pedigrees, reference panels or mutation rates · GQ can be added with bcftools call -f GQ · 59</p>
+<aside>Bayes’ rule turns the likelihood into a probability by multiplying with a prior and normalising. A natural prior for a diploid is Hardy–Weinberg: with allele frequency f, two copies has probability f squared, one copy two f times one minus f. Return to nine A and one G at Q30, where the likelihood favours the heterozygote about three to one. If the allele is common, the posterior agrees: 85 percent heterozygous. If it is rare, one in a thousand, the prior wins and the posterior is 99 percent homozygous reference. That is why the most likely genotype by likelihood can differ from the most probable one. GQ is the Phred-scaled chance that the chosen genotype is wrong. Our run does not write it, but the second-smallest PL is a rough stand-in: 15 for the tmppe mutant, about a three percent chance that it is really heterozygous; 9 for the TJP1 mutant, about thirteen percent.</aside>
+</section>

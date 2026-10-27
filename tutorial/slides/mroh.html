@@ -1,0 +1,27 @@
+<section id="mroh" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Runs of homozygosity</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Homozygosity mapping as a hidden Markov model</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1.35;display:flex;flex-direction:column;gap:6px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:18px 30px">
+<p style="font-size:23px;line-height:1.35">Two hidden states along the chromosome: <b>AZ</b>, both copies identical by descent, and <b>HW</b>, ordinary. With allele frequency \(f\):</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\[P(D_i\mid AZ)=(1-f)\,P(D_i\mid RR)+f\,P(D_i\mid AA)\]</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\[P(D_i\mid HW)=(1-f)^2P(D_i\mid RR)+2f(1-f)P(D_i\mid RA)+f^2P(D_i\mid AA)\]</p>
+<p style="font-size:23px;line-height:1.35">Switching state is likelier over larger genetic distances. The best path (Viterbi):</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\[V_i(s)=P(D_i\mid s)\,\max_{s'}\big[V_{i-1}(s')\,P(s\mid s')\big]\]</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">What our pipeline does instead</h3>
+<p style="font-size:23px;line-height:1.4">Counts hard homozygous calls per 1 Mb window (slide 37). Simple and robust, but each call counts fully, even with 3 reads.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">What the HMM adds</h3>
+<p style="font-size:23px;line-height:1.4">It uses the PL values, so a 3-read “homozygous” site counts less than a 10-read one, and it gives each site a probability of lying in a run. <span style="font-family:'JetBrains Mono', 'Courier New', monospace">bcftools roh</span> implements it; it is not in the pipeline yet.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">RR, RA, AA = reference, heterozygous, alternate · forward–backward gives per-site probabilities · Narasimhan et al. 2016 · 63</p>
+<aside>Our homozygosity peak can also be found with a proper statistical model. bcftools roh walks along the chromosome with two hidden states. In an autozygous stretch, both copies come from the same ancestor, so every site must be homozygous: the reads are explained by reference-reference or alternate-alternate only. In an ordinary stretch, all three genotypes are possible with Hardy–Weinberg weights. The chance of switching state between two sites grows with the genetic distance between them. The Viterbi algorithm finds the most likely sequence of states, and the forward-backward algorithm gives each site a probability of lying in a run. The advantage over our window count is that the HMM works with the genotype likelihoods, so a homozygous call from three reads counts less than one from ten. It is not part of the pipeline yet; it would be a natural addition for low-coverage data.</aside>
+</section>

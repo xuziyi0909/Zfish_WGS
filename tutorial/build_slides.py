@@ -96,6 +96,8 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 #stage th{font-weight:600}
 #stage hr{border:0;height:0;align-self:stretch}
 #stage aside{display:none}
+#stage .katex{font-size:1.08em}
+#stage .katex-display{margin:.2em 0}
 #bar{position:fixed;right:16px;bottom:12px;display:flex;gap:8px;align-items:center;
   font:14px system-ui,sans-serif;color:#c3c2b7;opacity:.35;transition:opacity .2s}
 #bar:hover,#bar:focus-within{opacity:1}
@@ -152,6 +154,12 @@ addEventListener('touchend', e => {
   if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
   touchX = null;
 });
+function renderMath() {
+  renderMathInElement(stage, {
+    delimiters: [{left: '\\\\[', right: '\\\\]', display: true}, {left: '\\\\(', right: '\\\\)', display: false}],
+    ignoredTags: ['aside', 'script', 'style'], throwOnError: false,
+  });
+}
 document.getElementById('prev').onclick = prev;
 document.getElementById('next').onclick = next;
 document.getElementById('notesbtn').onclick = () => notes.classList.toggle('show');
@@ -159,6 +167,9 @@ addEventListener('resize', fit);
 fit();
 show((parseInt(location.hash.slice(1), 10) || 1) - 1);
 """
+
+# formulas written as \( inline \) or \[ display \] in the slides are typeset by KaTeX
+KATEX = "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9"
 
 FONTS = ("https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400..700"
          "&family=IBM+Plex+Sans:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap")
@@ -177,6 +188,9 @@ def main():
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
+<link rel="stylesheet" href="{KATEX}/katex.min.css">
+<script defer src="{KATEX}/katex.min.js"></script>
+<script defer src="{KATEX}/contrib/auto-render.min.js" onload="renderMath()"></script>
 <style>{CSS}</style>
 </head>
 <body>

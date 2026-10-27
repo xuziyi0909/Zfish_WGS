@@ -1,0 +1,37 @@
+<section id="mmisread" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Summary</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Six ways to misread a VCF</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">AD is not a likelihood</h3>
+<p style="font-size:23px;line-height:1.4">5 reads to 0 says less than PL 177,15,0, which also weighs every letter’s quality.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">PL is not a posterior</h3>
+<p style="font-size:23px;line-height:1.4">It has no prior. A rare allele needs more evidence than PL alone suggests.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">GQ is not QUAL</h3>
+<p style="font-size:23px;line-height:1.4">QUAL: is the site variant at all? GQ: is this sample’s genotype right?</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Depth is not evidence</h3>
+<p style="font-size:23px;line-height:1.4">20 copies of one artefact are one observation, not 20.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">A call is not a read count</h3>
+<p style="font-size:23px;line-height:1.4">Base, mapping and alignment quality and the prior all enter.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Filters don’t fix the model</h3>
+<p style="font-size:23px;line-height:1.4">They choose which calls to look at; they make none of them more correct.</p>
+</div>
+</div>
+<div style="background:#ECEAE3;border-left:8px solid #B04A18;border-radius:16px;padding:20px 32px">
+<p style="font-size:25px;line-height:1.4;color:#16202B"><b>And our own pipeline:</b> the sibling-mode cut-offs (90% / 60%) and the homozygosity windows are decision rules on read counts, applied after calling. Slide 30 shows what they cost at 3×.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">The core of it all: \(P(G\mid D)\propto P(D\mid G)\,P(G)\), with care about which reads count as independent · 64</p>
+<aside>To close the appendix, six misreadings that the mathematics helps avoid. Allele depths are raw counts; the genotype likelihoods contain more information because they weigh each letter. PL values are likelihoods without a prior, so they overstate the case for a rare allele. GQ and QUAL answer different questions. High depth is only strong evidence if the reads are independent. A genotype call is not simply a share of reads. And filters only select; they do not improve calls. Finally, be honest about our own steps: the sibling-mode cut-offs and the window counts are rules applied to read counts after calling, not part of the likelihood model, and slide 30 shows how often they can misclassify at our coverage.</aside>
+</section>

@@ -1,0 +1,29 @@
+<section id="mpl" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · PL in the VCF</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">PL: the likelihoods our VCF actually stores</h2>
+</div>
+<div style="display:flex;gap:36px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:20px 32px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[PL(G)=\mathrm{round}\Big[-10\big(\log_{10}L(G)-\max_H\log_{10}L(H)\big)\Big]\]</p>
+<p style="font-size:23px;line-height:1.4">The best genotype gets 0. <b>PL = 60,0,80</b> means</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:26px;color:#16202B">\[\frac{L(0/0)}{L(0/1)}=10^{-6},\qquad \frac{L(1/1)}{L(0/1)}=10^{-8}\]</p>
+<p style="font-size:23px;line-height:1.4"><b>Order:</b> \(K\) alleles give \(\binom{K+1}{2}\) genotypes, genotype \(j/k\) at position \(F(j/k)=\tfrac{k(k+1)}{2}+j\):</p>
+<p style="font-size:23px;line-height:1.4;font-family:'JetBrains Mono', 'Courier New', monospace">0/0, 0/1, 1/1, 0/2, 1/2, 2/2</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:34%;color:#16202B">Sample</th><th style="width:18%;color:#16202B;text-align:right">AD ref,alt</th><th style="width:24%;color:#16202B;text-align:right">PL in VCF</th><th style="width:24%;color:#16202B;text-align:right">by hand, Q30</th></tr>
+<tr><td>tmppe mutant</td><td style="text-align:right">0,5</td><td style="text-align:right;color:#B04A18"><b>177,15,0</b></td><td style="text-align:right">174,15,0</td></tr>
+<tr><td>tmppe sibling</td><td style="text-align:right">6,0</td><td style="text-align:right;color:#17697A"><b>0,18,202</b></td><td style="text-align:right">0,18,209</td></tr>
+<tr><td>TJP1 mutant</td><td style="text-align:right">0,3</td><td style="text-align:right"><b>116,9,0</b></td><td style="text-align:right">104,9,0</td></tr>
+</table>
+<div style="background:#ECEAE3;border-radius:16px;padding:18px 26px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:23px;line-height:1.4"><b>Rule of thumb:</b> with <i>n</i> reads all showing the new letter, \(PL(0/1)=10\log_{10}2^n\approx 3n\). 3 reads → 9: one copy is still 1/8 as likely.</p>
+<p style="font-size:23px;line-height:1.4"><b>Not a probability:</b> PL has no prior in it. That comes next.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">bcftools view -r 7:29157506 results/variants/all_samples.raw.vcf.gz · differences: the real letters are not all exactly Q30 · 58</p>
+<aside>The VCF does not store raw likelihoods but PL: each genotype's log-likelihood relative to the best one, times minus ten, rounded. The best genotype is always zero, and every ten points means ten times less likely. Here is the check against our own file. For the tmppe mutant, five T reads, the VCF says 177, 15, 0; the hand calculation from the previous slide with every letter at Q30 gives 174, 15, 0. For the sibling's six C reads, 0, 18, 202 against 209. The small differences come from the real base qualities, which are not all exactly 30, and from mpileup's error model. The middle number is the useful one at low coverage: for n reads that all show the new letter, the heterozygote is penalised by only about three points per read. With TJP1's three reads it is 9, meaning one copy is still one eighth as likely as two. PL is a likelihood, not a probability; to get a probability we need a prior.</aside>
+</section>

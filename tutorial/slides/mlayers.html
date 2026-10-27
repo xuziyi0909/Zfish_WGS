@@ -1,0 +1,38 @@
+<section id="mlayers" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · The big picture</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Variant calling is Bayes’ rule applied to reads</h2>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Reads</p><p style="font-size:20px;color:#5F6873">fastp</p></div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:28px;height:16px"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Alignments</p><p style="font-size:20px;color:#5F6873">bwa-mem2, samtools</p></div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:28px;height:16px"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Pileup</p><p style="font-size:20px;color:#5F6873">mpileup</p></div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:28px;height:16px"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:2px solid #B04A18;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Likelihoods</p><p style="font-size:20px;color:#5F6873">mpileup → PL</p></div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:28px;height:16px"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:2px solid #B04A18;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Posteriors</p><p style="font-size:20px;color:#5F6873">call -m → GT, QUAL</p></div>
+<x-shape kind="arrow-right" style="background:#B9B4A8;width:28px;height:16px"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Decisions</p><p style="font-size:20px;color:#5F6873">filters, our rules</p></div>
+</div>
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:8px 32px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:34px;color:#16202B">\[\underbrace{P(G\mid D)}_{\text{posterior}}\;\propto\;\underbrace{P(D\mid G)}_{\text{measurement model}}\;\times\;\underbrace{P(G)}_{\text{biological prior}}\]</p>
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Measurement model</h3>
+<p style="font-size:23px;line-height:1.4">How the reads would look if the genotype were <i>G</i>: base errors, mapping errors, alignment errors, correlated errors.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Biological prior</h3>
+<p style="font-size:23px;line-height:1.4">How plausible <i>G</i> is before seeing reads: mutation rate, allele frequency, ploidy, Hardy–Weinberg.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Decision rule</h3>
+<p style="font-size:23px;line-height:1.4">\(\hat G=\arg\max_G P(G\mid D)\), then filters (QUAL ≥ 30) and our sibling-mode rules.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873"><i>D</i> = the reads at one position · <i>G</i> = a genotype: 0/0 (reference), 0/1 (one copy), 1/1 (two copies) · 53</p>
+<aside>Calling is not one formula but a chain. The aligner places reads, samtools sorts and cleans them, mpileup stacks them at each position and computes genotype likelihoods, and bcftools call turns those into genotypes and a site quality. Everything rests on Bayes’ rule. The likelihood, P of D given G, is the measurement model: how compatible the reads are with each genotype, given what we know about sequencing and alignment errors. The prior, P of G, is biology: how often positions differ at all. Their product, normalised, is the posterior. Then come decision rules: pick the most probable genotype, apply filters, and finally our own sibling-mode rules. Keeping these three layers apart avoids most misreadings of a VCF.</aside>
+</section>

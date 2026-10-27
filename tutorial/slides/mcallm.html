@@ -1,0 +1,29 @@
+<section id="mcallm" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · bcftools call -m</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">First decide which alleles exist, then genotype</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1.25;display:flex;flex-direction:column;gap:6px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:18px 30px">
+<p style="font-size:23px;line-height:1.35"><b>1 · Allele frequencies</b> from quality-weighted evidence \(Q^x_{i,k}\), pooled over \(N\) samples:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:26px;color:#16202B">\[f_x^{\,i}=\frac{\sum_k Q^x_{i,k}}{\sum_{y,k}Q^y_{i,k}},\qquad f_x=\frac1N\sum_{i=1}^{N}f_x^{\,i}\]</p>
+<p style="font-size:23px;line-height:1.35"><b>2 · Each allele set</b> \(S\) (e.g. {C} or {C,T}), genotypes summed out:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:26px;color:#16202B">\[L_S=\prod_{i=1}^{N}\sum_{x,y\in S}f_{x\mid S}\,f_{y\mid S}\,G_i(xy),\qquad P(S\mid D)\propto P(S)\,L_S\]</p>
+<p style="font-size:23px;line-height:1.35"><b>3 · Genotypes</b> are then called using only the alleles in the best \(S\).</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-direction:column;gap:6px;background:#ECEAE3;border-radius:16px;padding:18px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">The prior: how often sites vary</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(a_n=\sum_{k=1}^{n-1}\tfrac1k\approx\ln n+0.577,\quad E[\#\text{variable sites}]=\theta\,a_n\)</p>
+<p style="font-size:22px;line-height:1.35">Ours: \(\theta=1.1\times10^{-3}\) (default -P), 2 samples = 4 copies: \(a_4=1+\tfrac12+\tfrac13=1.83\), so about 0.2% of sites are expected to vary.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;background:#ECEAE3;border-radius:16px;padding:18px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">Site QUAL</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(QUAL=-10\log_{10}P(S=\{\text{ref}\}\mid D)\)</p>
+<p style="font-size:22px;line-height:1.35">tmppe: QUAL 138, so \(P(\text{no variant})\approx10^{-13.8}\). High QUAL does not mean every sample’s genotype is certain.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Model: Danecek et al., samtools.github.io/bcftools/call-m.pdf · \(a_n\): Watterson’s estimator · 60</p>
+<aside>The multiallelic caller, the -m in our command, splits the problem in two. First, which alleles exist at this site at all? It estimates each allele's frequency from the quality-weighted evidence in each sample, averages over samples, and then for every candidate set of alleles computes the likelihood of all samples together, summing over the genotypes each sample could have. A prior on the allele set comes from population genetics: Watterson's harmonic number says how many variable sites to expect among n chromosome copies for a mutation rate theta. With our two diploid samples, four copies, about one site in five hundred is expected to vary. Second, once the allele set is chosen, each sample is genotyped using only those alleles. Joint calling matters because evidence is pooled: several samples with weak support can together show that an allele is real. QUAL is the Phred-scaled posterior that only the reference allele is present: 138 for tmppe, overwhelming. But QUAL is a site property; one sample's genotype can still be uncertain.</aside>
+</section>

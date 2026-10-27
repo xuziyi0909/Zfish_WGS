@@ -1,0 +1,33 @@
+<section id="mrules" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Rules, not probabilities</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Duplicates, indels and filters are deterministic</h2>
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 26px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Duplicates</h3>
+<p style="font-size:22px;line-height:1.4">samtools markdup groups reads by a key; single-end:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(T=(\text{chrom},\,\text{unclipped }5'\text{ pos},\,\text{strand})\)</p>
+<p style="font-size:22px;line-height:1.4">Paired-end adds the mate’s position. The read with the highest</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(S(r)=\sum_{i:\,Q_i\ge15}Q_i\)</p>
+<p style="font-size:22px;line-height:1.4">is kept; the others are flagged. Ours: 12.8–13.2%&nbsp;flagged.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 26px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Indels</h3>
+<p style="font-size:22px;line-height:1.4">Reads are compared with whole local haplotypes, summing over alignments \(A\):</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(P(r\mid H_j)=\sum_A P(r,A\mid H_j)\)</p>
+<p style="font-size:22px;line-height:1.4">In <span style="font-family:'JetBrains Mono', 'Courier New', monospace">TCACACAG</span>, deleting any one CA gives the same sequence. bcftools norm writes the leftmost, so one event has one name, which exact matching to Ensembl needs.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:22px 26px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Filters</h3>
+<p style="font-size:22px;line-height:1.4">Boolean partitions; no new inference. Ours:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(\text{keep}=(QUAL\ge30)\wedge(ALT\ne{*})\)</p>
+<p style="font-size:22px;line-height:1.4">and in sibling mode, per variant:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:22px;color:#16202B">\(\text{specific}=(a_m\ge2)\wedge(d_m\ge3)\wedge\big(\tfrac{a_m}{d_m}\ge0.9\big)\)<br>\(\qquad\qquad\;\wedge\,(d_s\ge4)\wedge(a_s=0)\)</p>
+<p style="font-size:22px;line-height:1.4">\(a\) = new-letter reads, \(d\) = reads, m = mutant, s = sibling.</p>
+</div>
+</div>
+<p style="font-size:24px;line-height:1.4;color:#16202B"><b>Sorting and indexing</b> are algorithms: sort is \(O(n\log n)\); a BAM index splits the genome into nested bins, so reading a region touches only the blocks that overlap it.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Specifications: samtools.github.io/hts-specs · bcftools filter semantics differ for “any sample” and “all samples” · 62</p>
+<aside>Not everything in the pipeline is statistics. Duplicate marking is a rule: reads with the same start, strand and, for pairs, the same mate position are treated as copies of one fragment, and the one with the best base qualities is kept. It is geometry, not proof that two molecules were identical. Indels are harder to model than single letters, because the read has to be compared with whole local haplotypes and many alignments are possible, especially in repeats. The same deletion in a repeat can also be written at several positions; normalisation moves it to the leftmost, so the same event always gets the same description, which our exact matching against Ensembl relies on. Filters are yes-or-no rules applied after calling. Our quality filter keeps QUAL of 30 or more, and our sibling-mode categories are likewise rules on read counts. A filter does not make any call more correct; it only chooses which calls we look at.</aside>
+</section>

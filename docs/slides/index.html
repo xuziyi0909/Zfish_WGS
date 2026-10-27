@@ -7,6 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400..700&family=IBM+Plex+Sans:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js" onload="renderMath()"></script>
 <style>
 html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 #stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center}
@@ -27,6 +30,8 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 #stage th{font-weight:600}
 #stage hr{border:0;height:0;align-self:stretch}
 #stage aside{display:none}
+#stage .katex{font-size:1.08em}
+#stage .katex-display{margin:.2em 0}
 #bar{position:fixed;right:16px;bottom:12px;display:flex;gap:8px;align-items:center;
   font:14px system-ui,sans-serif;color:#c3c2b7;opacity:.35;transition:opacity .2s}
 #bar:hover,#bar:focus-within{opacity:1}
@@ -66,43 +71,48 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 </div>
 <aside>Welcome. This tutorial walks through the whole process, from the sequencing files the core gives us to a short list of candidate mutations we can test at the bench. It has five parts: the ideas behind the analysis, how to run the pipeline, what each step does, how to read the results, and a worked example using our own jaw mutant data. You do not need any coding experience; the pipeline is one command.</aside>
 </section>
-<section class="slide" id="roadmap" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<section class="slide" id="roadmap" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <div style="display:flex;flex-direction:column;gap:12px">
 <p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Roadmap</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Five parts, from sequencing files to bench work</h2>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Five parts, plus a math appendix</h2>
 </div>
 <div style="display:flex;flex-direction:column">
-<div style="display:flex;align-items:center;gap:40px;padding:20px 0px;border-top:1px solid #D9D5CA">
-<p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;color:#17697A;width:80px">1</p>
-<h3 style="font-size:40px;font-weight:600;color:#16202B;width:520px">The ideas</h3>
+<div style="display:flex;align-items:center;gap:40px;padding:12px 0px;border-top:1px solid #D9D5CA">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:48px;font-weight:600;color:#17697A;width:80px">1</p>
+<h3 style="font-size:36px;font-weight:600;color:#16202B;width:520px">The ideas</h3>
 <p style="font-size:28px;flex:1">Mutant vs control, key words, and why recessive mutations leave a footprint</p>
 </div>
-<div style="display:flex;align-items:center;gap:40px;padding:20px 0px;border-top:1px solid #D9D5CA">
-<p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;color:#17697A;width:80px">2</p>
-<h3 style="font-size:40px;font-weight:600;color:#16202B;width:520px">Running it</h3>
+<div style="display:flex;align-items:center;gap:40px;padding:12px 0px;border-top:1px solid #D9D5CA">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:48px;font-weight:600;color:#17697A;width:80px">2</p>
+<h3 style="font-size:36px;font-weight:600;color:#16202B;width:520px">Running it</h3>
 <p style="font-size:28px;flex:1">Files, the sample sheet, choosing a comparison mode, one command</p>
 </div>
-<div style="display:flex;align-items:center;gap:40px;padding:20px 0px;border-top:1px solid #D9D5CA">
-<p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;color:#17697A;width:80px">3</p>
-<h3 style="font-size:40px;font-weight:600;color:#16202B;width:520px">Inside the pipeline</h3>
+<div style="display:flex;align-items:center;gap:40px;padding:12px 0px;border-top:1px solid #D9D5CA">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:48px;font-weight:600;color:#17697A;width:80px">3</p>
+<h3 style="font-size:36px;font-weight:600;color:#16202B;width:520px">Inside the pipeline</h3>
 <p style="font-size:28px;flex:1">The eight steps, the math behind each test, and how candidates are ranked</p>
 </div>
-<div style="display:flex;align-items:center;gap:40px;padding:20px 0px;border-top:1px solid #D9D5CA">
-<p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;color:#17697A;width:80px">4</p>
-<h3 style="font-size:40px;font-weight:600;color:#16202B;width:520px">Reading the results</h3>
+<div style="display:flex;align-items:center;gap:40px;padding:12px 0px;border-top:1px solid #D9D5CA">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:48px;font-weight:600;color:#17697A;width:80px">4</p>
+<h3 style="font-size:36px;font-weight:600;color:#16202B;width:520px">Reading the results</h3>
 <p style="font-size:28px;flex:1">The report, the Excel workbook, and how far to trust a variant</p>
 </div>
-<div style="display:flex;align-items:center;gap:40px;padding:20px 0px;border-top:1px solid #D9D5CA;border-bottom:1px solid #D9D5CA">
-<p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;color:#B04A18;width:80px">5</p>
-<h3 style="font-size:40px;font-weight:600;color:#16202B;width:520px">Worked example</h3>
+<div style="display:flex;align-items:center;gap:40px;padding:12px 0px;border-top:1px solid #D9D5CA">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:48px;font-weight:600;color:#B04A18;width:80px">5</p>
+<h3 style="font-size:36px;font-weight:600;color:#16202B;width:520px">Worked example</h3>
 <p style="font-size:28px;flex:1">Our jaw mutant: what the pipeline found, and the next experiments</p>
+</div>
+<div style="display:flex;align-items:center;gap:40px;padding:12px 0px;border-top:1px solid #D9D5CA;border-bottom:1px solid #D9D5CA">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:48px;font-weight:600;color:#5F6873;width:80px">6</p>
+<h3 style="font-size:36px;font-weight:600;color:#16202B;width:520px">Appendix: the math</h3>
+<p style="font-size:28px;flex:1">Error models, genotype likelihoods, Bayes, the bcftools caller, depth</p>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Zebrafish WGS tutorial · 2</p>
-<aside>Here is the plan. Parts 1 and 2 are what everyone needs before running their own data. Part 3 explains what happens inside, which matters when you have to judge a candidate. Part 4 is how to read the output. Part 5 is a real example from our own jaw mutant, including the mistakes the pipeline now catches automatically.</aside>
+<aside>Here is the plan. Parts 1 and 2 are what everyone needs before running their own data. Part 3 explains what happens inside, which matters when you have to judge a candidate. Part 4 is how to read the output. Part 5 is a real example from our own jaw mutant, including the mistakes the pipeline now catches automatically. Part 6 is an optional appendix with the full mathematics of variant calling.</aside>
 </section>
 <section class="slide" id="part1" data-transition="fade" style="background:#16202B;color:#F2F0EA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7CC6D6">Part 1 of 5</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7CC6D6">Part 1 of 6</p>
 <h1 style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:600;line-height:1.08;color:#F2F0EA">The ideas</h1>
 <div style="display:flex;gap:12px;width:480px">
 <div style="flex:3;height:16px;background:#7CC6D6;border-radius:8px"></div>
@@ -254,7 +264,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <aside>A mutation is never inherited alone. It travels with the piece of chromosome it sits on, and recombination only slowly breaks that piece up over generations. So in a homozygous mutant, the region around the mutation is identical on both copies, and every ordinary variant in that region also looks homozygous. A sibling carries the region on at most one copy. This is homozygosity mapping: the pipeline counts homozygous variants per megabase along the genome, and the tallest peak is where the mutation most likely sits. With few meioses the region can be several megabases long and contain dozens of genes.</aside>
 </section>
 <section class="slide" id="part2" data-transition="fade" style="background:#16202B;color:#F2F0EA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7CC6D6">Part 2 of 5</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7CC6D6">Part 2 of 6</p>
 <h1 style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:600;line-height:1.08;color:#F2F0EA">Running it</h1>
 <div style="display:flex;gap:12px;width:480px">
 <div style="flex:3;height:16px;background:#7CC6D6;border-radius:8px"></div>
@@ -502,7 +512,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <aside>Here is what to expect while it runs. The first run in a new folder spends about an hour downloading the genome, the known-variant list and protein sequences; later runs skip that. Cleaning and alignment take the longest and scale with the number of reads. The last block, annotation, comparison, the checks and the report, takes about half an hour. To check progress, reattach with screen -r wgs: Snakemake prints how many steps are done. The step count shown is an example. Every run also writes a complete log in results/logs.</aside>
 </section>
 <section class="slide" id="part3" data-transition="fade" style="background:#16202B;color:#F2F0EA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7CC6D6">Part 3 of 5</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7CC6D6">Part 3 of 6</p>
 <h1 style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:600;line-height:1.08;color:#F2F0EA">Inside the pipeline</h1>
 <div style="display:flex;gap:12px;width:480px">
 <div style="flex:3;height:16px;background:#7CC6D6;border-radius:8px"></div>
@@ -705,25 +715,25 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <div style="display:flex;gap:40px">
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:28px 36px">
 <p style="font-size:24px;line-height:1.4"><i>n</i> reads, <i>k</i> of them show the new letter T, each letter wrong with chance <i>ε</i> (Q30: <i>ε</i> = 0.001)</p>
-<p style="font-family:'Source Serif 4', Georgia, serif;font-size:34px;line-height:1.6;color:#16202B"><i>P</i>(reads | CC) = <i>ε</i><sup><i>k</i></sup> (1 − <i>ε</i>)<sup><i>n</i>−<i>k</i></sup><br><i>P</i>(reads | CT) = (½)<sup><i>n</i></sup><br><i>P</i>(reads | TT) = (1 − <i>ε</i>)<sup><i>k</i></sup> <i>ε</i><sup><i>n</i>−<i>k</i></sup></p>
-<p style="font-size:24px;line-height:1.4">CT: each read comes from either copy, a coin flip. bcftools weighs the three with a prior (about 1 position in 1,000 differs) and reports the most likely.</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:34px;line-height:1.6;color:#16202B"><i>P</i>(reads | CC) = (<i>ε</i>/3)<sup><i>k</i></sup> (1 − <i>ε</i>)<sup><i>n</i>−<i>k</i></sup><br><i>P</i>(reads | CT) = (½)<sup><i>n</i></sup><br><i>P</i>(reads | TT) = (1 − <i>ε</i>)<sup><i>k</i></sup> (<i>ε</i>/3)<sup><i>n</i>−<i>k</i></sup></p>
+<p style="font-size:24px;line-height:1.4">CT: each read comes from either copy, a coin flip. An error gives any of 3 other letters: <i>ε</i>/3. bcftools weighs the three with a prior (about 1 position in 1,000 differs) and reports the most likely.</p>
 <p style="font-size:24px;line-height:1.4;color:#16202B"><b>QUAL</b> = −10 log<sub>10</sub> <i>P</i>(no sample has T | reads)</p>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px">
 <p style="font-size:26px;color:#16202B"><b>tmppe, chr7:29,157,506 C&gt;T</b> (equal priors)</p>
 <table style="font-size:26px;color:#3D4752">
 <tr style="background:#ECEAE3"><th style="width:28%;color:#16202B">Genotype</th><th style="width:36%;color:#16202B;text-align:right">Mutant: 5 T, 0 C</th><th style="width:36%;color:#16202B;text-align:right">Sibling: 0 T, 6 C</th></tr>
-<tr><td>CC</td><td style="text-align:right">10<sup>−15</sup> → 0%</td><td style="text-align:right;color:#17697A"><b>0.994 → 98.5%</b></td></tr>
+<tr><td>CC</td><td style="text-align:right">4×10<sup>−18</sup> → 0%</td><td style="text-align:right;color:#17697A"><b>0.994 → 98.5%</b></td></tr>
 <tr><td>CT</td><td style="text-align:right">1/32 → 3%</td><td style="text-align:right">1/64 → 1.5%</td></tr>
-<tr><td>TT</td><td style="text-align:right;color:#B04A18"><b>0.995 → 97%</b></td><td style="text-align:right">10<sup>−18</sup> → 0%</td></tr>
+<tr><td>TT</td><td style="text-align:right;color:#B04A18"><b>0.995 → 97%</b></td><td style="text-align:right">10<sup>−21</sup> → 0%</td></tr>
 </table>
 <div style="background:#ECEAE3;border-radius:16px;padding:20px 28px">
 <p style="font-size:24px;line-height:1.4;color:#16202B"><b>The weak spot at 3× coverage:</b> a heterozygote shows only T in (½)<sup><i>n</i></sup> of cases, 1 in 8 with 3 reads and 1 in 32 with 5. Some “homozygous” calls are really one copy.</p>
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Simplified: bcftools also uses each letter’s own quality and all samples together · 24</p>
-<aside>Here is how a genotype is decided. Take one position with n reads, k of them showing the new letter. For each possible genotype we ask how likely these reads would be. If the sample is CC, every T must be a sequencing error, so the chance is epsilon to the power k, tiny. If it is TT, every C must be an error. If it is CT, each read comes from one of the two copies at random, like a coin flip, so any particular set of reads has chance one half to the power n. For the tmppe mutant, five T reads: CC is essentially impossible, CT has a chance of one in thirty-two, TT almost one. So the call is homozygous, with about 97 percent confidence. For the sibling, six C reads, the call is CC with about 98 percent. bcftools also adds a prior, the expectation that only about one position in a thousand differs, and uses each letter's own quality. QUAL is the Phred-scaled chance that no sample carries the variant. The key lesson: at low coverage, a heterozygote can look homozygous by chance, one time in eight with three reads.</aside>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Simplified: bcftools also uses each letter’s own quality and all samples together · full derivation: slides 56–60 · 24</p>
+<aside>Here is how a genotype is decided. Take one position with n reads, k of them showing the new letter. For each possible genotype we ask how likely these reads would be. If the sample is CC, every T must be a sequencing error, so the chance is epsilon over three to the power k, tiny; the three is because an error can produce any of the three other letters. If it is TT, every C must be an error. If it is CT, each read comes from one of the two copies at random, like a coin flip, so any particular set of reads has chance one half to the power n. For the tmppe mutant, five T reads: CC is essentially impossible, CT has a chance of one in thirty-two, TT almost one. So the call is homozygous, with about 97 percent confidence. For the sibling, six C reads, the call is CC with about 98 percent. bcftools also adds a prior, the expectation that only about one position in a thousand differs, and uses each letter's own quality. QUAL is the Phred-scaled chance that no sample carries the variant. The key lesson: at low coverage, a heterozygote can look homozygous by chance, one time in eight with three reads.</aside>
 </section>
 <section class="slide" id="effects" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -929,7 +939,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 </div>
 <div style="display:flex;flex-direction:column;gap:10px;background:#ECEAE3;border-radius:16px;padding:24px 28px">
 <h3 style="font-size:28px;font-weight:600;color:#16202B">The price</h3>
-<p style="font-size:24px;line-height:1.4">With one carrier sibling, the mutation itself is lost in 15% to 34% of cases. The region still shows, because thousands of linked variants are counted. Pools and more reads help.</p>
+<p style="font-size:24px;line-height:1.4">With one carrier sibling, the mutation itself is lost in 15% to 34% of cases when the sibling has 4–15 reads. The region still shows, because thousands of linked variants are counted. Pools and more reads help.</p>
 </div>
 </div>
 </div>
@@ -1133,12 +1143,12 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <div style="display:flex;flex-direction:column;gap:10px;background:#ECEAE3;border-radius:16px;padding:24px 28px">
 <h3 style="font-size:28px;font-weight:600;color:#16202B">Read it as a map, not as proof</h3>
 <p style="font-size:24px;line-height:1.4"><b>Depth sets the ceiling:</b> at 3× no single variant can score high.</p>
-<p style="font-size:24px;line-height:1.4"><b>14 million tests:</b> a Bonferroni cut-off would need 8.45. Look for towers of dots, not one tall dot.</p>
+<p style="font-size:24px;line-height:1.4"><b>13 million tests:</b> a Bonferroni cut-off would need 8.41. Our highest dot is 5.2 (chr7:29,041,013, reads 11/0 · 0/9). Look for towers of dots.</p>
 </div>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Hypergeometric test, scipy.stats.hypergeom · read counts summed over all mutant and all control samples · 36</p>
-<aside>The Manhattan plot in the report shows one dot per variant, and its height is minus log ten of a p value. Here is where that p value comes from. At each variant we count reads in a two-by-two table: mutant or sibling, new letter or reference. The null hypothesis is that the new letter has nothing to do with which sample the read came from. Then the new-letter reads are just a random handful drawn from all the reads, and the number landing in the mutant follows the hypergeometric distribution. The p value is the chance of the mutant getting at least as many as it did. For tmppe, all five new-letter reads are in the mutant, and there is only one way out of 462 to put five reads into the mutant's five slots, so p is 0.0022 and minus log ten p is 2.66. Two warnings. First, the score is capped by depth: the same perfect pattern at fifteen-fold coverage would score 8.2, but at our three-fold coverage nothing gets far above 2. Second, we run fourteen million tests without correction, so single high dots happen by chance. A causal region shows as a tower of many dots, which is why we rely on the peak.</aside>
+<aside>The Manhattan plot in the report shows one dot per variant, and its height is minus log ten of a p value. Here is where that p value comes from. At each variant we count reads in a two-by-two table: mutant or sibling, new letter or reference. The null hypothesis is that the new letter has nothing to do with which sample the read came from. Then the new-letter reads are just a random handful drawn from all the reads, and the number landing in the mutant follows the hypergeometric distribution. The p value is the chance of the mutant getting at least as many as it did. For tmppe, all five new-letter reads are in the mutant, and there is only one way out of 462 to put five reads into the mutant's five slots, so p is 0.0022 and minus log ten p is 2.66. Two warnings. First, the score is capped by depth: the same perfect pattern at fifteen-fold coverage would score 8.2, but at our three-fold coverage 99.99 percent of dots stay below 3. Second, we run about thirteen million tests without correction, so single high dots happen by chance; a Bonferroni cut-off would need 8.41, and our highest dot, inside the chromosome 7 peak, reaches 5.2. A causal region shows as a tower of many dots, which is why we rely on the peak.</aside>
 </section>
 <section class="slide" id="windows" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -1170,7 +1180,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <aside>The genome-wide plots use simple arithmetic over windows rather than statistical tests. Variant density counts homozygous high-confidence candidates in each one-megabase window; the peak is the tallest window, grown along the chromosome while the next window, or the one after, so a single dip is tolerated, stays above a quarter of its height. Ours is about 21 times the genome average. Homozygosity is the share of called sites in a window where every read shows the new letter. At low depth a heterozygote sometimes shows only the new letter, one time in sixteen with four reads, which inflates the share in both samples alike, so the mutant-minus-sibling difference cancels it. The copy-number ratio first divides each sample's depth by its own median, so a sample sequenced twice as deeply does not look duplicated, then takes log base two of mutant over control: minus one means half the copies, plus 0.58 means one and a half times. The general point: single calls at three-fold coverage are noisy, but noise is spread everywhere, while linkage concentrates real signal in one place.</aside>
 </section>
 <section class="slide" id="part4" data-transition="fade" style="background:#16202B;color:#F2F0EA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7CC6D6">Part 4 of 5</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7CC6D6">Part 4 of 6</p>
 <h1 style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:600;line-height:1.08;color:#F2F0EA">Reading the results</h1>
 <div style="display:flex;gap:12px;width:480px">
 <div style="flex:3;height:16px;background:#7CC6D6;border-radius:8px"></div>
@@ -1305,7 +1315,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <aside>No single number decides. A variant becomes believable when several things line up: good coverage in both samples, several supporting reads, novel, no warnings, a conserved residue, inside the peak, and a gene whose expression or known phenotype fits. Always look at the top few in IGV before ordering primers; it takes two minutes. Real variants show the same changed letter in many independent reads from both strands. The final test is genetic: a causal recessive mutation is homozygous in every mutant and never homozygous in a wild-type sibling.</aside>
 </section>
 <section class="slide" id="part5" data-transition="fade" style="background:#16202B;color:#F2F0EA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
-<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A57E">Part 5 of 5</p>
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A57E">Part 5 of 6</p>
 <h1 style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:600;line-height:1.08;color:#F2F0EA">Worked example: our jaw mutant</h1>
 <div style="display:flex;gap:12px;width:480px">
 <div style="flex:3;height:16px;background:#7CC6D6;border-radius:8px"></div>
@@ -1508,6 +1518,379 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#BFCAD3">Full guide in the pipeline’s docs folder · Questions: ask in lab meeting · 51</p>
 <aside>To finish, the whole process as a checklist. Steps one to four take about fifteen minutes of your time; the computer does the rest in a couple of hours. Steps five to seven are where your biology comes in. Keep two things in mind: choose the comparison mode that matches your control, and treat the output as leads to test, never as answers. The written guide in the docs folder has every step in more detail.</aside>
 </section>
+<section class="slide" id="part6" data-transition="fade" style="background:#16202B;color:#F2F0EA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0A57E">Part 6 of 6 · Appendix</p>
+<h1 style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:600;line-height:1.08;color:#F2F0EA">The mathematics of variant calling</h1>
+<div style="display:flex;gap:12px;width:480px">
+<div style="flex:3;height:16px;background:#7CC6D6;border-radius:8px"></div>
+<div style="flex:2;height:16px;background:#F0A57E;border-radius:8px"></div>
+<div style="flex:4;height:16px;background:#3A4756;border-radius:8px"></div>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#BFCAD3;width:1300px">From reads to a VCF: error models, genotype likelihoods, Bayes’ rule, the bcftools caller, depth, and how our own rules fit in. Worked with numbers from our tmppe variant.</p>
+<aside>This appendix is for anyone who wants the full derivations behind the short math slides in Part 3. It follows one position from the reads to the VCF line: how the error of a single letter is modelled, how the reads at a position become genotype likelihoods, how a prior turns those into probabilities, how bcftools decides that a site is variant at all, and which steps are plain rules rather than statistics. Every formula is checked against our own data: the tmppe variant on chromosome 7.</aside>
+</section>
+<section class="slide" id="mlayers" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · The big picture</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Variant calling is Bayes’ rule applied to reads</h2>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Reads</p><p style="font-size:20px;color:#5F6873">fastp</p></div>
+<svg width="28" height="16" viewBox="0 0 28 16" style="flex:none" aria-hidden="true"><polygon points="0,4.48 16.8,4.48 16.8,0 28,8 16.8,16 16.8,11.52 0,11.52" fill="#B9B4A8"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Alignments</p><p style="font-size:20px;color:#5F6873">bwa-mem2, samtools</p></div>
+<svg width="28" height="16" viewBox="0 0 28 16" style="flex:none" aria-hidden="true"><polygon points="0,4.48 16.8,4.48 16.8,0 28,8 16.8,16 16.8,11.52 0,11.52" fill="#B9B4A8"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Pileup</p><p style="font-size:20px;color:#5F6873">mpileup</p></div>
+<svg width="28" height="16" viewBox="0 0 28 16" style="flex:none" aria-hidden="true"><polygon points="0,4.48 16.8,4.48 16.8,0 28,8 16.8,16 16.8,11.52 0,11.52" fill="#B9B4A8"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:2px solid #B04A18;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Likelihoods</p><p style="font-size:20px;color:#5F6873">mpileup → PL</p></div>
+<svg width="28" height="16" viewBox="0 0 28 16" style="flex:none" aria-hidden="true"><polygon points="0,4.48 16.8,4.48 16.8,0 28,8 16.8,16 16.8,11.52 0,11.52" fill="#B9B4A8"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:2px solid #B04A18;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Posteriors</p><p style="font-size:20px;color:#5F6873">call -m → GT, QUAL</p></div>
+<svg width="28" height="16" viewBox="0 0 28 16" style="flex:none" aria-hidden="true"><polygon points="0,4.48 16.8,4.48 16.8,0 28,8 16.8,16 16.8,11.52 0,11.52" fill="#B9B4A8"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:12px;padding:14px 16px"><p style="font-size:22px;font-weight:600;color:#16202B">Decisions</p><p style="font-size:20px;color:#5F6873">filters, our rules</p></div>
+</div>
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:8px 32px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:34px;color:#16202B">\[\underbrace{P(G\mid D)}_{\text{posterior}}\;\propto\;\underbrace{P(D\mid G)}_{\text{measurement model}}\;\times\;\underbrace{P(G)}_{\text{biological prior}}\]</p>
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Measurement model</h3>
+<p style="font-size:23px;line-height:1.4">How the reads would look if the genotype were <i>G</i>: base errors, mapping errors, alignment errors, correlated errors.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Biological prior</h3>
+<p style="font-size:23px;line-height:1.4">How plausible <i>G</i> is before seeing reads: mutation rate, allele frequency, ploidy, Hardy–Weinberg.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Decision rule</h3>
+<p style="font-size:23px;line-height:1.4">\(\hat G=\arg\max_G P(G\mid D)\), then filters (QUAL ≥ 30) and our sibling-mode rules.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873"><i>D</i> = the reads at one position · <i>G</i> = a genotype: 0/0 (reference), 0/1 (one copy), 1/1 (two copies) · 53</p>
+<aside>Calling is not one formula but a chain. The aligner places reads, samtools sorts and cleans them, mpileup stacks them at each position and computes genotype likelihoods, and bcftools call turns those into genotypes and a site quality. Everything rests on Bayes’ rule. The likelihood, P of D given G, is the measurement model: how compatible the reads are with each genotype, given what we know about sequencing and alignment errors. The prior, P of G, is biology: how often positions differ at all. Their product, normalised, is the posterior. Then come decision rules: pick the most probable genotype, apply filters, and finally our own sibling-mode rules. Keeping these three layers apart avoids most misreadings of a VCF.</aside>
+</section>
+<section class="slide" id="mphred" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Phred scores</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Five Phred numbers answer five different questions</h2>
+</div>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;color:#16202B">\(Q=-10\log_{10}p \quad\Longleftrightarrow\quad p=10^{-Q/10}\)&emsp;&emsp;<span style="font-family:'IBM Plex Sans', Arial, sans-serif;font-size:26px">Q20 → 1 in 100 · Q30 → 1 in 1,000</span></p>
+<table style="font-size:23px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:17%;color:#16202B">Field</th><th style="width:17%;color:#16202B">Attached to</th><th style="width:40%;color:#16202B">The probability of …</th><th style="width:26%;color:#16202B">Ours (tmppe)</th></tr>
+<tr><td style="color:#16202B"><b>Base quality</b></td><td>each letter</td><td>this letter was read wrongly</td><td>ignore letters &lt; 20</td></tr>
+<tr><td style="color:#16202B"><b>MAPQ</b></td><td>each read</td><td>this read sits at the wrong locus</td><td>ignore reads &lt; 20; MQ = 60</td></tr>
+<tr><td style="color:#16202B"><b>PL</b></td><td>sample × genotype</td><td>none: a likelihood ratio against the best genotype</td><td>mutant 177,15,0</td></tr>
+<tr><td style="color:#16202B"><b>GQ</b></td><td>each sample</td><td>the called genotype is wrong</td><td>not written by our run</td></tr>
+<tr><td style="color:#16202B"><b>QUAL</b></td><td>each site</td><td>no sample carries a variant here</td><td>keep ≥ 30; tmppe 138</td></tr>
+</table>
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:18px 32px;display:flex;flex-direction:column;gap:6px">
+<p style="font-size:24px;line-height:1.4;color:#16202B"><b>Averages need care:</b> the mean of Q is not the Q of the mean error, because the log is not linear.</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\(\tfrac1n\sum_i Q_i \;\ne\; -10\log_{10}\!\big(\tfrac1n\sum_i 10^{-Q_i/10}\big)\)&emsp;<span style="font-family:'IBM Plex Sans', Arial, sans-serif;font-size:26px">e.g. Q40 and Q10: mean Q = 25, but mean error = 0.05 → Q13</span></p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Same transformation, different events: never compare a MAPQ with a QUAL as if they meant the same thing · 54</p>
+<aside>The Phred transformation shows up everywhere, but it is applied to different events. Base quality is about a single letter. Mapping quality is about the whole read being at the right place; aligners calibrate it differently, so a MAPQ from bwa-mem2 is not exactly comparable with one from another aligner. PL is not an error probability at all: it is the likelihood of each genotype relative to the best one, on the Phred scale. GQ is the chance that the chosen genotype for one sample is wrong; our run does not write it, but it can be added. QUAL is about the whole site: the chance that no sample carries any variant. One more trap: averaging Phred scores. A base at Q40 and a base at Q10 average to Q25, but their average error rate is five percent, which is Q13. The fastp and samtools reports show mean qualities, so a decent mean can hide a tail of bad bases.</aside>
+</section>
+<section class="slide" id="merrors" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Three error sources</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Three ways a single base can mislead</h2>
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Base quality \(Q_i\)</h3>
+<p style="font-size:23px;line-height:1.4;color:#B04A18"><b>Was the letter read correctly?</b></p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[\epsilon_i=10^{-Q_i/10}\]</p>
+<p style="font-size:23px;line-height:1.4">Set by the sequencer from the signal of each cycle.</p>
+<p style="font-size:22px;line-height:1.4;color:#5F6873">Ours: mpileup -Q 20 drops letters with \(\epsilon_i&gt;0.01\)</p>
+</div>
+<div style="flex:1.25;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Mapping quality \(MQ_i\)</h3>
+<p style="font-size:23px;line-height:1.4;color:#B04A18"><b>Is the whole read at the right locus?</b></p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:26px;color:#16202B">\[\delta_i=10^{-MQ_i/10}\]\[P(b_i\mid a)=(1-\delta_i)\,P(b_i\mid a,\text{right})+\delta_i\cdot\tfrac14\]</p>
+<p style="font-size:23px;line-height:1.4">A misplaced read says nothing about this site: any of 4 letters.</p>
+<p style="font-size:22px;line-height:1.4;color:#5F6873">Ours: -q 20 drops reads with \(\delta_i&gt;0.01\)</p>
+</div>
+<div style="flex:1.25;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Base alignment quality</h3>
+<p style="font-size:23px;line-height:1.4;color:#B04A18"><b>Is the base in the right column near an indel?</b></p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:26px;color:#16202B">\[BAQ_i=-10\log_{10}\big[1-P(A_i\mid\text{read},\text{ref})\big]\]</p>
+<p style="font-size:23px;line-height:1.4">\(P(A_i)\) sums over all paths of a profile HMM with match, insertion and deletion states.</p>
+<p style="font-size:22px;line-height:1.4;color:#5F6873">Ours: on by default near indels; quality used = \(\min(Q_i, BAQ_i)\)</p>
+</div>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#16202B">A base can be read perfectly, from a read placed perfectly, and still sit in the wrong column. Each error source needs its own probability.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">BAQ: Li 2011, Bioinformatics 27:1157 · bcftools ≥ 1.13 applies it in problem regions only (-D: everywhere) · 55</p>
+<aside>One observed letter can be wrong for three independent reasons. First, the sequencer can misread it; that is the base quality. Second, the whole read can come from somewhere else in the genome, a paralog or a repeat; that is the mapping quality. A misplaced read tells us nothing about this site, so in the mixture model it contributes a flat one quarter for every letter. Third, near an insertion or deletion the aligner may shift a base by one or two columns; that is base alignment quality, computed with a profile hidden Markov model that sums over all the ways the read could be aligned locally. mpileup takes the lower of the base quality and BAQ, then drops bases below our threshold of 20, which removes many false SNPs next to indels. Since bcftools 1.13, BAQ is only applied in regions that look problematic, to save time.</aside>
+</section>
+<section class="slide" id="mreadlik" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Genotype likelihood</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">From one letter to all reads: \(P(D\mid G)\)</h2>
+</div>
+<div style="display:flex;gap:36px">
+<div style="flex:1.15;display:flex;flex-direction:column;gap:6px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:20px 32px">
+<p style="font-size:23px;line-height:1.4"><b>1 · One letter</b> \(b_i\), if the true allele is \(a\):</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[P(b_i\mid a)=\begin{cases}1-\epsilon_i & b_i=a\\[2pt] \epsilon_i/3 & b_i\ne a\end{cases}\]</p>
+<p style="font-size:23px;line-height:1.4"><b>2 · One genotype</b> (diploid: each copy sampled with chance ½):</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[P(b_i\mid G)=\sum_a \frac{n_a(G)}{2}\,P(b_i\mid a)\]</p>
+<p style="font-size:23px;line-height:1.4"><b>3 · All reads</b>, independent given \(G\), added in log space:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[\log_{10}P(D\mid G)=\sum_{i=1}^{n}\log_{10}P(b_i\mid G)\]</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-size:25px;line-height:1.4;color:#16202B"><b>Example:</b> 10 reads at Q30 (\(\epsilon=0.001\)): 5 A, 5 G</p>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:14%;color:#16202B">G</th><th style="width:62%;color:#16202B">\(\log_{10}P(D\mid G)\)</th><th style="width:24%;color:#16202B;text-align:right">PL</th></tr>
+<tr><td>AA</td><td>\(5\log_{10}0.999+5\log_{10}\tfrac{0.001}{3}=-17.39\)</td><td style="text-align:right">144</td></tr>
+<tr><td style="color:#B04A18"><b>AG</b></td><td>\(10\log_{10}\tfrac12=-3.01\)</td><td style="text-align:right;color:#B04A18"><b>0</b></td></tr>
+<tr><td>GG</td><td>\(-17.39\) (mirror image)</td><td style="text-align:right">144</td></tr>
+</table>
+<div style="background:#ECEAE3;border-radius:16px;padding:18px 26px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:23px;line-height:1.4"><b>Why ε/3?</b> An error is assumed equally likely to give any of the 3 other letters.</p>
+<p style="font-size:23px;line-height:1.4"><b>Why logs?</b> Multiplying thousands of small numbers underflows to 0 on a computer.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">\(n_a(G)\) = copies of allele \(a\) in genotype \(G\): for AG, \(n_A=n_G=1\) each · 56</p>
+<aside>Here is the measurement model step by step. For one letter, if the true allele matches, the chance of seeing it is one minus the error rate; otherwise it is the error rate divided by three, assuming an error is equally likely to produce any other letter. For a genotype, each read comes from one of the two chromosome copies, so we average over the alleles the genotype contains: a heterozygote mixes the two with weight one half. Assuming reads are independent given the genotype, the likelihood of all reads is the product, which in practice is a sum of logs. In the example, five A and five G reads at Q30: the heterozygote explains them with probability one half to the tenth, while either homozygote has to explain five reads as errors, which costs about fourteen orders of magnitude. The PL column is the same comparison on the Phred scale, which the next slides use.</aside>
+</section>
+<section class="slide" id="mbalance" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Beyond allele balance</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Nine A, one G: the quality of one letter decides</h2>
+</div>
+<div style="display:flex;gap:36px">
+<div style="flex:1.2;display:flex;flex-direction:column;gap:18px">
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:22%;color:#16202B">The G letter</th><th style="width:15%;color:#16202B;text-align:right">AA</th><th style="width:15%;color:#16202B;text-align:right">AG</th><th style="width:15%;color:#16202B;text-align:right">GG</th><th style="width:33%;color:#16202B">PL · more likely</th></tr>
+<tr><td>Q30</td><td style="text-align:right">−3.48</td><td style="text-align:right">−3.01</td><td style="text-align:right">−31.3</td><td>5,0,283 · <b>AG</b>, ×2.9</td></tr>
+<tr><td>Q20</td><td style="text-align:right">−2.48</td><td style="text-align:right">−3.02</td><td style="text-align:right">−31.3</td><td>0,5,288 · <b>AA</b>, ×3.4</td></tr>
+</table>
+<p style="font-size:22px;color:#5F6873">Values are \(\log_{10}P(D\mid G)\); the 9 A letters are Q30 in both rows.</p>
+<p style="font-size:25px;line-height:1.45">The same 10% alternate share flips between genotypes. bcftools never uses an allele-fraction cut-off; the answer depends on:</p>
+<p style="font-size:24px;line-height:1.45">base quality · mapping quality · BAQ · depth · strand and read position · whether errors are independent · the prior (next slides)</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:24px 32px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">When reads are not independent</h3>
+<p style="font-size:23px;line-height:1.4">\(\prod_i P(b_i\mid G)\) treats every read as a new witness. PCR duplicates, one strand, one cycle or one sequence context can repeat the same error.</p>
+<p style="font-size:23px;line-height:1.4">The MAQ-style model in samtools sorts same-type errors by quality and discounts each further one:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:30px;color:#16202B">\[\epsilon'_j=\epsilon_j^{\,\alpha^{\,j-1}},\qquad 0\le\alpha\le1\]</p>
+<p style="font-size:23px;line-height:1.4">So evidence cannot grow like \(c^n\) from one artefact. Marking duplicates removes the most common cause.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Correlated-error model: Li 2011, Bioinformatics 27:2987 · our sibling-mode 90%/60% cut-offs come after calling, on AD counts · 57</p>
+<aside>A common belief is that a variant is called when the alternate share passes some threshold. That is not how bcftools works. Take nine A reads and one G read. If the G letter has quality 30, the heterozygote is about three times more likely than the homozygote, because one error at one in three thousand is less plausible than a one-half coin flip landing nine to one. If the same G has quality 20, the homozygote wins, because a one-in-three-hundred error explains it more easily. The prior on the next slides will push this further towards AA. The other assumption is independence. Twenty reads that share one artefact are not twenty witnesses. The samtools error model discounts repeated errors of the same kind: each further one counts with an exponent that shrinks. Our own sibling-mode rules, the 90 and 60 percent, are applied later to read counts; they are decision rules, not part of this model.</aside>
+</section>
+<section class="slide" id="mpl" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · PL in the VCF</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">PL: the likelihoods our VCF actually stores</h2>
+</div>
+<div style="display:flex;gap:36px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:20px 32px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[PL(G)=\mathrm{round}\Big[-10\big(\log_{10}L(G)-\max_H\log_{10}L(H)\big)\Big]\]</p>
+<p style="font-size:23px;line-height:1.4">The best genotype gets 0. <b>PL = 60,0,80</b> means</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:26px;color:#16202B">\[\frac{L(0/0)}{L(0/1)}=10^{-6},\qquad \frac{L(1/1)}{L(0/1)}=10^{-8}\]</p>
+<p style="font-size:23px;line-height:1.4"><b>Order:</b> \(K\) alleles give \(\binom{K+1}{2}\) genotypes, genotype \(j/k\) at position \(F(j/k)=\tfrac{k(k+1)}{2}+j\):</p>
+<p style="font-size:23px;line-height:1.4;font-family:'JetBrains Mono', 'Courier New', monospace">0/0, 0/1, 1/1, 0/2, 1/2, 2/2</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:34%;color:#16202B">Sample</th><th style="width:18%;color:#16202B;text-align:right">AD ref,alt</th><th style="width:24%;color:#16202B;text-align:right">PL in VCF</th><th style="width:24%;color:#16202B;text-align:right">by hand, Q30</th></tr>
+<tr><td>tmppe mutant</td><td style="text-align:right">0,5</td><td style="text-align:right;color:#B04A18"><b>177,15,0</b></td><td style="text-align:right">174,15,0</td></tr>
+<tr><td>tmppe sibling</td><td style="text-align:right">6,0</td><td style="text-align:right;color:#17697A"><b>0,18,202</b></td><td style="text-align:right">0,18,209</td></tr>
+<tr><td>TJP1 mutant</td><td style="text-align:right">0,3</td><td style="text-align:right"><b>116,9,0</b></td><td style="text-align:right">104,9,0</td></tr>
+</table>
+<div style="background:#ECEAE3;border-radius:16px;padding:18px 26px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:23px;line-height:1.4"><b>Rule of thumb:</b> with <i>n</i> reads all showing the new letter, \(PL(0/1)=10\log_{10}2^n\approx 3n\). 3 reads → 9: one copy is still 1/8 as likely.</p>
+<p style="font-size:23px;line-height:1.4"><b>Not a probability:</b> PL has no prior in it. That comes next.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">bcftools view -r 7:29157506 results/variants/all_samples.raw.vcf.gz · differences: the real letters are not all exactly Q30 · 58</p>
+<aside>The VCF does not store raw likelihoods but PL: each genotype's log-likelihood relative to the best one, times minus ten, rounded. The best genotype is always zero, and every ten points means ten times less likely. Here is the check against our own file. For the tmppe mutant, five T reads, the VCF says 177, 15, 0; the hand calculation from the previous slide with every letter at Q30 gives 174, 15, 0. For the sibling's six C reads, 0, 18, 202 against 209. The small differences come from the real base qualities, which are not all exactly 30, and from mpileup's error model. The middle number is the useful one at low coverage: for n reads that all show the new letter, the heterozygote is penalised by only about three points per read. With TJP1's three reads it is 9, meaning one copy is still one eighth as likely as two. PL is a likelihood, not a probability; to get a probability we need a prior.</aside>
+</section>
+<section class="slide" id="mbayes" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Bayes and the prior</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Likelihood × prior = posterior</h2>
+</div>
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:4px 32px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:30px;color:#16202B">\[P(G\mid D)=\frac{P(D\mid G)\,P(G)}{\sum_H P(D\mid H)\,P(H)}\qquad P(0/0)=(1-f)^2,\;\;P(0/1)=2f(1-f),\;\;P(1/1)=f^2\]</p>
+</div>
+<div style="display:flex;gap:36px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:24px;line-height:1.4;color:#16202B"><b>9 A + 1 G at Q30</b> (likelihood favours AG ×2.9), with Hardy–Weinberg priors at allele frequency <i>f</i>:</p>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:40%;color:#16202B"><i>f</i></th><th style="width:30%;color:#16202B;text-align:right">P(AA | D)</th><th style="width:30%;color:#16202B;text-align:right">P(AG | D)</th></tr>
+<tr><td>0.5 (common)</td><td style="text-align:right">15%</td><td style="text-align:right"><b>85%</b></td></tr>
+<tr><td>0.01</td><td style="text-align:right"><b>94%</b></td><td style="text-align:right">6%</td></tr>
+<tr><td>0.001 (rare)</td><td style="text-align:right"><b>99.4%</b></td><td style="text-align:right">0.6%</td></tr>
+</table>
+<p style="font-size:24px;line-height:1.4">\(\arg\max_G P(D\mid G)\) need not equal \(\arg\max_G P(G\mid D)\): weak evidence for a rare allele loses to the prior.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#ECEAE3;border-radius:16px;padding:22px 30px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Genotype quality, GQ</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[GQ=-10\log_{10}\big[1-P(\hat G\mid D)\big]\]</p>
+<p style="font-size:23px;line-height:1.4">Our run does not write GQ. A rough stand-in is the second-smallest PL (it ignores the prior):</p>
+<p style="font-size:23px;line-height:1.4">tmppe mutant: 15 → about 3% chance the genotype is wrong. TJP1 mutant: 9 → about 13%.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Priors can also come from pedigrees, reference panels or mutation rates · GQ can be added with bcftools call -f GQ · 59</p>
+<aside>Bayes’ rule turns the likelihood into a probability by multiplying with a prior and normalising. A natural prior for a diploid is Hardy–Weinberg: with allele frequency f, two copies has probability f squared, one copy two f times one minus f. Return to nine A and one G at Q30, where the likelihood favours the heterozygote about three to one. If the allele is common, the posterior agrees: 85 percent heterozygous. If it is rare, one in a thousand, the prior wins and the posterior is 99 percent homozygous reference. That is why the most likely genotype by likelihood can differ from the most probable one. GQ is the Phred-scaled chance that the chosen genotype is wrong. Our run does not write it, but the second-smallest PL is a rough stand-in: 15 for the tmppe mutant, about a three percent chance that it is really heterozygous; 9 for the TJP1 mutant, about thirteen percent.</aside>
+</section>
+<section class="slide" id="mcallm" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · bcftools call -m</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">First decide which alleles exist, then genotype</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1.25;display:flex;flex-direction:column;gap:6px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:18px 30px">
+<p style="font-size:23px;line-height:1.35"><b>1 · Allele frequencies</b> from quality-weighted evidence \(Q^x_{i,k}\), pooled over \(N\) samples:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:26px;color:#16202B">\[f_x^{\,i}=\frac{\sum_k Q^x_{i,k}}{\sum_{y,k}Q^y_{i,k}},\qquad f_x=\frac1N\sum_{i=1}^{N}f_x^{\,i}\]</p>
+<p style="font-size:23px;line-height:1.35"><b>2 · Each allele set</b> \(S\) (e.g. {C} or {C,T}), genotypes summed out:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:26px;color:#16202B">\[L_S=\prod_{i=1}^{N}\sum_{x,y\in S}f_{x\mid S}\,f_{y\mid S}\,G_i(xy),\qquad P(S\mid D)\propto P(S)\,L_S\]</p>
+<p style="font-size:23px;line-height:1.35"><b>3 · Genotypes</b> are then called using only the alleles in the best \(S\).</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-direction:column;gap:6px;background:#ECEAE3;border-radius:16px;padding:18px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">The prior: how often sites vary</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(a_n=\sum_{k=1}^{n-1}\tfrac1k\approx\ln n+0.577,\quad E[\#\text{variable sites}]=\theta\,a_n\)</p>
+<p style="font-size:22px;line-height:1.35">Ours: \(\theta=1.1\times10^{-3}\) (default -P), 2 samples = 4 copies: \(a_4=1+\tfrac12+\tfrac13=1.83\), so about 0.2% of sites are expected to vary.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;background:#ECEAE3;border-radius:16px;padding:18px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">Site QUAL</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(QUAL=-10\log_{10}P(S=\{\text{ref}\}\mid D)\)</p>
+<p style="font-size:22px;line-height:1.35">tmppe: QUAL 138, so \(P(\text{no variant})\approx10^{-13.8}\). High QUAL does not mean every sample’s genotype is certain.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Model: Danecek et al., samtools.github.io/bcftools/call-m.pdf · \(a_n\): Watterson’s estimator · 60</p>
+<aside>The multiallelic caller, the -m in our command, splits the problem in two. First, which alleles exist at this site at all? It estimates each allele's frequency from the quality-weighted evidence in each sample, averages over samples, and then for every candidate set of alleles computes the likelihood of all samples together, summing over the genotypes each sample could have. A prior on the allele set comes from population genetics: Watterson's harmonic number says how many variable sites to expect among n chromosome copies for a mutation rate theta. With our two diploid samples, four copies, about one site in five hundred is expected to vary. Second, once the allele set is chosen, each sample is genotyped using only those alleles. Joint calling matters because evidence is pooled: several samples with weak support can together show that an allele is real. QUAL is the Phred-scaled posterior that only the reference allele is present: 138 for tmppe, overwhelming. But QUAL is a site property; one sample's genotype can still be uncertain.</aside>
+</section>
+<section class="slide" id="mdepth" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Depth and coverage</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Several depths, and the Poisson limit at 3×</h2>
+</div>
+<div style="display:flex;gap:36px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 30px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">“Depth” is not one number</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\(DP_{\text{raw}}\;\ge\;DP_{\text{filtered}}\;\ge\;\sum_a AD_a\)</p>
+<p style="font-size:23px;line-height:1.4">Reads drop out for MAPQ &lt; 20, duplicates, secondary or failed flags; letters for quality &lt; 20 after BAQ; the rest are capped at 1,000 per sample.</p>
+<p style="font-size:23px;line-height:1.4">tmppe: DP = 11 = AD 6,0 (sibling) + 0,5 (mutant). AD counts reads; it is not a likelihood.</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:26px;color:#16202B">\(\bar d=\tfrac1L\sum_j d_j,\qquad C_{\ge t}=\tfrac1L\sum_j I(d_j\ge t)\)</p>
+<p style="font-size:22px;color:#5F6873">mean depth and breadth of coverage over \(L\) positions</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-size:24px;line-height:1.4">Reads land at random, so depth at a site is roughly Poisson with mean&nbsp;λ:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[P(d\ge k)=1-\sum_{i=0}^{k-1}e^{-\lambda}\frac{\lambda^i}{i!}\]</p>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:40%;color:#16202B">\(\lambda\)</th><th style="width:30%;color:#16202B;text-align:right">\(P(d=0)\)</th><th style="width:30%;color:#16202B;text-align:right">\(P(d\ge4)\)</th></tr>
+<tr><td>2.8 (our sibling)</td><td style="text-align:right">6.1%</td><td style="text-align:right;color:#B04A18"><b>31%</b></td></tr>
+<tr><td>3.4 (our mutant)</td><td style="text-align:right">3.3%</td><td style="text-align:right">44%</td></tr>
+<tr><td>15 (the goal)</td><td style="text-align:right">0.00003%</td><td style="text-align:right">99.98%</td></tr>
+</table>
+<p style="font-size:23px;line-height:1.4">Observed at our variant sites: 40% have a sibling with ≥ 4 reads (mean 3.3 there). Either way most cannot be judged: hence 2.1 million low-confidence variants.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Lander–Waterman model · real coverage is clumpier than Poisson (GC, repeats), so these are best cases · 61</p>
+<aside>Depth sounds simple, but a VCF line can carry several versions. Raw depth counts every read over the position; filtered depth drops poorly mapped reads, duplicates and flagged reads; the allele depths count only letters that passed the base-quality filter and were assigned to an allele. They are counts, not likelihoods. The second half explains why so many of our variants are low confidence. If reads land at random, depth at any one site follows a Poisson distribution with the average coverage as its mean. At 2.8-fold, the sibling has no reads at all at six percent of sites, and four or more reads at only 31 percent. So two thirds of the time the sibling cannot be judged, whatever the variant is. At our actual variant sites it is a little better, 40 percent, because variant calling needs reads in the first place. At fifteen-fold almost every site would pass. Real data are clumpier than Poisson, so the true numbers are somewhat worse.</aside>
+</section>
+<section class="slide" id="mrules" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Rules, not probabilities</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Duplicates, indels and filters are deterministic</h2>
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 26px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Duplicates</h3>
+<p style="font-size:22px;line-height:1.4">samtools markdup groups reads by a key; single-end:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(T=(\text{chrom},\,\text{unclipped }5'\text{ pos},\,\text{strand})\)</p>
+<p style="font-size:22px;line-height:1.4">Paired-end adds the mate’s position. The read with the highest</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(S(r)=\sum_{i:\,Q_i\ge15}Q_i\)</p>
+<p style="font-size:22px;line-height:1.4">is kept; the others are flagged. Ours: 12.8–13.2%&nbsp;flagged.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 26px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Indels</h3>
+<p style="font-size:22px;line-height:1.4">Reads are compared with whole local haplotypes, summing over alignments \(A\):</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(P(r\mid H_j)=\sum_A P(r,A\mid H_j)\)</p>
+<p style="font-size:22px;line-height:1.4">In <span style="font-family:'JetBrains Mono', 'Courier New', monospace">TCACACAG</span>, deleting any one CA gives the same sequence. bcftools norm writes the leftmost, so one event has one name, which exact matching to Ensembl needs.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:22px 26px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Filters</h3>
+<p style="font-size:22px;line-height:1.4">Boolean partitions; no new inference. Ours:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\(\text{keep}=(QUAL\ge30)\wedge(ALT\ne{*})\)</p>
+<p style="font-size:22px;line-height:1.4">and in sibling mode, per variant:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:22px;color:#16202B">\(\text{specific}=(a_m\ge2)\wedge(d_m\ge3)\wedge\big(\tfrac{a_m}{d_m}\ge0.9\big)\)<br>\(\qquad\qquad\;\wedge\,(d_s\ge4)\wedge(a_s=0)\)</p>
+<p style="font-size:22px;line-height:1.4">\(a\) = new-letter reads, \(d\) = reads, m = mutant, s = sibling.</p>
+</div>
+</div>
+<p style="font-size:24px;line-height:1.4;color:#16202B"><b>Sorting and indexing</b> are algorithms: sort is \(O(n\log n)\); a BAM index splits the genome into nested bins, so reading a region touches only the blocks that overlap it.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Specifications: samtools.github.io/hts-specs · bcftools filter semantics differ for “any sample” and “all samples” · 62</p>
+<aside>Not everything in the pipeline is statistics. Duplicate marking is a rule: reads with the same start, strand and, for pairs, the same mate position are treated as copies of one fragment, and the one with the best base qualities is kept. It is geometry, not proof that two molecules were identical. Indels are harder to model than single letters, because the read has to be compared with whole local haplotypes and many alignments are possible, especially in repeats. The same deletion in a repeat can also be written at several positions; normalisation moves it to the leftmost, so the same event always gets the same description, which our exact matching against Ensembl relies on. Filters are yes-or-no rules applied after calling. Our quality filter keeps QUAL of 30 or more, and our sibling-mode categories are likewise rules on read counts. A filter does not make any call more correct; it only chooses which calls we look at.</aside>
+</section>
+<section class="slide" id="mroh" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Runs of homozygosity</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Homozygosity mapping as a hidden Markov model</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1.35;display:flex;flex-direction:column;gap:6px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:18px 30px">
+<p style="font-size:23px;line-height:1.35">Two hidden states along the chromosome: <b>AZ</b>, both copies identical by descent, and <b>HW</b>, ordinary. With allele frequency \(f\):</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\[P(D_i\mid AZ)=(1-f)\,P(D_i\mid RR)+f\,P(D_i\mid AA)\]</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\[P(D_i\mid HW)=(1-f)^2P(D_i\mid RR)+2f(1-f)P(D_i\mid RA)+f^2P(D_i\mid AA)\]</p>
+<p style="font-size:23px;line-height:1.35">Switching state is likelier over larger genetic distances. The best path (Viterbi):</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:24px;color:#16202B">\[V_i(s)=P(D_i\mid s)\,\max_{s'}\big[V_{i-1}(s')\,P(s\mid s')\big]\]</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">What our pipeline does instead</h3>
+<p style="font-size:23px;line-height:1.4">Counts hard homozygous calls per 1 Mb window (slide 37). Simple and robust, but each call counts fully, even with 3 reads.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<h3 style="font-size:26px;font-weight:600;color:#16202B">What the HMM adds</h3>
+<p style="font-size:23px;line-height:1.4">It uses the PL values, so a 3-read “homozygous” site counts less than a 10-read one, and it gives each site a probability of lying in a run. <span style="font-family:'JetBrains Mono', 'Courier New', monospace">bcftools roh</span> implements it; it is not in the pipeline yet.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">RR, RA, AA = reference, heterozygous, alternate · forward–backward gives per-site probabilities · Narasimhan et al. 2016 · 63</p>
+<aside>Our homozygosity peak can also be found with a proper statistical model. bcftools roh walks along the chromosome with two hidden states. In an autozygous stretch, both copies come from the same ancestor, so every site must be homozygous: the reads are explained by reference-reference or alternate-alternate only. In an ordinary stretch, all three genotypes are possible with Hardy–Weinberg weights. The chance of switching state between two sites grows with the genetic distance between them. The Viterbi algorithm finds the most likely sequence of states, and the forward-backward algorithm gives each site a probability of lying in a run. The advantage over our window count is that the HMM works with the genotype likelihoods, so a homozygous call from three reads counts less than one from ten. It is not part of the pipeline yet; it would be a natural addition for low-coverage data.</aside>
+</section>
+<section class="slide" id="mmisread" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">Appendix · Summary</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;line-height:1.1;color:#16202B">Six ways to misread a VCF</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">AD is not a likelihood</h3>
+<p style="font-size:23px;line-height:1.4">5 reads to 0 says less than PL 177,15,0, which also weighs every letter’s quality.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">PL is not a posterior</h3>
+<p style="font-size:23px;line-height:1.4">It has no prior. A rare allele needs more evidence than PL alone suggests.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">GQ is not QUAL</h3>
+<p style="font-size:23px;line-height:1.4">QUAL: is the site variant at all? GQ: is this sample’s genotype right?</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Depth is not evidence</h3>
+<p style="font-size:23px;line-height:1.4">20 copies of one artefact are one observation, not 20.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">A call is not a read count</h3>
+<p style="font-size:23px;line-height:1.4">Base, mapping and alignment quality and the prior all enter.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:22px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Filters don’t fix the model</h3>
+<p style="font-size:23px;line-height:1.4">They choose which calls to look at; they make none of them more correct.</p>
+</div>
+</div>
+<div style="background:#ECEAE3;border-left:8px solid #B04A18;border-radius:16px;padding:20px 32px">
+<p style="font-size:25px;line-height:1.4;color:#16202B"><b>And our own pipeline:</b> the sibling-mode cut-offs (90% / 60%) and the homozygosity windows are decision rules on read counts, applied after calling. Slide 30 shows what they cost at 3×.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">The core of it all: \(P(G\mid D)\propto P(D\mid G)\,P(G)\), with care about which reads count as independent · 64</p>
+<aside>To close the appendix, six misreadings that the mathematics helps avoid. Allele depths are raw counts; the genotype likelihoods contain more information because they weigh each letter. PL values are likelihoods without a prior, so they overstate the case for a rare allele. GQ and QUAL answer different questions. High depth is only strong evidence if the reads are independent. A genotype call is not simply a share of reads. And filters only select; they do not improve calls. Finally, be honest about our own steps: the sibling-mode cut-offs and the window counts are rules applied to read counts after calling, not part of the likelihood model, and slide 30 shows how often they can misclassify at our coverage.</aside>
+</section>
 </main>
 <div id="notes" aria-live="polite"></div>
 <nav id="bar" aria-label="Slide controls">
@@ -1556,6 +1939,12 @@ addEventListener('touchend', e => {
   if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
   touchX = null;
 });
+function renderMath() {
+  renderMathInElement(stage, {
+    delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}],
+    ignoredTags: ['aside', 'script', 'style'], throwOnError: false,
+  });
+}
 document.getElementById('prev').onclick = prev;
 document.getElementById('next').onclick = next;
 document.getElementById('notesbtn').onclick = () => notes.classList.toggle('show');
