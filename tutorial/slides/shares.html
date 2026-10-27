@@ -1,0 +1,34 @@
+<section id="shares" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Sibling-mode thresholds</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Why 90% and 60%: each read is a coin flip</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:3;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:34px;color:#16202B"><i>P</i>(<i>k</i> of <i>n</i> reads show it) = C(<i>n</i>, <i>k</i>) <i>f</i>&#8201;<sup><i>k</i></sup> (1 − <i>f</i>&#8201;)<sup><i>n</i>−<i>k</i></sup>   (binomial)</p>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:16%;color:#16202B">Reads <i>n</i></th><th style="width:28%;color:#16202B;text-align:right">One-copy mutant ≥ 90% (<i>f</i>&nbsp;=&nbsp;½)</th><th style="width:28%;color:#16202B;text-align:right">Carrier sibling &gt; 60% (<i>f</i>&nbsp;=&nbsp;½)</th><th style="width:28%;color:#16202B;text-align:right">Sibling pool &gt; 60% (<i>f</i>&nbsp;=&nbsp;⅓)</th></tr>
+<tr><td>3</td><td style="text-align:right">12.5%</td><td style="text-align:right;color:#5F6873">not judged</td><td style="text-align:right;color:#5F6873">not judged</td></tr>
+<tr><td>4</td><td style="text-align:right">6.3%</td><td style="text-align:right">31%</td><td style="text-align:right">11%</td></tr>
+<tr><td>5</td><td style="text-align:right">3.1%</td><td style="text-align:right">19%</td><td style="text-align:right">4.5%</td></tr>
+<tr><td>6</td><td style="text-align:right">1.6%</td><td style="text-align:right">34%</td><td style="text-align:right">10%</td></tr>
+<tr><td>10</td><td style="text-align:right">1.1%</td><td style="text-align:right">17%</td><td style="text-align:right">2.0%</td></tr>
+<tr><td>15</td><td style="text-align:right">0.05%</td><td style="text-align:right">15%</td><td style="text-align:right">0.9%</td></tr>
+</table>
+<p style="font-size:24px;line-height:1.4">Second column: how often a one-copy variant slips through. Last two columns: how often the <b>true mutation</b> is wrongly called “shared”.</p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Where ½ and ⅓ come from</h3>
+<p style="font-size:24px;line-height:1.4">A carrier has the mutation on 1 of 2 copies: <i>f</i> = ½.</p>
+<p style="font-size:24px;line-height:1.4">A normal-looking sibling is a carrier ⅔ of the time (50% vs 25% of the clutch), so a pool’s reads carry it ⅔ × ½ = <b>⅓</b>.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#ECEAE3;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">The price</h3>
+<p style="font-size:24px;line-height:1.4">With one carrier sibling, the mutation itself is lost in 15% to 34% of cases. The region still shows, because thousands of linked variants are counted. Pools and more reads help.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">C(<i>n</i>, <i>k</i>) = number of ways to choose which <i>k</i> of the <i>n</i> reads show it · settings: min_alt_fraction_mutant, max_alt_fraction_control · 30</p>
+<aside>Where do 90 and 60 percent come from? In a sample with the variant on one of its two copies, each read shows it with chance one half, like a coin flip, so the number of reads showing it follows the binomial distribution. The first column is the chance that a heterozygous mutant looks homozygous, at least 90 percent of reads: one in eight with three reads, but only one in a hundred with ten. The other two columns are the cost on the sibling side. The sibling looks normal, so it is a carrier two times in three: half the clutch are carriers and a quarter are homozygous wild type. A single carrier sibling shows the variant in about half its reads, and by chance more than 60 percent of them quite often: 15 to 34 percent of the time, depending on depth. When that happens to the real mutation, it is called shared and drops off the candidate list. A pool of siblings averages out at one third, so it rarely crosses 60 percent. This is why the peak, which counts thousands of linked variants, is more reliable than any single variant, and why a pool or deeper sequencing of the control helps.</aside>
+</section>

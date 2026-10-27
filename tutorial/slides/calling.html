@@ -33,6 +33,6 @@
 </table>
 </div>
 <p style="font-size:26px;line-height:1.4"><b>Why jointly?</b> The sibling’s 6 reads were looked at and show no T. “Absent” means checked and not seen, not merely “not reported”.</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Result: 14.1 million variants in our two samples · results/variants/all_samples.annotated.vcf.gz · 22</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Result: 14.1 million variants in our two samples · results/variants/all_samples.annotated.vcf.gz · 23</p>
 <aside>Step four finds the differences. To use all the cores, the genome is cut into 30 pieces processed in parallel. For each position, reads are stacked up, ignoring poorly placed reads and low-quality letters. Then all fish are genotyped together, which is important: for every variant we get the read counts in every fish, including fish that do not carry it. That is how we know the sibling's six reads at the tmppe position all show C. Finally the calls are tidied so that each line holds one change and insertions and deletions are written in a standard way, which the known-variant matching needs, and calls below quality 30 are dropped.</aside>
 </section>

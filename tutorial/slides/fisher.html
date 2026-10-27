@@ -1,0 +1,39 @@
+<section id="fisher" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Manhattan plot</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Where −log<sub>10</sub> p comes from: a one-sided Fisher test</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;color:#16202B"><b>Count the reads at one variant</b> (tmppe):</p>
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:31%;color:#16202B"></th><th style="width:23%;color:#16202B;text-align:right">new letter</th><th style="width:23%;color:#16202B;text-align:right">reference</th><th style="width:23%;color:#16202B;text-align:right">total</th></tr>
+<tr><td style="color:#16202B"><b>Mutant</b></td><td style="text-align:right;color:#B04A18"><b><i>a</i> = 5</b></td><td style="text-align:right">0</td><td style="text-align:right"><i>n</i> = 5</td></tr>
+<tr><td style="color:#16202B"><b>Sibling</b></td><td style="text-align:right">0</td><td style="text-align:right">6</td><td style="text-align:right">6</td></tr>
+<tr><td style="color:#16202B"><b>Total</b></td><td style="text-align:right"><i>K</i> = 5</td><td style="text-align:right">6</td><td style="text-align:right"><i>N</i> = 11</td></tr>
+</table>
+<p style="font-size:26px;line-height:1.4"><b>The question:</b> if the 5 new-letter reads had landed at random among all 11 reads, how often would the mutant get 5 or more of them?</p>
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:20px 32px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;color:#16202B"><i>p</i> = Σ<sub><i>x</i> ≥ <i>a</i></sub>  C(<i>K</i>, <i>x</i>) C(<i>N</i>−<i>K</i>, <i>n</i>−<i>x</i>) / C(<i>N</i>, <i>n</i>)</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;color:#16202B">tmppe: <i>p</i> = 1 / C(11, 5) = 1/462 = 0.0022<br>−log<sub>10</sub> <i>p</i> = −log<sub>10</sub> 0.0022 = <b>2.66</b></p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:52%;color:#16202B">Reads (mutant · sibling)</th><th style="width:24%;color:#16202B;text-align:right">p</th><th style="width:24%;color:#16202B;text-align:right">−log<sub>10</sub> p</th></tr>
+<tr><td>tmppe: 5/0 · 0/6</td><td style="text-align:right">0.0022</td><td style="text-align:right">2.66</td></tr>
+<tr><td>TJP1: 3/0 · 2/6</td><td style="text-align:right">0.061</td><td style="text-align:right">1.22</td></tr>
+<tr><td>Carrier sibling: 5/0 · 3/3</td><td style="text-align:right">0.12</td><td style="text-align:right">0.92</td></tr>
+<tr><td>Same as tmppe at 15×: 15/0 · 0/15</td><td style="text-align:right">6 × 10<sup>−9</sup></td><td style="text-align:right">8.19</td></tr>
+</table>
+<p style="font-size:24px;line-height:1.4">Reading the axis: 1 = p of 0.1, 2 = 0.01, 3 = 0.001.</p>
+<div style="display:flex;flex-direction:column;gap:10px;background:#ECEAE3;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Read it as a map, not as proof</h3>
+<p style="font-size:24px;line-height:1.4"><b>Depth sets the ceiling:</b> at 3× no single variant can score high.</p>
+<p style="font-size:24px;line-height:1.4"><b>14 million tests:</b> a Bonferroni cut-off would need 8.45. Look for towers of dots, not one tall dot.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Hypergeometric test, scipy.stats.hypergeom · read counts summed over all mutant and all control samples · 36</p>
+<aside>The Manhattan plot in the report shows one dot per variant, and its height is minus log ten of a p value. Here is where that p value comes from. At each variant we count reads in a two-by-two table: mutant or sibling, new letter or reference. The null hypothesis is that the new letter has nothing to do with which sample the read came from. Then the new-letter reads are just a random handful drawn from all the reads, and the number landing in the mutant follows the hypergeometric distribution. The p value is the chance of the mutant getting at least as many as it did. For tmppe, all five new-letter reads are in the mutant, and there is only one way out of 462 to put five reads into the mutant's five slots, so p is 0.0022 and minus log ten p is 2.66. Two warnings. First, the score is capped by depth: the same perfect pattern at fifteen-fold coverage would score 8.2, but at our three-fold coverage nothing gets far above 2. Second, we run fourteen million tests without correction, so single high dots happen by chance. A causal region shows as a tower of many dots, which is why we rely on the peak.</aside>
+</section>

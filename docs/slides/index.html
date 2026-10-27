@@ -85,7 +85,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <div style="display:flex;align-items:center;gap:40px;padding:20px 0px;border-top:1px solid #D9D5CA">
 <p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;color:#17697A;width:80px">3</p>
 <h3 style="font-size:40px;font-weight:600;color:#16202B;width:520px">Inside the pipeline</h3>
-<p style="font-size:28px;flex:1">The eight steps, and how each candidate is judged and ranked</p>
+<p style="font-size:28px;flex:1">The eight steps, the math behind each test, and how candidates are ranked</p>
 </div>
 <div style="display:flex;align-items:center;gap:40px;padding:20px 0px;border-top:1px solid #D9D5CA">
 <p style="font-family:'Source Serif 4', Georgia, serif;font-size:56px;font-weight:600;color:#17697A;width:80px">4</p>
@@ -509,7 +509,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <div style="flex:2;height:16px;background:#F0A57E;border-radius:8px"></div>
 <div style="flex:4;height:16px;background:#3A4756;border-radius:8px"></div>
 </div>
-<p style="font-size:32px;line-height:1.4;color:#BFCAD3;width:1300px">The eight steps from raw reads to ranked candidates, and the checks that weed out convincing-looking false leads.</p>
+<p style="font-size:32px;line-height:1.4;color:#BFCAD3;width:1300px">The eight steps from raw reads to ranked candidates, the checks that weed out convincing-looking false leads, and the math behind each test.</p>
 <aside>Part 3 explains what happens between the command and the report. You do not need to run these steps by hand, but knowing them helps you judge a candidate and explain the method in a paper.</aside>
 </section>
 <section class="slide" id="flow" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
@@ -630,6 +630,35 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Output: results/alignments/&lt;sample&gt;.bam + .bai (open in IGV); depth per chromosome feeds report sections 1–2 · 21</p>
 <aside>Step two places every read on the reference genome with bwa-mem2. Each placement comes with a mapping quality, a measure of how sure the aligner is. A read from a repeat could belong to several places, so it scores low; the variant caller ignores reads below 20. Step three marks duplicates: during library PCR one DNA fragment can be copied many times, and the copies all start at the same position. Only one is counted, so a PCR error cannot masquerade as a variant supported by many reads. After both steps, usable coverage is what is left: 2.8-fold and 3.4-fold here.</aside>
 </section>
+<section class="slide" id="phred" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Quality scores</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Every quality score is an error chance on a log scale</h2>
+</div>
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:24px 40px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;color:#16202B"><i>Q</i> = −10 × log<sub>10</sub> <i>P</i>(wrong)&emsp;&emsp;so&emsp;&emsp;<i>P</i>(wrong) = 10<sup>−<i>Q</i>/10</sup></p>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:3;display:flex;flex-direction:column;gap:16px">
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:12%;color:#16202B">Q</th><th style="width:20%;color:#16202B;text-align:right">P(wrong)</th><th style="width:20%;color:#16202B;text-align:right">1 in …</th><th style="width:48%;color:#16202B">Where the pipeline uses it</th></tr>
+<tr><td>10</td><td style="text-align:right">0.1</td><td style="text-align:right">10</td><td>–</td></tr>
+<tr><td style="color:#B04A18"><b>20</b></td><td style="text-align:right">0.01</td><td style="text-align:right">100</td><td>Base quality ≥ 20, mapping quality ≥ 20</td></tr>
+<tr><td style="color:#B04A18"><b>30</b></td><td style="text-align:right">0.001</td><td style="text-align:right">1,000</td><td>“Q30” letters in fastp; variant QUAL ≥ 30</td></tr>
+<tr><td>40</td><td style="text-align:right">0.0001</td><td style="text-align:right">10,000</td><td>–</td></tr>
+</table>
+<p style="font-size:26px;line-height:1.4">Each +10 means ten times fewer errors. Example: Q = 20 → 10<sup>−2</sup> = 1 wrong in 100.</p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:12px;background:#ECEAE3;border-radius:16px;padding:28px 32px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B04A18">One scale, three questions</p>
+<p style="font-size:24px;line-height:1.4"><b>Base quality:</b> is this letter wrong? Set by the sequencer.</p>
+<p style="font-size:24px;line-height:1.4"><b>Mapping quality:</b> is this read in the wrong place? bwa-mem2 compares the best and second-best placement.</p>
+<p style="font-size:24px;line-height:1.4"><b>QUAL:</b> is there no variant here at all? bcftools, next slides.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Phred scale, named after the first program that used it · 22</p>
+<aside>Before the next steps, a word on the numbers. Every quality score in sequencing uses the same Phred scale: the score is minus ten times the log, base ten, of the chance of being wrong. So 20 means one in a hundred, 30 one in a thousand, and every extra ten means ten times fewer errors. The pipeline uses it three times. Base quality says how likely a single letter is a sequencing error; we ignore letters below 20, and the fastp report counts the share of letters at 30 or more. Mapping quality says how likely the read is in the wrong place; bwa-mem2 derives it from how much better the best placement scores than the second best, so a read in a repeat, with two equally good places, gets zero. We ignore reads below 20. QUAL is the chance that the site is not a variant at all, which we will compute on the next math slide; we keep calls of 30 or more.</aside>
+</section>
 <section class="slide" id="calling" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:12px">
 <p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#17697A">Step 4 · Call variants · bcftools</p>
@@ -665,8 +694,36 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 </table>
 </div>
 <p style="font-size:26px;line-height:1.4"><b>Why jointly?</b> The sibling’s 6 reads were looked at and show no T. “Absent” means checked and not seen, not merely “not reported”.</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Result: 14.1 million variants in our two samples · results/variants/all_samples.annotated.vcf.gz · 22</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Result: 14.1 million variants in our two samples · results/variants/all_samples.annotated.vcf.gz · 23</p>
 <aside>Step four finds the differences. To use all the cores, the genome is cut into 30 pieces processed in parallel. For each position, reads are stacked up, ignoring poorly placed reads and low-quality letters. Then all fish are genotyped together, which is important: for every variant we get the read counts in every fish, including fish that do not carry it. That is how we know the sibling's six reads at the tmppe position all show C. Finally the calls are tidied so that each line holds one change and insertions and deletions are written in a standard way, which the known-variant matching needs, and calls below quality 30 are dropped.</aside>
+</section>
+<section class="slide" id="genotype" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Calling a genotype</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Which genotype best explains the reads?</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:28px 36px">
+<p style="font-size:24px;line-height:1.4"><i>n</i> reads, <i>k</i> of them show the new letter T, each letter wrong with chance <i>ε</i> (Q30: <i>ε</i> = 0.001)</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:34px;line-height:1.6;color:#16202B"><i>P</i>(reads | CC) = <i>ε</i><sup><i>k</i></sup> (1 − <i>ε</i>)<sup><i>n</i>−<i>k</i></sup><br><i>P</i>(reads | CT) = (½)<sup><i>n</i></sup><br><i>P</i>(reads | TT) = (1 − <i>ε</i>)<sup><i>k</i></sup> <i>ε</i><sup><i>n</i>−<i>k</i></sup></p>
+<p style="font-size:24px;line-height:1.4">CT: each read comes from either copy, a coin flip. bcftools weighs the three with a prior (about 1 position in 1,000 differs) and reports the most likely.</p>
+<p style="font-size:24px;line-height:1.4;color:#16202B"><b>QUAL</b> = −10 log<sub>10</sub> <i>P</i>(no sample has T | reads)</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;color:#16202B"><b>tmppe, chr7:29,157,506 C&gt;T</b> (equal priors)</p>
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:28%;color:#16202B">Genotype</th><th style="width:36%;color:#16202B;text-align:right">Mutant: 5 T, 0 C</th><th style="width:36%;color:#16202B;text-align:right">Sibling: 0 T, 6 C</th></tr>
+<tr><td>CC</td><td style="text-align:right">10<sup>−15</sup> → 0%</td><td style="text-align:right;color:#17697A"><b>0.994 → 98.5%</b></td></tr>
+<tr><td>CT</td><td style="text-align:right">1/32 → 3%</td><td style="text-align:right">1/64 → 1.5%</td></tr>
+<tr><td>TT</td><td style="text-align:right;color:#B04A18"><b>0.995 → 97%</b></td><td style="text-align:right">10<sup>−18</sup> → 0%</td></tr>
+</table>
+<div style="background:#ECEAE3;border-radius:16px;padding:20px 28px">
+<p style="font-size:24px;line-height:1.4;color:#16202B"><b>The weak spot at 3× coverage:</b> a heterozygote shows only T in (½)<sup><i>n</i></sup> of cases, 1 in 8 with 3 reads and 1 in 32 with 5. Some “homozygous” calls are really one copy.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Simplified: bcftools also uses each letter’s own quality and all samples together · 24</p>
+<aside>Here is how a genotype is decided. Take one position with n reads, k of them showing the new letter. For each possible genotype we ask how likely these reads would be. If the sample is CC, every T must be a sequencing error, so the chance is epsilon to the power k, tiny. If it is TT, every C must be an error. If it is CT, each read comes from one of the two copies at random, like a coin flip, so any particular set of reads has chance one half to the power n. For the tmppe mutant, five T reads: CC is essentially impossible, CT has a chance of one in thirty-two, TT almost one. So the call is homozygous, with about 97 percent confidence. For the sibling, six C reads, the call is CC with about 98 percent. bcftools also adds a prior, the expectation that only about one position in a thousand differs, and uses each letter's own quality. QUAL is the Phred-scaled chance that no sample carries the variant. The key lesson: at low coverage, a heterozygote can look homozygous by chance, one time in eight with three reads.</aside>
 </section>
 <section class="slide" id="effects" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -697,7 +754,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 </table>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Examples from our data: tmppe, SLC35F4, ENSDARG00000013153, si:dkey-1h4.4 · gene models: Ensembl 113 · 23</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Examples from our data: tmppe, SLC35F4, ENSDARG00000013153, si:dkey-1h4.4 · gene models: Ensembl 113 · 25</p>
 <aside>Step five predicts what each variant does, using Ensembl's gene models for GRCz11. Each variant gets an impact level. HIGH means the protein is probably broken; MODERATE means one amino acid changes, or a few are inserted or deleted in frame. A variant that touches several transcripts of a gene can have several effects; the tables show the most severe one. The right-hand table is how to read the protein notation in the tables. All four examples are real variants from our mutant: p dot means the protein, c dot the coding DNA, and the numbers are positions counted from the start codon.</aside>
 </section>
 <section class="slide" id="known" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -719,7 +776,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B04A18;width:220px">Example</p>
 <p style="font-size:28px;line-height:1.45;color:#16202B;flex:1"><b>slc39a13 A23P</b> had the best jaw biology (mouse knockout: small jaw), but it is <b>rs507894324</b>, a known polymorphism. It is now flagged and moved to priority 5.</p>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Columns in the tables: novel (TRUE/FALSE) and known_id (the rs number) · 24</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Columns in the tables: novel (TRUE/FALSE) and known_id (the rs number) · 26</p>
 <aside>Known variants are differences already seen in other zebrafish lines; they are ordinary strain polymorphisms. A mutation from an ENU screen, or a spontaneous one, is essentially always new. The pipeline downloads Ensembl's list of eighteen million known zebrafish variants once and labels every call that matches by position and by the changed letter. In our mutant more than half of the strongest protein-changing candidates were known. The best example is slc39a13: the mouse knockout has a small jaw, so it looked perfect, but it is a catalogued polymorphism.</aside>
 </section>
 <section class="slide" id="knownmatch" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
@@ -750,7 +807,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <tr><td>Same indel, written at a shifted position</td><td style="color:#B04A18"><b>Known</b>, thanks to the rewrite</td></tr>
 <tr><td>Not in the list at all</td><td style="color:#17697A"><b>Novel</b></td></tr>
 </table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Stored as novel (TRUE/FALSE) and known_id (the rs number) in every table · 25</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Stored as novel (TRUE/FALSE) and known_id (the rs number) in every table · 27</p>
 <aside>Matching sounds trivial but has two traps. First, an insertion or deletion inside a repeat, such as one extra A in a run of A's, can be written at several equivalent positions. Our caller always writes it at the leftmost one, but the Ensembl list often does not; without rewriting, 470,839 known indels would never match. Second, a position can carry several different changes. We require the same change, not just the same position, because a new ENU allele can arise at a site that is already variable in other strains, and it should still count as novel.</aside>
 </section>
 <section class="slide" id="classify" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
@@ -779,7 +836,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="font-size:24px;line-height:1.4;color:#16202B"><b>Several mutants:</b> mutant_rule any or all</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Orange = high confidence: these two categories feed priorities 1–3 and the homozygosity peak · 26</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Orange = high confidence: these two categories feed priorities 1–3 and the homozygosity peak · 28</p>
 <aside>This table is the exact rule set. Two definitions matter: the mutant has a variant when at least two reads show it and the position has at least three reads; a control is covered when it has at least four reads there. In absent mode, any trace in the control makes a variant shared. In sibling mode the mutant must also show the variant in at least 90 percent of its reads, and the control may show it in up to 60 percent: zero control reads gives mutant-specific, a few gives mutant-enriched. Not homozygous is a sibling-mode bin for variants the mutant carries on only one copy: they cannot be a recessive mutation. With several mutants, mutant_rule decides whether one or all must carry it.</aside>
 </section>
 <section class="slide" id="compare" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
@@ -842,8 +899,42 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="font-size:24px;line-height:1.4">Not homozygous in the mutant, or above 60% in the sibling</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Orange outline = high confidence. Absent mode keeps only the first box, with zero sibling reads · 27</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Orange outline = high confidence. Absent mode keeps only the first box, with zero sibling reads · 29</p>
 <aside>This is the heart of the comparison. For each variant we look at the share of reads that carry it. A recessive mutation must be on both copies in the mutant, so nearly all reads: the orange zone, 90 percent or more. A sibling may be a carrier, about half its reads, or a pool, about a third: the teal zone up to 60 percent. If the sibling has zero reads with good coverage, the variant is mutant-specific; if it has a few, mutant-enriched. Both count as high confidence. Low confidence means the sibling simply had too few reads to judge, which is common at 3x coverage: two million variants fell there in our data. Anything heterozygous in the mutant, or that looks homozygous in the sibling, cannot be the recessive mutation.</aside>
+</section>
+<section class="slide" id="shares" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Sibling-mode thresholds</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Why 90% and 60%: each read is a coin flip</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:3;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:34px;color:#16202B"><i>P</i>(<i>k</i> of <i>n</i> reads show it) = C(<i>n</i>, <i>k</i>) <i>f</i>&#8201;<sup><i>k</i></sup> (1 − <i>f</i>&#8201;)<sup><i>n</i>−<i>k</i></sup>   (binomial)</p>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:16%;color:#16202B">Reads <i>n</i></th><th style="width:28%;color:#16202B;text-align:right">One-copy mutant ≥ 90% (<i>f</i>&nbsp;=&nbsp;½)</th><th style="width:28%;color:#16202B;text-align:right">Carrier sibling &gt; 60% (<i>f</i>&nbsp;=&nbsp;½)</th><th style="width:28%;color:#16202B;text-align:right">Sibling pool &gt; 60% (<i>f</i>&nbsp;=&nbsp;⅓)</th></tr>
+<tr><td>3</td><td style="text-align:right">12.5%</td><td style="text-align:right;color:#5F6873">not judged</td><td style="text-align:right;color:#5F6873">not judged</td></tr>
+<tr><td>4</td><td style="text-align:right">6.3%</td><td style="text-align:right">31%</td><td style="text-align:right">11%</td></tr>
+<tr><td>5</td><td style="text-align:right">3.1%</td><td style="text-align:right">19%</td><td style="text-align:right">4.5%</td></tr>
+<tr><td>6</td><td style="text-align:right">1.6%</td><td style="text-align:right">34%</td><td style="text-align:right">10%</td></tr>
+<tr><td>10</td><td style="text-align:right">1.1%</td><td style="text-align:right">17%</td><td style="text-align:right">2.0%</td></tr>
+<tr><td>15</td><td style="text-align:right">0.05%</td><td style="text-align:right">15%</td><td style="text-align:right">0.9%</td></tr>
+</table>
+<p style="font-size:24px;line-height:1.4">Second column: how often a one-copy variant slips through. Last two columns: how often the <b>true mutation</b> is wrongly called “shared”.</p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Where ½ and ⅓ come from</h3>
+<p style="font-size:24px;line-height:1.4">A carrier has the mutation on 1 of 2 copies: <i>f</i> = ½.</p>
+<p style="font-size:24px;line-height:1.4">A normal-looking sibling is a carrier ⅔ of the time (50% vs 25% of the clutch), so a pool’s reads carry it ⅔ × ½ = <b>⅓</b>.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#ECEAE3;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">The price</h3>
+<p style="font-size:24px;line-height:1.4">With one carrier sibling, the mutation itself is lost in 15% to 34% of cases. The region still shows, because thousands of linked variants are counted. Pools and more reads help.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">C(<i>n</i>, <i>k</i>) = number of ways to choose which <i>k</i> of the <i>n</i> reads show it · settings: min_alt_fraction_mutant, max_alt_fraction_control · 30</p>
+<aside>Where do 90 and 60 percent come from? In a sample with the variant on one of its two copies, each read shows it with chance one half, like a coin flip, so the number of reads showing it follows the binomial distribution. The first column is the chance that a heterozygous mutant looks homozygous, at least 90 percent of reads: one in eight with three reads, but only one in a hundred with ten. The other two columns are the cost on the sibling side. The sibling looks normal, so it is a carrier two times in three: half the clutch are carriers and a quarter are homozygous wild type. A single carrier sibling shows the variant in about half its reads, and by chance more than 60 percent of them quite often: 15 to 34 percent of the time, depending on depth. When that happens to the real mutation, it is called shared and drops off the candidate list. A pool of siblings averages out at one third, so it rarely crosses 60 percent. This is why the peak, which counts thousands of linked variants, is more reliable than any single variant, and why a pool or deeper sequencing of the control helps.</aside>
 </section>
 <section class="slide" id="protein" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -887,7 +978,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Columns: allele_check, refseq_residues, ortholog_residues · Species: human, rat, chicken, frog, medaka, fugu · 28</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Columns: allele_check, refseq_residues, ortholog_residues · Species: human, rat, chicken, frog, medaka, fugu · 31</p>
 <aside>This check came straight from a mistake we nearly made. aldh1a2 looked like a great jaw candidate with three missense changes. But the reference genome itself carries rare residues there; published zebrafish cDNAs have exactly what our mutant has. So the mutant is normal and the reference is odd. The pipeline now lines up every missense change with RefSeq proteins, which are built from cDNAs of other fish, and with the same protein in six other vertebrates. If the mutant residue is in a zebrafish RefSeq protein, or is what most vertebrates have, it is moved to priority 5. If the reference residue is identical in every species, the change is more likely to matter, and it is listed first within its priority.</aside>
 </section>
 <section class="slide" id="proteinhow" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
@@ -924,8 +1015,38 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <tr><td style="color:#17697A"><b>conserved</b></td><td>3+ species aligned; all have the reference residue</td><td style="text-align:right">38 · listed first</td></tr>
 <tr><td style="color:#16202B"><b>variable</b> / <b>no_orthologs</b></td><td>Species differ / only RefSeq could be compared</td><td style="text-align:right">493 / 198</td></tr>
 </table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Counts: our 1,192 high-confidence protein-changing variants (151 not_checked, 53 not missense) · 29</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Counts: our 1,192 high-confidence protein-changing variants (151 not_checked, 53 not missense) · 32</p>
 <aside>Here is the method behind the aldh1a2 example. For each missense change the pipeline takes the zebrafish protein of the annotated transcript and checks that the reference amino acid really sits at that position. It aligns that protein with up to four NCBI RefSeq proteins of the same gene, preferring curated ones, and with the closest Ensembl Compara ortholog in each of six species: human, rat, chicken, frog, medaka and fugu. It reads the residue lined up with the variant, but only trusts it when the surrounding twenty residues align reasonably well, so a poorly aligned region cannot give a false answer. The rules are applied in this order. Only the first two move a variant to priority 5; conserved changes are listed first within their priority.</aside>
+</section>
+<section class="slide" id="blosum" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Protein alignment</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Score the alignment, then decide by counting species</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:28px 36px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">1 · BLOSUM62 score for each lined-up pair</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;color:#16202B"><i>s</i>(<i>a</i>, <i>b</i>) = 2 × log<sub>2</sub>( <i>p<sub>ab</sub></i> / <i>q<sub>a</sub> q<sub>b</sub></i> ), rounded</p>
+<p style="font-size:24px;line-height:1.4"><i>p<sub>ab</sub></i>: how often <i>a</i> and <i>b</i> line up in related proteins. <i>q<sub>a</sub> q<sub>b</sub></i>: how often by chance. Positive = a common swap.</p>
+<p style="font-size:24px;line-height:1.4">W–W&nbsp;+11 · P–P&nbsp;+7 · A–A&nbsp;+4 · I–V&nbsp;+3 · D–E&nbsp;+2 · P–A&nbsp;−1 · P–L&nbsp;−3 · R–W&nbsp;−3</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">Total = Σ <i>s</i> − 10 per gap − 0.5 per extra gap letter</p>
+<p style="font-size:24px;line-height:1.4">The best total over all alignments is found by dynamic programming (Needleman–Wunsch). Gaps at the ends are free.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">2 · Trust the residue?</h3>
+<p style="font-size:24px;line-height:1.4">At least 6 of the 20 neighbours (10 each side) identical: 30%. Random letters match only about 6% of the time (Σ <i>q<sub>a</sub></i><sup>2</sup>).</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#ECEAE3;border-radius:16px;padding:24px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">3 · Count the species</h3>
+<p style="font-size:24px;line-height:1.4"><i>n</i> species aligned; <i>n</i><sub>ref</sub>, <i>n</i><sub>alt</sub> have the reference or mutant residue.</p>
+<p style="font-size:24px;line-height:1.4"><b>Consensus:</b> <i>n</i> ≥ 3, <i>n</i><sub>alt</sub> &gt; <i>n</i><sub>ref</sub>, <i>n</i><sub>alt</sub> ≥ <i>n</i>/2. lgr4 I745V: 6 of 6 have V.</p>
+<p style="font-size:24px;line-height:1.4"><b>Conserved:</b> <i>n</i> ≥ 3, <i>n</i><sub>ref</sub> = <i>n</i>. tmppe R370W: human, rat, chicken all&nbsp;R.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Biopython PairwiseAligner, global mode · thresholds in workflow/scripts/protein_check.py · 33</p>
+<aside>The protein check has no p value; it is an alignment followed by counting. To line up two proteins, every pair of amino acids that sits in the same column gets a BLOSUM62 score. The score is twice the log, base two, of how much more often that pair is seen in alignments of truly related proteins than expected by chance. Identical tryptophans score eleven because tryptophan is rare and rarely replaced; isoleucine to valine scores plus three because it is a common, mild swap; proline to leucine scores minus three. Gaps cost ten to open and a half for each extra letter. The aligner tries every arrangement efficiently with dynamic programming and keeps the highest total. Then, for the variant position, we only trust the lined-up residue if at least six of the twenty neighbouring residues are identical: two unrelated sequences match only about six percent of the time. Finally the decision is plain counting across species. lgr4 isoleucine 745 is valine in all six other species, so the mutant valine is the vertebrate consensus and moves to priority 5. tmppe arginine 370 is arginine in all three species that aligned well, so it is conserved and listed first.</aside>
 </section>
 <section class="slide" id="priority" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -943,7 +1064,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <div style="background:#ECEAE3;border-radius:16px;padding:24px 32px">
 <p style="font-size:28px;line-height:1.4;color:#16202B"><b>Priority ignores location.</b> The causal change inside the homozygosity peak may be “only” priority 2, while a priority 1 far away is background. Weigh both.</p>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Priority 0 = not protein-changing (kept in the full table) · 30</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Priority 0 = not protein-changing (kept in the full table) · 34</p>
 <aside>Each HIGH or MODERATE variant gets a priority from 1 to 5. One is the classic recessive loss of function: a broken protein on both copies. Two covers strong but less complete evidence, and in a sibling-mode run most missense candidates land here, because sibling mode already requires homozygosity; that is why priority 3 is nearly empty. Four is low confidence. Five is everything the checks flagged: it stays in the tables with the reason written out, but should not be your first PCR. Most important: priority is scored one variant at a time. Always look at where the homozygosity peak is as well.</aside>
 </section>
 <section class="slide" id="alongside" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
@@ -977,8 +1098,76 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="font-size:24px;line-height:1.4">228 structural variants (214 deletions), 148 touching a gene. Single-end reads miss many.</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">All figures are saved as PNG (slides) and PDF (papers) in results/plots/ · 31</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">All figures are saved as PNG (slides) and PDF (papers) in results/plots/ · 35</p>
 <aside>Besides the eight steps, the pipeline builds genome-wide views. The variant-density plot is the homozygosity mapping from Part 1: it counts homozygous high-confidence candidates in one-megabase windows, and the peak is the tallest window extended along the chromosome while its neighbours stay above a quarter of its height. The homozygosity plot and the Manhattan plot look at the same signal in two other ways. The coverage plot can reveal large deletions or duplications. Structural variants are called with DELLY and kept only if they pass its filters, are present in the mutant and absent from every control. With single-end reads only split reads can be used, so many larger events are missed.</aside>
+</section>
+<section class="slide" id="fisher" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Manhattan plot</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Where −log<sub>10</sub> p comes from: a one-sided Fisher test</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;color:#16202B"><b>Count the reads at one variant</b> (tmppe):</p>
+<table style="font-size:26px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:31%;color:#16202B"></th><th style="width:23%;color:#16202B;text-align:right">new letter</th><th style="width:23%;color:#16202B;text-align:right">reference</th><th style="width:23%;color:#16202B;text-align:right">total</th></tr>
+<tr><td style="color:#16202B"><b>Mutant</b></td><td style="text-align:right;color:#B04A18"><b><i>a</i> = 5</b></td><td style="text-align:right">0</td><td style="text-align:right"><i>n</i> = 5</td></tr>
+<tr><td style="color:#16202B"><b>Sibling</b></td><td style="text-align:right">0</td><td style="text-align:right">6</td><td style="text-align:right">6</td></tr>
+<tr><td style="color:#16202B"><b>Total</b></td><td style="text-align:right"><i>K</i> = 5</td><td style="text-align:right">6</td><td style="text-align:right"><i>N</i> = 11</td></tr>
+</table>
+<p style="font-size:26px;line-height:1.4"><b>The question:</b> if the 5 new-letter reads had landed at random among all 11 reads, how often would the mutant get 5 or more of them?</p>
+<div style="background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:20px 32px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;color:#16202B"><i>p</i> = Σ<sub><i>x</i> ≥ <i>a</i></sub>  C(<i>K</i>, <i>x</i>) C(<i>N</i>−<i>K</i>, <i>n</i>−<i>x</i>) / C(<i>N</i>, <i>n</i>)</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;color:#16202B">tmppe: <i>p</i> = 1 / C(11, 5) = 1/462 = 0.0022<br>−log<sub>10</sub> <i>p</i> = −log<sub>10</sub> 0.0022 = <b>2.66</b></p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:52%;color:#16202B">Reads (mutant · sibling)</th><th style="width:24%;color:#16202B;text-align:right">p</th><th style="width:24%;color:#16202B;text-align:right">−log<sub>10</sub> p</th></tr>
+<tr><td>tmppe: 5/0 · 0/6</td><td style="text-align:right">0.0022</td><td style="text-align:right">2.66</td></tr>
+<tr><td>TJP1: 3/0 · 2/6</td><td style="text-align:right">0.061</td><td style="text-align:right">1.22</td></tr>
+<tr><td>Carrier sibling: 5/0 · 3/3</td><td style="text-align:right">0.12</td><td style="text-align:right">0.92</td></tr>
+<tr><td>Same as tmppe at 15×: 15/0 · 0/15</td><td style="text-align:right">6 × 10<sup>−9</sup></td><td style="text-align:right">8.19</td></tr>
+</table>
+<p style="font-size:24px;line-height:1.4">Reading the axis: 1 = p of 0.1, 2 = 0.01, 3 = 0.001.</p>
+<div style="display:flex;flex-direction:column;gap:10px;background:#ECEAE3;border-radius:16px;padding:24px 28px">
+<h3 style="font-size:28px;font-weight:600;color:#16202B">Read it as a map, not as proof</h3>
+<p style="font-size:24px;line-height:1.4"><b>Depth sets the ceiling:</b> at 3× no single variant can score high.</p>
+<p style="font-size:24px;line-height:1.4"><b>14 million tests:</b> a Bonferroni cut-off would need 8.45. Look for towers of dots, not one tall dot.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Hypergeometric test, scipy.stats.hypergeom · read counts summed over all mutant and all control samples · 36</p>
+<aside>The Manhattan plot in the report shows one dot per variant, and its height is minus log ten of a p value. Here is where that p value comes from. At each variant we count reads in a two-by-two table: mutant or sibling, new letter or reference. The null hypothesis is that the new letter has nothing to do with which sample the read came from. Then the new-letter reads are just a random handful drawn from all the reads, and the number landing in the mutant follows the hypergeometric distribution. The p value is the chance of the mutant getting at least as many as it did. For tmppe, all five new-letter reads are in the mutant, and there is only one way out of 462 to put five reads into the mutant's five slots, so p is 0.0022 and minus log ten p is 2.66. Two warnings. First, the score is capped by depth: the same perfect pattern at fifteen-fold coverage would score 8.2, but at our three-fold coverage nothing gets far above 2. Second, we run fourteen million tests without correction, so single high dots happen by chance. A causal region shows as a tower of many dots, which is why we rely on the peak.</aside>
+</section>
+<section class="slide" id="windows" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Peak, homozygosity, copy number</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Windows turn weak single calls into a strong signal</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FDFDFB;border:2px solid #B04A18;border-radius:16px;padding:28px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Variant density</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:30px;color:#16202B"><i>d<sub>w</sub></i> = homozygous candidates in 1 Mb window <i>w</i></p>
+<p style="font-size:24px;line-height:1.4"><b>Peak:</b> the tallest window, grown while the next window (or the one after) is ≥ 25% of its height.</p>
+<p style="font-size:24px;line-height:1.4"><b>Ours:</b> 2,582 vs 125 per Mb on average, about 21× more.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:28px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Homozygosity</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:30px;color:#16202B"><i>h<sub>w</sub></i> = homozygous sites / sites called</p>
+<p style="font-size:24px;line-height:1.4">Sites with ≥ 4 reads and ≥ 1 new-letter read; a window needs ≥ 20. Averaged over 5 windows, then <i>h</i><sub>mutant</sub> − <i>h</i><sub>sibling</sub>.</p>
+<p style="font-size:24px;line-height:1.4">A heterozygote with 4 reads looks homozygous (½)<sup>4</sup> = 1 time in 16, in both samples alike, so the difference cancels it.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:28px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Copy number</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:30px;color:#16202B"><i>r<sub>w</sub></i> = log<sub>2</sub>( <i>D</i><sub>mutant</sub> / <i>D</i><sub>control</sub> )</p>
+<p style="font-size:24px;line-height:1.4"><i>D</i> = depth in a 500 kb window ÷ that sample’s median depth, so sequencing more does not shift it.</p>
+<p style="font-size:24px;line-height:1.4">One copy lost: log<sub>2</sub>(1/2) = −1. One gained: log<sub>2</sub>(3/2) = +0.58.</p>
+</div>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#16202B"><b>Why it works at 3×:</b> each call may be wrong, but errors scatter evenly over the genome. Only linkage piles thousands of real homozygous variants into one region.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Window tables: results/plots/windows_1Mb.tsv and coverage_500kb_ratio.tsv · 37</p>
+<aside>The genome-wide plots use simple arithmetic over windows rather than statistical tests. Variant density counts homozygous high-confidence candidates in each one-megabase window; the peak is the tallest window, grown along the chromosome while the next window, or the one after, so a single dip is tolerated, stays above a quarter of its height. Ours is about 21 times the genome average. Homozygosity is the share of called sites in a window where every read shows the new letter. At low depth a heterozygote sometimes shows only the new letter, one time in sixteen with four reads, which inflates the share in both samples alike, so the mutant-minus-sibling difference cancels it. The copy-number ratio first divides each sample's depth by its own median, so a sample sequenced twice as deeply does not look duplicated, then takes log base two of mutant over control: minus one means half the copies, plus 0.58 means one and a half times. The general point: single calls at three-fold coverage are noisy, but noise is spread everywhere, while linkage concentrates real signal in one place.</aside>
 </section>
 <section class="slide" id="part4" data-transition="fade" style="background:#16202B;color:#F2F0EA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
 <p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7CC6D6">Part 4 of 5</p>
@@ -1012,7 +1201,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="font-size:26px;line-height:1.4">Copy the results folder to your computer with Cyberduck or FileZilla, then double-click.</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Keep the reference/ folder: the next project can reuse it and skip the downloads · 33</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Keep the reference/ folder: the next project can reuse it and skip the downloads · 39</p>
 <aside>Everything lands in the results folder. Two files are enough for most people: report.html, a single page you open in any browser, and the Excel workbook in mutant_specific. The tsv files hold the same tables for anyone who wants to work in R or Python. peak_candidates lists the protein-changing variants inside the homozygosity peak. The alignments folder has the BAM files you need to look at a variant in IGV.</aside>
 </section>
 <section class="slide" id="report" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
@@ -1059,7 +1248,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 </div>
 </div>
 <p style="font-size:28px;color:#16202B">Above section 1: summary tiles, the strongest genomic signal, and notes on your data.</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Orange outline: where the candidates are · 34</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Orange outline: where the candidates are · 40</p>
 <aside>The report reads from top to bottom. At the very top are summary tiles and a box naming the strongest genomic signal, the homozygosity peak, with the top variants inside it. Then nine sections. Check section one first: if coverage is poor, every later number is shakier. Sections four to six are where the candidates are. Gene names link to Ensembl and ZFIN, and locations link to the Ensembl genome browser. Section six has a Checks column that says whether each variant is known or novel and how its amino acid compares across species.</aside>
 </section>
 <section class="slide" id="excel" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
@@ -1083,7 +1272,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <tr><td style="color:#16202B"><b>allele_check</b></td><td>The protein check: conserved, variable, matches RefSeq, …</td></tr>
 <tr><td style="color:#16202B"><b>&lt;fish&gt;_alt_reads</b></td><td>Reads with the variant in that fish (_ref_reads: reads without)</td></tr>
 </table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Try: Data → Filter · priority 1–2, novel = TRUE, allele_check = conserved · 35</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Try: Data → Filter · priority 1–2, novel = TRUE, allele_check = conserved · 41</p>
 <aside>The Excel workbook is where most of the work happens. The Likely damaging sheet has every HIGH and MODERATE candidate, sorted by priority; the README sheet explains every column. The columns on this slide are the ones to know; ortholog_residues next to allele_check shows the amino acid in each species. A good first filter is priority one or two, novel true, and allele check conserved: in our data that leaves 22 variants genome-wide, and only two of them, in tmppe and TJP1, inside the chr7 peak. The read-count columns let you judge the evidence yourself: 5 of 5 reads in the mutant and 0 of 6 in the sibling is much stronger than 2 of 2 and 0 of 1.</aside>
 </section>
 <section class="slide" id="trust" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -1112,7 +1301,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="font-size:26px;line-height:1.4;color:#16202B"><b>Then confirm at the bench:</b> PCR and Sanger in more mutants and siblings.</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Warning sign: dozens of variants packed together usually means a repeat or mapping problem · 36</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Warning sign: dozens of variants packed together usually means a repeat or mapping problem · 42</p>
 <aside>No single number decides. A variant becomes believable when several things line up: good coverage in both samples, several supporting reads, novel, no warnings, a conserved residue, inside the peak, and a gene whose expression or known phenotype fits. Always look at the top few in IGV before ordering primers; it takes two minutes. Real variants show the same changed letter in many independent reads from both strands. The final test is genetic: a causal recessive mutation is homozygous in every mutant and never homozygous in a wild-type sibling.</aside>
 </section>
 <section class="slide" id="part5" data-transition="fade" style="background:#16202B;color:#F2F0EA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
@@ -1151,7 +1340,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="font-size:26px;line-height:1.45;color:#16202B"><b>Ideal: 15× or more, paired-end.</b></p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Report section 1 · not recorded: whether each sample was one fish or a pool · 38</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Report section 1 · not recorded: whether each sample was one fish or a pool · 44</p>
 <aside>Our example. The sequencing run itself was excellent: almost every read kept, high quality, almost all mapped, few duplicates. The problem is quantity. Only one of the two read files per sample was available, and most fragments were shorter than the read, so a quarter of all letters were trimmed as adapter. That leaves about three-fold coverage, a fifth of what we would like. Keep this in mind on the next slides: every candidate rests on a handful of reads, and some heterozygous variants in the sibling will have been missed.</aside>
 </section>
 <section class="slide" id="peak" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
@@ -1178,7 +1367,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">results/plots/variant_density.png · top: all high-confidence; bottom: homozygous in the mutant · 39</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">results/plots/variant_density.png · top: all high-confidence; bottom: homozygous in the mutant · 45</p>
 <aside>This is the clearest result of the whole analysis, and it is a region rather than a single variant. Counting homozygous candidate variants per megabase, chromosome 7 between 22 and 33 megabases stands out at about twenty times the genome average. That is the footprint of the linked region from Part 1: the mutation is most likely inside it. Forty-four priority one or two variants fall in the peak, so we still need the checks and the biology to choose among them.</aside>
 </section>
 <section class="slide" id="homozyg" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
@@ -1196,7 +1385,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="font-size:28px;line-height:1.45;color:#16202B"><b>The tallest red block is again on chromosome 7.</b> Two independent views agree.</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">results/plots/homozygosity.png · the report also has a Manhattan plot and a copy-number plot · 40</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">results/plots/homozygosity.png · the report also has a Manhattan plot and a copy-number plot · 46</p>
 <aside>The homozygosity plot looks at the same question differently: not counting candidate variants, but asking what share of all variant sites are homozygous in each sample. The two samples track each other closely almost everywhere, as expected for siblings. The bottom panel is the difference, and its tallest positive block is on chromosome 7, at the same place as the peak. When two views agree like this, we can be fairly confident the mutation is linked to that region. The next step is to confirm the linkage in more fish.</aside>
 </section>
 <section class="slide" id="filtered" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -1215,7 +1404,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <div style="background:#ECEAE3;border-radius:16px;padding:24px 32px">
 <p style="font-size:28px;line-height:1.4;color:#16202B"><b>Each looked good on biology alone.</b> They stay in the Excel file, with the reason in the warnings column, so you can still check them.</p>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Reads shown as reads with the variant / all reads at that position · 41</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Reads shown as reads with the variant / all reads at that position · 47</p>
 <aside>These are real examples from the chr7 region. Every one of them would have been on a list of jaw candidates by biology alone, and some of us spent time on them in the manual analysis. aldh1a2 and mmp14a: the reference genome carries a rare residue, and published zebrafish proteins already have the mutant's amino acid. slc39a13 has the best jaw biology but is a catalogued polymorphism. lgr4 changes to the residue every other vertebrate has. b3gat3 is known and the sibling shows it in all three reads, so the sibling is probably homozygous too. The pipeline now catches all of these automatically.</aside>
 </section>
 <section class="slide" id="leads" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
@@ -1238,7 +1427,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <p style="font-size:26px;line-height:1.4"><b>Caveat:</b> each call rests on 3–8 reads, so one sibling sample at 3× separates carriers from homozygotes only weakly.</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Sibling-mode run, 19 October 2026 · full write-up: analysis/jaw_candidates/STATUS.md · 42</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Sibling-mode run, 19 October 2026 · full write-up: analysis/jaw_candidates/STATUS.md · 48</p>
 <aside>After the checks, these are the leads inside the peak. tmppe and TJP1 are the only priority one or two novel changes in the peak at residues conserved across all aligned vertebrates: two of the 22 such variants genome-wide. HERC1 Q3550H has the best read support and human HERC1 loss causes facial dysmorphism, but the position is not conserved. The stop-lost variant is the only priority one but sits in an unnamed gene. The known jaw genes cog4 and thap11 sit in the core of the peak without a coding change, so a regulatory change is possible. None of these is an answer yet: they are what to genotype and sequence next.</aside>
 </section>
 <section class="slide" id="nextsteps" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -1276,7 +1465,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">A causal recessive mutation is homozygous in every mutant and never in a wild-type sibling · 43</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">A causal recessive mutation is homozygous in every mutant and never in a wild-type sibling · 49</p>
 <aside>The analysis points to a region and a few leads; the bench decides. First confirm linkage cheaply: genotype a few markers across the peak in individual mutants and siblings. If every mutant is homozygous at a marker and no sibling is, the mutation is close; recombinants narrow the interval. Second, Sanger-sequence the leads in that narrower interval, including UTRs, because cog4 and thap11 have no coding change. Third, test function with crispants or complementation. Finally, for the next mutant, plan deeper paired-end sequencing of pools from the start; it resolves the interval far better than one fish per group at 3x.</aside>
 </section>
 <section class="slide" id="trouble" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
@@ -1294,7 +1483,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <tr><td style="color:#16202B"><b>Directory cannot be locked</b></td><td>Another run is going, or one crashed: see the unlock command in the guide</td></tr>
 <tr><td style="color:#16202B"><b>Run stopped when I logged out</b></td><td>Start it inside screen, then just run ./run_wgs.sh again</td></tr>
 </table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">More answers: the “Troubleshooting &amp; FAQ” page of the pipeline guide · 44</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">More answers: the “Troubleshooting &amp; FAQ” page of the pipeline guide · 50</p>
 <aside>These are the problems people actually hit. Almost all are fixed in one line. The general rule when the pipeline stops: open the log file it names, search for Error in rule, and read the last lines of the detailed log listed under it. After fixing, simply run the same command again; finished steps are not repeated. The troubleshooting page in the guide has the exact unlock command and more cases.</aside>
 </section>
 <section class="slide" id="checklist" data-transition="fade" style="background:#16202B;color:#F2F0EA;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
@@ -1316,7 +1505,7 @@ html,body{margin:0;height:100%;background:#0e141b;overflow:hidden}
 <div style="flex:2;height:16px;background:#F0A57E;border-radius:8px"></div>
 <div style="flex:4;height:16px;background:#3A4756;border-radius:8px"></div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#BFCAD3">Full guide in the pipeline’s docs folder · Questions: ask in lab meeting · 45</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#BFCAD3">Full guide in the pipeline’s docs folder · Questions: ask in lab meeting · 51</p>
 <aside>To finish, the whole process as a checklist. Steps one to four take about fifteen minutes of your time; the computer does the rest in a couple of hours. Steps five to seven are where your biology comes in. Keep two things in mind: choose the comparison mode that matches your control, and treat the output as leads to test, never as answers. The written guide in the docs folder has every step in more detail.</aside>
 </section>
 </main>

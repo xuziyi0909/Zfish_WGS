@@ -1,0 +1,30 @@
+<section id="blosum" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Protein alignment</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Score the alignment, then decide by counting species</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFDFB;border:1px solid #D9D5CA;border-left:8px solid #B04A18;border-radius:16px;padding:28px 36px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">1 · BLOSUM62 score for each lined-up pair</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;color:#16202B"><i>s</i>(<i>a</i>, <i>b</i>) = 2 × log<sub>2</sub>( <i>p<sub>ab</sub></i> / <i>q<sub>a</sub> q<sub>b</sub></i> ), rounded</p>
+<p style="font-size:24px;line-height:1.4"><i>p<sub>ab</sub></i>: how often <i>a</i> and <i>b</i> line up in related proteins. <i>q<sub>a</sub> q<sub>b</sub></i>: how often by chance. Positive = a common swap.</p>
+<p style="font-size:24px;line-height:1.4">W–W&nbsp;+11 · P–P&nbsp;+7 · A–A&nbsp;+4 · I–V&nbsp;+3 · D–E&nbsp;+2 · P–A&nbsp;−1 · P–L&nbsp;−3 · R–W&nbsp;−3</p>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">Total = Σ <i>s</i> − 10 per gap − 0.5 per extra gap letter</p>
+<p style="font-size:24px;line-height:1.4">The best total over all alignments is found by dynamic programming (Needleman–Wunsch). Gaps at the ends are free.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">2 · Trust the residue?</h3>
+<p style="font-size:24px;line-height:1.4">At least 6 of the 20 neighbours (10 each side) identical: 30%. Random letters match only about 6% of the time (Σ <i>q<sub>a</sub></i><sup>2</sup>).</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#ECEAE3;border-radius:16px;padding:24px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">3 · Count the species</h3>
+<p style="font-size:24px;line-height:1.4"><i>n</i> species aligned; <i>n</i><sub>ref</sub>, <i>n</i><sub>alt</sub> have the reference or mutant residue.</p>
+<p style="font-size:24px;line-height:1.4"><b>Consensus:</b> <i>n</i> ≥ 3, <i>n</i><sub>alt</sub> &gt; <i>n</i><sub>ref</sub>, <i>n</i><sub>alt</sub> ≥ <i>n</i>/2. lgr4 I745V: 6 of 6 have V.</p>
+<p style="font-size:24px;line-height:1.4"><b>Conserved:</b> <i>n</i> ≥ 3, <i>n</i><sub>ref</sub> = <i>n</i>. tmppe R370W: human, rat, chicken all&nbsp;R.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Biopython PairwiseAligner, global mode · thresholds in workflow/scripts/protein_check.py · 33</p>
+<aside>The protein check has no p value; it is an alignment followed by counting. To line up two proteins, every pair of amino acids that sits in the same column gets a BLOSUM62 score. The score is twice the log, base two, of how much more often that pair is seen in alignments of truly related proteins than expected by chance. Identical tryptophans score eleven because tryptophan is rare and rarely replaced; isoleucine to valine scores plus three because it is a common, mild swap; proline to leucine scores minus three. Gaps cost ten to open and a half for each extra letter. The aligner tries every arrangement efficiently with dynamic programming and keeps the highest total. Then, for the variant position, we only trust the lined-up residue if at least six of the twenty neighbouring residues are identical: two unrelated sequences match only about six percent of the time. Finally the decision is plain counting across species. lgr4 isoleucine 745 is valine in all six other species, so the mutant valine is the vertebrate consensus and moves to priority 5. tmppe arginine 370 is arginine in all three species that aligned well, so it is conserved and listed first.</aside>
+</section>

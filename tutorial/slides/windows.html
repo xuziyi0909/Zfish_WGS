@@ -1,0 +1,29 @@
+<section id="windows" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Peak, homozygosity, copy number</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#16202B">Windows turn weak single calls into a strong signal</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FDFDFB;border:2px solid #B04A18;border-radius:16px;padding:28px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Variant density</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:30px;color:#16202B"><i>d<sub>w</sub></i> = homozygous candidates in 1 Mb window <i>w</i></p>
+<p style="font-size:24px;line-height:1.4"><b>Peak:</b> the tallest window, grown while the next window (or the one after) is ≥ 25% of its height.</p>
+<p style="font-size:24px;line-height:1.4"><b>Ours:</b> 2,582 vs 125 per Mb on average, about 21× more.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:28px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Homozygosity</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:30px;color:#16202B"><i>h<sub>w</sub></i> = homozygous sites / sites called</p>
+<p style="font-size:24px;line-height:1.4">Sites with ≥ 4 reads and ≥ 1 new-letter read; a window needs ≥ 20. Averaged over 5 windows, then <i>h</i><sub>mutant</sub> − <i>h</i><sub>sibling</sub>.</p>
+<p style="font-size:24px;line-height:1.4">A heterozygote with 4 reads looks homozygous (½)<sup>4</sup> = 1 time in 16, in both samples alike, so the difference cancels it.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:28px 32px">
+<h3 style="font-size:30px;font-weight:600;color:#16202B">Copy number</h3>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:30px;color:#16202B"><i>r<sub>w</sub></i> = log<sub>2</sub>( <i>D</i><sub>mutant</sub> / <i>D</i><sub>control</sub> )</p>
+<p style="font-size:24px;line-height:1.4"><i>D</i> = depth in a 500 kb window ÷ that sample’s median depth, so sequencing more does not shift it.</p>
+<p style="font-size:24px;line-height:1.4">One copy lost: log<sub>2</sub>(1/2) = −1. One gained: log<sub>2</sub>(3/2) = +0.58.</p>
+</div>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#16202B"><b>Why it works at 3×:</b> each call may be wrong, but errors scatter evenly over the genome. Only linkage piles thousands of real homozygous variants into one region.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Window tables: results/plots/windows_1Mb.tsv and coverage_500kb_ratio.tsv · 37</p>
+<aside>The genome-wide plots use simple arithmetic over windows rather than statistical tests. Variant density counts homozygous high-confidence candidates in each one-megabase window; the peak is the tallest window, grown along the chromosome while the next window, or the one after, so a single dip is tolerated, stays above a quarter of its height. Ours is about 21 times the genome average. Homozygosity is the share of called sites in a window where every read shows the new letter. At low depth a heterozygote sometimes shows only the new letter, one time in sixteen with four reads, which inflates the share in both samples alike, so the mutant-minus-sibling difference cancels it. The copy-number ratio first divides each sample's depth by its own median, so a sample sequenced twice as deeply does not look duplicated, then takes log base two of mutant over control: minus one means half the copies, plus 0.58 means one and a half times. The general point: single calls at three-fold coverage are noisy, but noise is spread everywhere, while linkage concentrates real signal in one place.</aside>
+</section>

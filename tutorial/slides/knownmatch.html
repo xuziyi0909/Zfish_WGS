@@ -26,6 +26,6 @@
 <tr><td>Same indel, written at a shifted position</td><td style="color:#B04A18"><b>Known</b>, thanks to the rewrite</td></tr>
 <tr><td>Not in the list at all</td><td style="color:#17697A"><b>Novel</b></td></tr>
 </table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Stored as novel (TRUE/FALSE) and known_id (the rs number) in every table · 25</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Stored as novel (TRUE/FALSE) and known_id (the rs number) in every table · 27</p>
 <aside>Matching sounds trivial but has two traps. First, an insertion or deletion inside a repeat, such as one extra A in a run of A's, can be written at several equivalent positions. Our caller always writes it at the leftmost one, but the Ensembl list often does not; without rewriting, 470,839 known indels would never match. Second, a position can carry several different changes. We require the same change, not just the same position, because a new ENU allele can arise at a site that is already variable in other strains, and it should still count as novel.</aside>
 </section>
