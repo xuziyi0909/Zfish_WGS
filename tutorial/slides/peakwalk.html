@@ -1,0 +1,45 @@
+<section id="peakwalk" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Finding the peak</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:60px;font-weight:600;line-height:1.1;color:#16202B">Grow from the top while windows stay ≥ 25% tall</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1.35;display:flex;flex-direction:column;gap:10px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 28px">
+<p style="font-size:24px;font-weight:600;color:#16202B">chr7: homozygous candidates per 1 Mb window</p>
+<div style="position:relative;display:flex;align-items:flex-end;gap:8px;height:360px;border-bottom:2px solid #5F6873">
+<div style="flex:1;height:6px;background:#B9B4A8"></div>
+<div style="flex:1;height:9px;background:#B9B4A8"></div>
+<div style="flex:1;height:8px;background:#B9B4A8"></div>
+<div style="flex:1;height:23px;background:#B9B4A8"></div>
+<div style="flex:1;height:125px;background:#B04A18"></div>
+<div style="flex:1;height:135px;background:#B04A18"></div>
+<div style="flex:1;height:85px;background:#B04A18"></div>
+<div style="flex:1;height:65px;background:#E8A27F"></div>
+<div style="flex:1;height:83px;background:#B04A18"></div>
+<div style="flex:1;height:177px;background:#B04A18"></div>
+<div style="flex:1;height:330px;background:#B04A18"></div>
+<div style="flex:1;height:227px;background:#B04A18"></div>
+<div style="flex:1;height:288px;background:#B04A18"></div>
+<div style="flex:1;height:224px;background:#B04A18"></div>
+<div style="flex:1;height:161px;background:#B04A18"></div>
+<div style="flex:1;height:50px;background:#B9B4A8"></div>
+<div style="flex:1;height:13px;background:#B9B4A8"></div>
+<div style="flex:1;height:89px;background:#B9B4A8"></div>
+<div style="position:absolute;left:0px;right:0px;bottom:83px;height:0px;border-top:2px dashed #17697A"></div>
+<p style="position:absolute;left:0px;bottom:90px;width:420px;font-size:22px;font-weight:600;color:#17697A">25% of 2,582 = 646</p>
+</div>
+<div style="display:flex;gap:8px">
+<p style="flex:1;font-size:20px;text-align:center">18</p><p style="flex:1;font-size:20px;text-align:center"></p><p style="flex:1;font-size:20px;text-align:center">20</p><p style="flex:1;font-size:20px;text-align:center"></p><p style="flex:1;font-size:20px;text-align:center">22</p><p style="flex:1;font-size:20px;text-align:center"></p><p style="flex:1;font-size:20px;text-align:center">24</p><p style="flex:1;font-size:20px;text-align:center"></p><p style="flex:1;font-size:20px;text-align:center">26</p><p style="flex:1;font-size:20px;text-align:center"></p><p style="flex:1;font-size:20px;text-align:center;color:#B04A18"><b>28</b></p><p style="flex:1;font-size:20px;text-align:center"></p><p style="flex:1;font-size:20px;text-align:center">30</p><p style="flex:1;font-size:20px;text-align:center"></p><p style="flex:1;font-size:20px;text-align:center">32</p><p style="flex:1;font-size:20px;text-align:center"></p><p style="flex:1;font-size:20px;text-align:center">34</p><p style="flex:1;font-size:20px;text-align:center"></p>
+</div>
+<p style="font-size:22px;color:#5F6873">Window start (Mb) · dark orange = peak · light orange = bridged · grey = outside</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;line-height:1.4"><b>Top:</b> 28–29 Mb, 2,582. Cut-off: a quarter of that, 646.</p>
+<p style="font-size:24px;line-height:1.4"><b>Left:</b> 27 (1,382) ✓ · 26 (652) ✓ · 25 (507) ✗ but 24 (668) ✓, so 25 is bridged · 23 ✓ · 22 (977) ✓ · 21 (180) ✗ and 20 (63) ✗: <b>stop, start at 22</b>.</p>
+<p style="font-size:24px;line-height:1.4"><b>Right:</b> 29 ✓ · 30 ✓ · 31 ✓ · 32 (1,258) ✓ · 33 (395) ✗ and 34 (104) ✗: <b>stop, end at 33</b>.</p>
+<p style="font-size:24px;line-height:1.4;color:#16202B"><b>35 Mb (699) is above the line but outside:</b> the walk stops at the first two low windows in a row.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">“≥ 25%” is the rule for continuing; the peak ends where it fails twice in a row · results/plots/windows_1Mb.tsv · 41</p>
+<aside>This is the peak rule worked through on our chromosome 7. The tallest window, 28 to 29 megabases, holds 2,582 homozygous candidates, so the cut-off is a quarter of that, 646. From the top we walk outwards in both directions. A window is added while it is at least a quarter of the peak height; the rule says when to keep going, not when to stop. To the left, 27 and 26 pass. 25 megabases, at 507, is below the line, but the window after it, 24, is above, so 25 is bridged: the rule looks one window further so that a single low window does not cut the peak in two. 23 and 22 pass. Then 21 and 20 are both below, so the walk stops and the peak starts at 22. To the right, 29 to 32 pass, then 33 and 34 are both low, so the peak ends at 33. Note 35 megabases: it is above the line, but the walk had already stopped. That gives the 22 to 33 megabase peak in the report.</aside>
+</section>

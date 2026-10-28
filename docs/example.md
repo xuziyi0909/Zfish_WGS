@@ -216,7 +216,7 @@ Three things follow:
 
 There are 13 million tests and the p values are not corrected; a Bonferroni cut-off
 would need 8.4, which no variant reaches. So read the plot for the **tower**, not for
-any single dot. Slides [36–38]({{ '/slides/#36' | relative_url }}) work through the
+any single dot. Slides [36–39]({{ '/slides/#36' | relative_url }}) work through the
 calculation.
 
 ![Manhattan plot: −log10 p of mutant enrichment per variant, with a tower of dots on chromosome 7 at 22–33 Mb](assets/manhattan.png)

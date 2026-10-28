@@ -1,0 +1,35 @@
+<section id="fishersum" data-transition="fade" style="background:#F7F6F2;color:#3D4752;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B04A18">The math · Fisher’s test, the general formula</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:60px;font-weight:600;line-height:1.1;color:#16202B">When more than one deal counts, add them up</h2>
+</div>
+<div style="display:flex;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:28px;color:#16202B">\[p=\sum_{x\,\ge\,a}\frac{\binom{K}{x}\binom{N-K}{n-x}}{\binom{N}{n}}\]</p>
+<p style="font-size:24px;line-height:1.4"><b>N</b> all reads · <b>K</b> reads with the new letter · <b>n</b> mutant reads · <b>a</b> new-letter reads the mutant has</p>
+<p style="font-size:24px;line-height:1.4"><b>Top:</b> deals that give the mutant exactly <i>x</i> new-letter reads (pick <i>x</i> of the <i>K</i>, and the other <i>n</i> − <i>x</i> from the reference reads). <b>Bottom:</b> all deals. <b>Sum:</b> every outcome at least as extreme as the one seen.</p>
+<table style="font-size:24px;color:#3D4752">
+<tr style="background:#ECEAE3"><th style="width:34%;color:#16202B">Example</th><th style="width:22%;color:#16202B;text-align:right">new letter</th><th style="width:22%;color:#16202B;text-align:right">reference</th><th style="width:22%;color:#16202B;text-align:right">total</th></tr>
+<tr><td style="color:#16202B"><b>Mutant</b></td><td style="text-align:right;color:#B04A18"><b><i>a</i> = 3</b></td><td style="text-align:right">2</td><td style="text-align:right"><i>n</i> = 5</td></tr>
+<tr><td style="color:#16202B"><b>Sibling</b></td><td style="text-align:right">1</td><td style="text-align:right">5</td><td style="text-align:right">6</td></tr>
+<tr><td style="color:#16202B"><b>All</b></td><td style="text-align:right"><i>K</i> = 4</td><td style="text-align:right">7</td><td style="text-align:right"><i>N</i> = 11</td></tr>
+</table>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FDFDFB;border:1px solid #D9D5CA;border-radius:16px;padding:24px 32px">
+<p style="font-size:24px;font-weight:600;color:#16202B">Deals giving the mutant <i>x</i> new-letter reads (of 462)</p>
+<div style="display:flex;align-items:flex-end;gap:16px;height:300px;border-bottom:2px solid #5F6873;padding:0px 8px">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px">21</p><div style="width:100%;height:26px;background:#B9B4A8;border-radius:4px 4px 0px 0px"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px">140</p><div style="width:100%;height:167px;background:#B9B4A8;border-radius:4px 4px 0px 0px"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px">210</p><div style="width:100%;height:250px;background:#B9B4A8;border-radius:4px 4px 0px 0px"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px;font-weight:600;color:#B04A18">84 ← seen</p><div style="width:100%;height:100px;background:#B04A18;border-radius:4px 4px 0px 0px"></div></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%"><p style="font-size:22px;font-weight:600;color:#B04A18">7</p><div style="width:100%;height:8px;background:#B04A18;border-radius:4px 4px 0px 0px"></div></div>
+</div>
+<div style="display:flex;gap:16px;padding:0px 8px">
+<p style="flex:1;font-size:22px;text-align:center">0</p><p style="flex:1;font-size:22px;text-align:center">1</p><p style="flex:1;font-size:22px;text-align:center">2</p><p style="flex:1;font-size:22px;text-align:center;color:#B04A18"><b>3</b></p><p style="flex:1;font-size:22px;text-align:center;color:#B04A18"><b>4</b></p>
+</div>
+<p style="font-size:24px;line-height:1.4;color:#16202B"><b><i>x</i> = 3:</b> C(4, 3) · C(7, 2) = 4 × 21 = 84<br><b><i>x</i> = 4:</b> C(4, 4) · C(7, 1) = 1 × 7 = 7<br><b><i>p</i></b> = (84 + 7) / 462 = 0.197 → −log₁₀ <i>p</i> = <b>0.71</b></p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">The sum stops at <i>x</i> = 4 because only 4 reads carry the new letter · tmppe (5 of 5, 0 of 6) scored 2.66 · 38</p>
+<aside>The previous slide had only one deal to count, because the mutant showed the most extreme outcome possible. Usually more than one outcome counts, and the formula adds them up. Here the mutant has three new-letter reads and two reference reads, and the sibling one new-letter read and five reference reads: eleven reads in all, four of them new. The bottom of the fraction is again all 462 ways to deal five of the eleven reads to the mutant. The top counts the deals that give the mutant exactly x new-letter reads: choose x of the four new-letter reads, and the remaining five minus x from the seven reference reads. One-sided means we add every outcome at least as extreme as the one seen, so x equals three and x equals four: 84 plus 7, 91 deals. The sum stops at four because only four reads carry the new letter. So p is 91 in 462, about 0.2, and the dot sits at 0.71, far below tmppe's 2.66: three of five against one of six is easily produced by chance.</aside>
+</section>
