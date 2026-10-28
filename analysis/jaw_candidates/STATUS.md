@@ -85,3 +85,43 @@ All exons are covered in the mutant at about 4–5×. Low-QUAL raw calls were ch
   other vertebrates all have E.
 - aldh1a2 P393A, mmp14a N338D and b3gat3 S94A are all priority 5 (known variants; aldh1a2 and
   mmp14a also match zebrafish RefSeq).
+
+## Homozygosity mapping (2026-10-27)
+New pipeline step (`homozygosity_mapping`, results/homozygosity/mapping_windows.tsv,
+plots/homozygosity_mapping.png). At SNVs where the mutant has ≥ 2 alt reads (depth ≥ 4) and the
+sibling ≥ 1 ref read (depth ≥ 3), it measures the share of mutant reads showing the reference,
+i.e. coming from another version of the chromosome, in 250 kb windows.
+
+- **Genome-wide minimum: chr7 28.75–29.5 Mb, 1.5–1.9%** (error level). Genome typical 45%;
+  next-best chromosome 16 at 12%.
+- chr7 profile: 21.75–24.0 Mb 13–19%; **24.0–26.45 Mb 35–44% (two copies)**; 26.5–28.75 Mb 4–6%;
+  **28.75–29.5 Mb 1.5–1.9%**; 29.5–37.5 Mb mostly 9–21%.
+- **The 24.0–26.45 Mb block is real two-copy heterozygosity, not an artefact.** It has sharp edges
+  (~23.97 and 26.46 Mb at 20 kb resolution) and normal depth (4.3 vs 4.0–4.1). Allele fractions are
+  centred on 0.5. There are no N gaps and no large SV at the edges. Genes keep the same order on
+  chr7 in GRCz12tu and GRCz13ab (NCBI Datasets). So the mutation can't be there; btr09 L360V
+  (24.52 Mb) drops out, as do rgp1/b3gat3/mmp14a in that flank.
+- **The mutant sample is probably a pool.** The in-between values (e.g. 10–15% at 30–33 Mb) can't
+  come from one diploid fish. The minority reads are real: at 30–33.2 Mb they are 8.5% where the
+  sibling carries ref, vs 0.8% where it carries alt. Allele fractions at those sites are skewed
+  (mostly 1 ref read in 6–8), not centred on 0.5. A pool of a few mutants with crossovers near
+  the mutation explains this. The 24–26.45 block then means all pooled mutants carry two different
+  mutant-chromosome lineages there (e.g. the two carrier parents' chromosomes differ). This
+  corrects the earlier guess, from the 50% allele balance alone, that the sample was one fish.
+- **Best interval 28.75–29.5 Mb** contains cog4 and thap11 (known jaw genes; thap11 5'UTR
+  c.-217A>T at 29,045,070), tmppe R370W, HERC1 (Q3550H, D1201E, splice +2 insertion),
+  SLC38A8 C209R, acd T288A, ogfod1 V36I, trpm1a S358C and ENSDARG00000103445 (E252K, S254R).
+  Other genes: dok4, dnaaf1, nrn1lb, gfod2, vrk3, fbxl8, tradd, gnao1b, mtbl, exosc6, aph1b,
+  dapk2a, sh2d7, rab8b, gtf2a2, foxb1b.
+- TJP1 P1240L (31.13 Mb, 12%) and si:dkey-1h4.4 stop-lost (30.93 Mb, 11%) sit in the linked region
+  but outside the best interval: less likely if the sample is a pool.
+- Caveats: one sample per group at ~4×. The pool inference rests on read fractions, and the number
+  of fish is not recorded (ask). A misclassified wild-type embryo in a mutant pool would also raise
+  the share everywhere except at the mutation itself.
+
+### Revised next steps
+1. Genotype ~20 single mutants and ~20 siblings at chr7 ~23, 25, 28, 29.2 (HERC1 Q3550H) and 31 Mb.
+   All mutants should be homozygous at 29.2. Mutants should be heterozygous at 25 if the two-lineage
+   explanation is right.
+2. Sanger the coding exons and UTRs of cog4, thap11, tmppe and HERC1 in mutants.
+3. Find out how many fish went into libraries 0038 and 0039.
