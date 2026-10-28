@@ -89,6 +89,7 @@ All plots are also saved in `results/plots/` as PNG (for slides) and PDF (for pa
 | **Variant density** | A tall, isolated tower of mutant-specific variants, especially homozygous ones. That's the chromosome segment the mutant inherited differently from the control. For a recessive mutation, the causal change is usually inside it. |
 | **Homozygosity** | Red blocks in the difference track are regions where the mutant has lost variation but the control hasn't. That's the footprint of a recessive mutation. |
 | **Runs of homozygosity** | Found with `bcftools roh`, a hidden Markov model that weighs every genotype call along the chromosome. The top track is the share of each 1 Mb window that lies in a run, per sample; both samples share many runs from the lab strain's background. The red block in the difference track is where the mutant is in runs and the control isn't. At low coverage single runs are fragmented, so read the window shares, not individual runs. |
+| **Homozygosity mapping** | The share of mutant reads that come from another version of the chromosome, at sites where the control shows the reference letter. Next to a recessive mutation every mutant chromosome carries the same version, so the line drops to about 0. The bottom panel zooms in on the chromosome with the lowest point. The dark band is the **best interval**, the light band the wider **linked** region. Blocks at the genome-typical level (dashed line) inside a peak mean the mutant has two different copies there, so the mutation can't be in them. Values in between (say 5–20%) can't come from one fish; they suggest a pooled sample in which some fish carry a crossover. |
 | **Manhattan plot** | Each dot is one variant; higher means its reads favour the mutant more strongly. Look for a *tower* of dots rather than single tall points. At low coverage the maximum height is limited. |
 | **Coverage / copy number** | A step to about −1 in the bottom track suggests the mutant lost one copy of a large region; about +0.58 suggests a duplication. Dips in *both* samples are just hard-to-sequence regions. |
 | **Summary** | Variant categories, kinds of protein changes, allele fractions (0.5 = one copy, 1.0 = both), structural-variant sizes. |
@@ -207,16 +208,19 @@ results/
 ├── report.html                       ← start here
 ├── mutant_specific/
 │   ├── mutant_specific_variants.xlsx ← start here (Excel)
-│   ├── peak_candidates.tsv           protein-changing variants inside the homozygosity peak
+│   ├── peak_candidates.tsv           protein-changing variants inside the homozygosity peak,
+│   │                                 with their homozygosity-mapping window (best interval / linked / outside)
 │   ├── candidate_genes.tsv
 │   ├── mutant_specific_variants.tsv.gz   every mutant-specific variant, incl. non-coding (large)
 │   └── mutant_specific_variants.vcf.gz   same, as VCF (for IGV)
 ├── homozygosity/
-│   └── roh_runs.tsv                      runs of homozygosity per sample (bcftools roh)
+│   ├── roh_runs.tsv                      runs of homozygosity per sample (bcftools roh)
+│   └── mapping_windows.tsv               homozygosity mapping: share of mutant reads from another version per 250 kb
 ├── structural_variants/
 │   └── mutant_specific_sv.tsv
 ├── plots/                            figures (PNG + PDF) and the per-window tables behind them
-│   ├── manhattan / variant_density / homozygosity / homozygosity_runs / coverage / candidate_map / summary
+│   ├── manhattan / variant_density / homozygosity / homozygosity_runs / homozygosity_mapping /
+│   │   coverage / candidate_map / summary
 │   ├── windows_1Mb.tsv                   variant counts, homozygosity and runs of homozygosity per 1 Mb
 │   └── coverage_500kb_ratio.tsv          depth and mutant/control ratio per 500 kb
 ├── variants/

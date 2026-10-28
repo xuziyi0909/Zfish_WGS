@@ -63,6 +63,8 @@ PROTEIN_REFS = {
 }
 ROH_ENABLED = bool(config.get("homozygosity_runs", {}).get("enabled", False))
 ROH_TSV = f"{OUT}/homozygosity/roh_runs.tsv"
+MAPPING_ENABLED = bool(config.get("homozygosity_mapping", {}).get("enabled", False)) and bool(CONTROLS)
+MAPPING_TSV = f"{OUT}/homozygosity/mapping_windows.tsv"
 COMPARISON_MODE = str(config["comparison"].get("mode", "absent")).lower()
 if COMPARISON_MODE not in ("absent", "sibling"):
     raise ValueError(f"comparison: mode must be 'absent' or 'sibling' (found '{COMPARISON_MODE}')")

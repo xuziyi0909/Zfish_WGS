@@ -27,6 +27,6 @@
 </div>
 </div>
 <p style="font-size:26px;line-height:1.4;color:#16202B">A base can be read perfectly, from a read placed perfectly, and still sit in the wrong column. Each error source needs its own probability.</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">BAQ: Li 2011, Bioinformatics 27:1157 · bcftools ≥ 1.13 applies it in problem regions only (-D: everywhere) · 58</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">BAQ: Li 2011, Bioinformatics 27:1157 · bcftools ≥ 1.13 applies it in problem regions only (-D: everywhere) · 62</p>
 <aside>One observed letter can be wrong for three independent reasons. First, the sequencer can misread it; that is the base quality. Second, the whole read can come from somewhere else in the genome, a paralog or a repeat; that is the mapping quality. A misplaced read tells us nothing about this site, so in the mixture model it contributes a flat one quarter for every letter. Third, near an insertion or deletion the aligner may shift a base by one or two columns; that is base alignment quality, computed with a profile hidden Markov model that sums over all the ways the read could be aligned locally. mpileup takes the lower of the base quality and BAQ, then drops bases below our threshold of 20, which removes many false SNPs next to indels. Since bcftools 1.13, BAQ is only applied in regions that look problematic, to save time.</aside>
 </section>

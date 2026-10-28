@@ -27,6 +27,9 @@ You don't need to change anything for a normal run. Open the file with
 | `homozygosity_runs.enabled` | `true` | Set to `false` to skip the runs-of-homozygosity step (`bcftools roh`) |
 | `homozygosity_runs.min_reads`, `min_reads_each_allele` | `3`, `2` | Genotype calls with fewer reads, or "heterozygous" calls resting on a single read of one allele, are ignored before the run search. At ~3× coverage these single error-prone reads otherwise break every run |
 | `homozygosity_runs.az_to_hw` | `1e-10` | Chance of a run ending between two sites; lower gives longer runs |
+| `homozygosity_mapping.enabled` | `true` | Set to `false` to skip homozygosity mapping (it also needs a control sample) |
+| `homozygosity_mapping.window_kb` | 250 | Window size. Larger windows are smoother but give coarser interval edges |
+| `homozygosity_mapping.core_margin` | 0.02 | The best interval takes windows within this share of the lowest window. Raise it for a wider, safer interval |
 | `structural_variants.enabled` | `true` | Set to `false` to skip the slowest step |
 | `resources.threads_per_job` | 16 | CPU threads for alignment |
 | `reference.*` | GRCz11, Ensembl 113 | Only to use a different genome build |

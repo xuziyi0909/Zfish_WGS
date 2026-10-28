@@ -113,12 +113,13 @@ them inside the chr7 peak: *tmppe* R370W and *TJP1* P1240L.
 
 ### The mapping signal: chromosome 7
 
-Four plots look at the same signal in different ways. The first three summarise
-1 Mb windows; only the last, the Manhattan plot, shows a p value.
+Five plots look at the same signal in different ways. The first four summarise
+windows along the genome; only the last, the Manhattan plot, shows a p value.
+Homozygosity mapping (plot 4) gives the narrowest answer: **chr7 28.75–29.5 Mb**.
 
 **1. Variant density** (y axis: variants per Mb). How many high-confidence candidate
 variants fall in each 1 Mb window: all of them on top, only those homozygous in the
-mutant below. This is the homozygosity-mapping plot.
+mutant below.
 
 ![Variant density: high-confidence candidate variants per Mb, with one tall peak on chromosome 7](assets/variant_density.png)
 
@@ -143,11 +144,49 @@ background (top). The difference (bottom) has one clear block: **chromosome 7,
 
 This narrows the 22–33 Mb density peak to its cleanest core. *tmppe* (29.2 Mb),
 *HERC1* (29.2 Mb) and *si:dkey-1h4.4* (30.9 Mb) lie inside it; *TJP1* (31.1 Mb) is
-just past its edge, where the mutant is in runs over 44% of the window. At 24–25 Mb,
-inside the density peak, the mutant looks heterozygous again; whether that is a
-recombination or a mapping problem needs checking.
+just past its edge, where the mutant is in runs over 44% of the window.
 
-**4. Manhattan plot** (y axis: −log10 p). One dot per variant; its height is a
+**4. Homozygosity mapping** (y axis: share of mutant reads from another version of
+the chromosome). The pipeline takes every site where the mutant carries a variant
+and the sibling shows the reference letter, and asks how many mutant reads still
+show the reference. Those reads come from a second, different version of the
+chromosome. Next to a recessive mutation every mutant chromosome carries the same
+version, so the share falls to about 0 (sequencing errors give 1–2%). Where the
+mutant has two different copies it is about 45%, the genome-wide typical value.
+
+![Homozygosity mapping: share of mutant reads from another chromosome version, genome-wide (one dip to near zero on chromosome 7) and along chromosome 7 (best interval 28.75–29.5 Mb)](assets/homozygosity_mapping.png)
+
+The lowest point in the genome is **chr7 28.75–29.5 Mb**, at 1.5–1.9% (the next-best
+chromosome, 16, only gets down to 12%). Along chromosome 7 the curve has steps:
+
+| chr7 (Mb) | Share from another version | What it means |
+|---|---|---|
+| 21.75–24.0 | 13–19% | Mostly one version, but not all of the mutant DNA |
+| **24.0–26.45** | **35–44%** | The mutant has two different copies. The mutation can't be here |
+| 26.5–28.75 | 4–6% | Almost all one version |
+| **28.75–29.5** | **1.5–1.9%** | **Only one version: the best interval** |
+| 29.5–37.5 | mostly 9–21% | Mostly one version, but not all (33.5–34.5 Mb has too few informative sites to read) |
+
+The 24.0–26.45 Mb block has sharp edges, normal read depth and allele fractions
+centred on 50%, and the genes keep the same order in the newer assemblies GRCz12tu
+and GRCz13ab, so it isn't a mapping or assembly artefact. The mutant really carries
+two different versions there, most likely because the line's mutant chromosomes
+picked up different pieces by crossing over in earlier generations.
+
+The in-between values (4–19%) say something about the sample. One diploid fish
+gives 0% or about 50% at each site, never 10%. Here the reads of the second version
+are a minority at each site (mostly 1 in 6–8 reads), and they appear only at sites
+where the sibling also carries that version, so they aren't errors. That fits a
+mutant sample made of **several fish**, a few of which carry a crossover close to the
+mutation. If so, the mutation must sit where **no** mutant fish carries another
+version, which is 28.75–29.5 Mb.
+
+Nine priority-2 variants lie in the best interval, in *tmppe* (R370W), *HERC1*
+(Q3550H, D1201E), *SLC38A8*, *acd*, *ogfod1*, *trpm1a* and *ENSDARG00000103445*.
+The report's peak table marks every variant as *best interval*, *linked* or
+*outside*.
+
+**5. Manhattan plot** (y axis: −log10 p). One dot per variant; its height is a
 p value from **Fisher's exact test** on that variant's reads.
 
 How one dot is calculated, using *tmppe* (chr7:29,157,506 C>T):
@@ -187,15 +226,19 @@ identical copies of the chromosome segment around it, while the sibling doesn't.
 The region holds 44 priority 1–2 variants, all novel. Most are passengers carried
 along with the causal change. The leads worth testing first:
 
-| Variant (chr7) | Position | Reads: mutant · sibling | Notes |
-|---|---|---|---|
-| *tmppe* R370W | 29,157,506 | 5/5 · 0/6 | Novel; R in human, rat and chicken (conserved) |
-| *TJP1* P1240L | 31,126,090 | 3/3 · 2/8 | Novel; P in human, rat, chicken and frog (conserved); the sibling looks like a carrier |
-| *HERC1* Q3550H | 29,211,339 | 7/7 · 0/5 | Novel, best read support; not conserved (other vertebrates have E) |
-| *si:dkey-1h4.4* stop lost | 30,929,805 | 4/4 · 1/4 | The only priority-1 variant in the peak; unnamed gene |
+| Variant (chr7) | Position | Reads: mutant · sibling | Mapping | Notes |
+|---|---|---|---|---|
+| *tmppe* R370W | 29,157,506 | 5/5 · 0/6 | best interval | Novel; R in human, rat and chicken (conserved) |
+| *HERC1* Q3550H | 29,211,339 | 7/7 · 0/5 | best interval | Novel, best read support; not conserved (other vertebrates have E) |
+| *TJP1* P1240L | 31,126,090 | 3/3 · 2/8 | linked (12%) | Novel; P in human, rat, chicken and frog (conserved); the sibling looks like a carrier |
+| *si:dkey-1h4.4* stop lost | 30,929,805 | 4/4 · 1/4 | linked (11%) | The only priority-1 variant in the peak; unnamed gene |
 
-The known jaw genes *cog4* and *thap11* sit in the core of the peak with no coding
-change; *thap11* has a novel 5′ UTR variant. The full write-up is in
+If the mutant sample is a pool, *tmppe* and *HERC1* are the stronger leads: at the
+*TJP1* and *si:dkey-1h4.4* positions about one mutant read in nine comes from another
+version of the chromosome.
+
+The known jaw genes *cog4* and *thap11* (29.02 and 29.04 Mb) sit inside the best
+interval with no coding change; *thap11* has a novel 5′ UTR variant. The full write-up is in
 `analysis/jaw_candidates/STATUS.md`.
 
 {: .note }

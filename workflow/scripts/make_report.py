@@ -308,6 +308,15 @@ PLOT_TEXT = {
         "per sample. Bottom: mutant minus control; the shaded block is the strongest stretch where the "
         "mutant is in runs and the control is not. At low coverage runs come out fragmented, so read the "
         "window shares rather than single runs (homozygosity/roh_runs.tsv)."),
+    "homozygosity_mapping": ("Homozygosity mapping",
+        "At sites where the mutant carries a variant and the control shows the reference letter, this is the "
+        "share of mutant reads that still show the reference, i.e. come from another version of the "
+        "chromosome. Next to a recessive mutation every mutant chromosome carries the same version, so the "
+        "share drops to about 0 (sequencing errors give 1–2%); two different copies give the dashed "
+        "genome-typical level. Values in between mean that only some of the mutant DNA carries another "
+        "version, which happens when the sample is a pool of fish and some of them carry a crossover. "
+        "Top: whole genome. Bottom: the chromosome with the lowest point. The dark band (best interval) "
+        "is where the mutation most likely lies; per-window values: homozygosity/mapping_windows.tsv."),
     "manhattan": ("Manhattan plot",
         "Every dot is one variant; the higher it is, the more strongly its reads favour the mutant over the "
         "control (one-sided Fisher exact test). Look for towers of dots rather than single high points. "
@@ -321,6 +330,12 @@ PLOT_TEXT = {
         "variants, (c) allele fractions in the mutant, (d) sizes of mutant-specific structural variants."),
 }
 pkc = pd.read_csv(inp.peak_candidates, sep="\t", dtype=str).fillna("")
+MAP_PILL = {"best interval": '<span class="pill p1">best interval</span>',
+            "linked": '<span class="pill p2">linked</span>', "outside": "outside"}
+if "mapping" in pkc.columns:
+    order = {"best interval": 0, "linked": 1, "outside": 2}
+    pkc = pkc.assign(_o=pkc["mapping"].map(order), _p=pd.to_numeric(pkc["priority"]),
+                     _x=pd.to_numeric(pkc["pos"])).sort_values(["_o", "_p", "_x"]).drop(columns=["_o", "_p", "_x"])
 peak_table = ""
 if len(pkc):
     peak_table = (
@@ -328,13 +343,19 @@ if len(pkc):
         '<p class="sub">Every mutant-specific HIGH/MODERATE variant in the peak region, all priorities. Inside a '
         'linked region most variants are homozygous "passengers", so expect several; the causal change is '
         'often the one that best fits the phenotype (check ZFIN). Full list: '
-        '<code>mutant_specific/peak_candidates.tsv</code>.</p>'
-        '<table><thead><tr><th class="num">Priority</th><th>Location</th><th>Gene</th><th>Effect</th>'
-        '<th>Change</th><th>Confidence</th></tr></thead><tbody>'
+        '<code>mutant_specific/peak_candidates.tsv</code>. '
+        + ('<b>Mapping</b>: whether the variant lies in the best interval or the wider linked region of the '
+           'homozygosity-mapping plot; the table is sorted with the best interval first.</p>'
+           if "mapping" in pkc.columns else "</p>")
+        + '<table><thead><tr><th class="num">Priority</th><th>Location</th><th>Gene</th><th>Effect</th>'
+        '<th>Change</th><th>Confidence</th>' + ('<th>Mapping</th>' if "mapping" in pkc.columns else '')
+        + '</tr></thead><tbody>'
         + "".join(f"<tr><td class='num'>{prio_badge(r.priority)}</td><td>{loc_link(r.chrom, r.pos)}</td>"
                   f"<td>{gene_link(r.gene, r.gene_id)}</td><td>{esc(r.effect)}</td>"
                   f"<td><code>{esc(r.hgvs_p)}</code></td>"
-                  f"<td>{'high' if r.category in HIGH_CONF else 'low'}</td></tr>"
+                  f"<td>{'high' if r.category in HIGH_CONF else 'low'}</td>"
+                  + (f"<td>{MAP_PILL.get(r.mapping, esc(r.mapping))}</td>" if "mapping" in pkc.columns else "")
+                  + "</tr>"
                   for r in pkc.head(150).itertuples())
         + "</tbody></table></div>")
 
@@ -346,7 +367,7 @@ for name, (title, text) in PLOT_TEXT.items():
         plots_html += (f'<div class="card fig"><h3>{title}</h3><p class="sub">{text}</p>'
                        f'<img alt="{title}" src="data:image/png;base64,{b64}">'
                        f'<div class="sub">plots/{name}.png · plots/{name}.pdf</div></div>')
-        if name == ("homozygosity_runs" if "homozygosity_runs" in plot_by_name else "homozygosity"):
+        if name == [n for n in ("homozygosity", "homozygosity_runs", "homozygosity_mapping") if n in plot_by_name][-1]:
             plots_html += peak_table
 
 peak = json.load(open(inp.peak))
@@ -361,6 +382,21 @@ if roh_peak:
         f'mutant is homozygous and the control is not is chromosome {esc(str(roh_peak["chrom"]))}, '
         f'{roh_peak["start_mb"]}–{roh_peak["end_mb"]} Mb (mutant in runs over '
         f'{100 * roh_peak["mutant_share"]:.0f}% of it, control {100 * roh_peak["control_share"]:.0f}%).')
+mapping = peak.get("homozygosity_mapping")
+map_sentence = ""
+if mapping:
+    mc = mapping.get("candidates", [])
+    top_ = [c for c in mc if str(c["priority"]) in ("1", "2")]
+    genes_ = list(dict.fromkeys(str(c["label"]) for c in top_))
+    map_sentence = (
+        f' <b>Homozygosity mapping</b> narrows it to chromosome {esc(str(mapping["chrom"]))}, '
+        f'{mapping["start"] / 1e6:.2f}–{mapping["end"] / 1e6:.2f} Mb: there, only '
+        f'{100 * mapping["lowest_share"]:.1f}% of mutant reads come from another version of the chromosome '
+        f'(genome typical {100 * mapping["typical_share"]:.0f}%; next-best chromosome '
+        f'{esc(str(mapping["next_chrom"]))} at {100 * mapping["next_share"]:.0f}%). '
+        + (f'It holds {len(mc)} protein-changing mutant-specific variant(s), {len(top_)} of priority 1–2 in '
+           f'{", ".join("<b>" + esc(g) + "</b>" for g in genes_)}.' if top_ else
+           f'It holds {len(mc)} protein-changing mutant-specific variant(s), none of priority 1–2.'))
 if peak.get("found"):
     share = 100 * peak["homozygous_variants_in_peak"] / max(peak["homozygous_variants_total"], 1)
     cands = peak["candidates"]
@@ -379,7 +415,7 @@ if peak.get("found"):
         + ' Priority (1–5) is scored one variant at a time and ignores location, so the top-priority '
           'variants elsewhere in the genome can rank above variants in this region; weigh both. '
           'See the plots and the table of variants inside the peak in section 4.'
-        + roh_sentence + '</div>')
+        + roh_sentence + map_sentence + '</div>')
 
 # ------------------------------------------------------------------ warnings
 warnings = []
@@ -463,6 +499,7 @@ files = [
     ("mutant_specific/mutant_specific_variants.tsv.gz", "Every mutant-specific variant, including non-coding ones (compressed text table; often too large for Excel)."),
     ("mutant_specific/mutant_specific_variants.vcf.gz", "Same variants in VCF format (for IGV or other tools)."),
     ("homozygosity/roh_runs.tsv", "Runs of homozygosity in each sample (bcftools roh): start, end, length."),
+    ("homozygosity/mapping_windows.tsv", "Homozygosity mapping: share of mutant reads from another chromosome version in each window."),
     ("structural_variants/mutant_specific_sv.tsv", "Large deletions, duplications, inversions found only in the mutant."),
     ("variants/all_samples.annotated.vcf.gz", "All variants in all samples, with gene annotation."),
     ("alignments/", "Aligned reads (BAM). Open in IGV to look at a variant by eye."),
@@ -501,6 +538,15 @@ if roh_peak is not None or "homozygosity_runs" in plot_by_name:
         f"than {rc.get('min_reads', 3)} reads, or heterozygous calls with fewer than "
         f"{rc.get('min_reads_each_allele', 2)} reads of either allele, to missing; the share of each 1 Mb "
         f"window in runs was compared between mutant and control.")
+methods_map = ""
+if mapping is not None or "homozygosity_mapping" in plot_by_name:
+    hm = cfg.get("homozygosity_mapping", {})
+    methods_map = (
+        f" For homozygosity mapping, SNVs where the mutant had ≥ 2 alternate reads (depth ≥ 4) and the control "
+        f"≥ 1 reference read (depth ≥ 3) were grouped in {hm.get('window_kb', 250)} kb windows (≥ "
+        f"{hm.get('min_sites', 30)} sites); the share of mutant reads showing the reference allele was computed "
+        f"per window and smoothed over 5 windows. The best interval is the run of windows, around the lowest "
+        f"smoothed point in the genome, whose share is within {hm.get('core_margin', 0.02):g} of the lowest window.")
 page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>WGS Variant Report</title>
 <style>{CSS}</style></head><body><main>
@@ -561,7 +607,7 @@ Full list: <code>mutant_specific/candidate_genes.tsv</code>.</p>
 aligned to {esc(cfg['reference']['name'])} with bwa-mem2, and PCR duplicates were marked with samtools markdup.
 Small variants were called jointly across all samples with bcftools mpileup/call (MAPQ ≥ {cfg['alignment']['min_mapping_quality']},
 base quality ≥ {vc['min_base_quality']}), normalised, filtered to QUAL ≥ {vc['min_qual']} and annotated with snpEff.
-{methods_compare}{methods_roh} Structural variants were called with DELLY.</div>
+{methods_compare}{methods_roh}{methods_map} Structural variants were called with DELLY.</div>
 </main></body></html>"""
 
 open(snakemake.output[0], "w").write(page)

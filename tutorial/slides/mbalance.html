@@ -22,6 +22,6 @@
 <p style="font-size:23px;line-height:1.4">So evidence cannot grow like \(c^n\) from one artefact. Marking duplicates removes the most common cause.</p>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Correlated-error model: Li 2011, Bioinformatics 27:2987 · our sibling-mode 90%/60% cut-offs come after calling, on AD counts · 60</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#5F6873">Correlated-error model: Li 2011, Bioinformatics 27:2987 · our sibling-mode 90%/60% cut-offs come after calling, on AD counts · 64</p>
 <aside>A common belief is that a variant is called when the alternate share passes some threshold. That is not how bcftools works. Take nine A reads and one G read. If the G letter has quality 30, the heterozygote is about three times more likely than the homozygote, because one error at one in three thousand is less plausible than a one-half coin flip landing nine to one. If the same G has quality 20, the homozygote wins, because a one-in-three-hundred error explains it more easily. The prior on the next slides will push this further towards AA. The other assumption is independence. Twenty reads that share one artefact are not twenty witnesses. The samtools error model discounts repeated errors of the same kind: each further one counts with an exponent that shrinks. Our own sibling-mode rules, the 90 and 60 percent, are applied later to read counts; they are decision rules, not part of this model.</aside>
 </section>

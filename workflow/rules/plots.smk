@@ -1,9 +1,11 @@
-# Genome-wide figures: Manhattan, variant density, homozygosity, runs of homozygosity, coverage,
-# candidate map.
+# Genome-wide figures: Manhattan, variant density, homozygosity, runs of homozygosity,
+# homozygosity mapping, coverage, candidate map.
 
 PLOTS = ["manhattan", "variant_density", "homozygosity", "coverage", "candidate_map", "summary"]
 if ROH_ENABLED:
     PLOTS.insert(3, "homozygosity_runs")
+if MAPPING_ENABLED:
+    PLOTS.insert(PLOTS.index("homozygosity") + 1 + ROH_ENABLED, "homozygosity_mapping")
 
 
 rule coverage_windows:
@@ -44,10 +46,13 @@ rule plots:
         cov_ratio=f"{OUT}/plots/coverage_500kb_ratio.tsv",
         peak=f"{OUT}/plots/peak.json",
         peak_candidates=f"{OUT}/mutant_specific/peak_candidates.tsv",
+        mapping=MAPPING_TSV if MAPPING_ENABLED else [],
     params:
         controls=CONTROLS,
         mutants=MUTANTS,
         outdir=f"{OUT}/plots",
+        mapping_enabled=MAPPING_ENABLED,
+        mapping=config.get("homozygosity_mapping", {}),
     log:
         f"{OUT}/logs/plots.log",
     script:

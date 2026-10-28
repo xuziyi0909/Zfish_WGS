@@ -90,6 +90,20 @@ homozygosity_runs:
   genotype_error_phred: 30  # how much each genotype call is trusted (bcftools roh -G)
   az_to_hw: 1.0e-10         # chance of a run ending between sites (lower = longer runs)
 
+# ---------------------------------------------------------------------
+# Homozygosity mapping (needs a control). At sites where the mutant carries a
+# variant and the control shows the reference letter, count the mutant reads
+# that still show the reference, i.e. come from another version of the
+# chromosome. Next to a recessive mutation every mutant chromosome carries the
+# same version, so this share drops to about 0 (one fish or a pool of mutants);
+# two different copies give about 0.45.
+# ---------------------------------------------------------------------
+homozygosity_mapping:
+  enabled: true
+  window_kb: 250            # window size along the chromosome
+  min_sites: 30             # windows with fewer informative sites are left blank
+  core_margin: 0.02         # best interval = windows within this share of the lowest window
+
 structural_variants:
   enabled: true             # call large deletions/duplications/inversions with DELLY
 

@@ -33,14 +33,14 @@ To make a PDF or print handouts, open the slides and use your browser's **Print*
 |---|---|---|
 | 1. The ideas | 3–7 | Mutant vs control, key words, sibling genetics, the linked region |
 | 2. Running it | 8–17 | Setup, copying files, the sample sheet, comparison mode, settings, running |
-| 3. Inside the pipeline | 18–39 | Each of the eight steps, the checks, the math behind each test, and the priority 1–5 ranking |
-| 4. Reading the results | 40–44 | Files, the report, the Excel workbook, judging a variant |
-| 5. Worked example | 45–54 | The jaw mutant: data, peak, runs of homozygosity, false leads, remaining leads, next steps |
-| 6. Appendix: the math | 55–67 | Error models, genotype likelihoods, PL, Bayes, the bcftools caller, depth, homozygosity HMM |
+| 3. Inside the pipeline | 18–40 | Each of the eight steps, the checks, the math behind each test, and the priority 1–5 ranking |
+| 4. Reading the results | 41–45 | Files, the report, the Excel workbook, judging a variant |
+| 5. Worked example | 46–58 | The jaw mutant: data, peak, runs of homozygosity, homozygosity mapping, the two-copy block at 24–26 Mb, one fish or a pool, false leads, remaining leads, next steps |
+| 6. Appendix: the math | 59–71 | Error models, genotype likelihoods, PL, Bayes, the bcftools caller, depth, homozygosity HMM |
 
 ## The math behind each test
 
-Eight slides, labelled *The math* in orange, sit next to the step they explain and
+Nine slides, labelled *The math* in orange, sit next to the step they explain and
 work through each calculation with a real variant from our data:
 
 | Slide | Explains |
@@ -53,24 +53,25 @@ work through each calculation with a real variant from our data:
 | [37]({{ '/slides/#37' | relative_url }}) | Fisher's exact test step by step: dealing the reads out at random |
 | [38]({{ '/slides/#38' | relative_url }}) | Reading the Manhattan plot: bands, the depth ceiling, and why chromosome 7 towers |
 | [39]({{ '/slides/#39' | relative_url }}) | Window statistics: the peak, homozygosity and copy number |
+| [40]({{ '/slides/#40' | relative_url }}) | Homozygosity mapping: the share of mutant reads from another version, and how the best interval is chosen |
 
 Part 6 is an optional appendix with the full derivations, again checked against our
 own VCF (the tmppe variant):
 
 | Slide | Explains |
 |---|---|
-| [56]({{ '/slides/#56' | relative_url }}) | The big picture: likelihood × prior = posterior, then decision rules |
-| [57]({{ '/slides/#57' | relative_url }}) | Five Phred numbers (base quality, MAPQ, PL, GQ, QUAL) and what each means |
-| [58]({{ '/slides/#58' | relative_url }}) | Three error sources: base quality, mapping quality, base alignment quality (BAQ) |
-| [59]({{ '/slides/#59' | relative_url }}) | Genotype likelihoods from single reads |
-| [60]({{ '/slides/#60' | relative_url }}) | Why an allele-fraction cut-off is not the calling model; correlated errors |
-| [61]({{ '/slides/#61' | relative_url }}) | PL values, checked against our VCF |
-| [62]({{ '/slides/#62' | relative_url }}) | Bayes' rule, Hardy–Weinberg priors and genotype quality (GQ) |
-| [63]({{ '/slides/#63' | relative_url }}) | The bcftools multiallelic caller, its prior and site QUAL |
-| [64]({{ '/slides/#64' | relative_url }}) | Depth: DP vs AD, and Poisson coverage at 3× |
-| [65]({{ '/slides/#65' | relative_url }}) | Duplicates, indel normalisation and filters: rules, not probabilities |
-| [66]({{ '/slides/#66' | relative_url }}) | Runs of homozygosity as a hidden Markov model, and how the pipeline runs `bcftools roh` |
-| [67]({{ '/slides/#67' | relative_url }}) | Six common ways to misread a VCF |
+| [60]({{ '/slides/#60' | relative_url }}) | The big picture: likelihood × prior = posterior, then decision rules |
+| [61]({{ '/slides/#61' | relative_url }}) | Five Phred numbers (base quality, MAPQ, PL, GQ, QUAL) and what each means |
+| [62]({{ '/slides/#62' | relative_url }}) | Three error sources: base quality, mapping quality, base alignment quality (BAQ) |
+| [63]({{ '/slides/#63' | relative_url }}) | Genotype likelihoods from single reads |
+| [64]({{ '/slides/#64' | relative_url }}) | Why an allele-fraction cut-off is not the calling model; correlated errors |
+| [65]({{ '/slides/#65' | relative_url }}) | PL values, checked against our VCF |
+| [66]({{ '/slides/#66' | relative_url }}) | Bayes' rule, Hardy–Weinberg priors and genotype quality (GQ) |
+| [67]({{ '/slides/#67' | relative_url }}) | The bcftools multiallelic caller, its prior and site QUAL |
+| [68]({{ '/slides/#68' | relative_url }}) | Depth: DP vs AD, and Poisson coverage at 3× |
+| [69]({{ '/slides/#69' | relative_url }}) | Duplicates, indel normalisation and filters: rules, not probabilities |
+| [70]({{ '/slides/#70' | relative_url }}) | Runs of homozygosity as a hidden Markov model, and how the pipeline runs `bcftools roh` |
+| [71]({{ '/slides/#71' | relative_url }}) | Six common ways to misread a VCF |
 
 ## Updating the slides
 

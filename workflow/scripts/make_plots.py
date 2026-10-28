@@ -4,6 +4,7 @@ manhattan        per-variant -log10 p that the mutant carries more alt reads tha
 variant_density  high-confidence mutant-specific variants per Mb
 homozygosity     fraction of homozygous variant calls per Mb, per sample
 homozygosity_runs share of each 1 Mb window in runs of homozygosity (bcftools roh), per sample
+homozygosity_mapping share of mutant reads from another chromosome version at control-informative sites
 coverage         normalised read depth and mutant/control depth ratio (large deletions/duplications)
 candidate_map    chromosomes with priority 1-2 variants and structural variants marked
 summary          variant categories, effect types, allele fractions, SV sizes
@@ -308,6 +309,129 @@ if inp.roh:
     fig.tight_layout()
     save(fig, "homozygosity_runs")
 
+# ================================================================ 3c. homozygosity mapping
+# At SNVs where the mutant carries the variant and the control shows the reference letter, the mutant
+# reads that still show the reference come from another version of the chromosome. Next to a recessive
+# mutation every mutant chromosome carries the same version, so this share drops to about 0, whether
+# the mutant sample is one fish or a pool; two different copies give about 0.45.
+MAPPING = None
+mw = None
+if snakemake.params.mapping_enabled:
+    mcfg = snakemake.params.mapping
+    W = int(mcfg.get("window_kb", 250)) * 1000
+    min_sites, margin = int(mcfg.get("min_sites", 30)), float(mcfg.get("core_margin", 0.02))
+    cs_alt = v[[f"{s}_alt_reads" for s in controls]].sum(axis=1).to_numpy()
+    cs_ref = v[[f"{s}_ref_reads" for s in controls]].sum(axis=1).to_numpy()
+    m_dep = m_alt + m_ref
+    inf = ((v["type"] == "SNV").to_numpy() & (m_alt >= 2) & (m_dep >= 4)
+           & (cs_alt + cs_ref >= 3) & (cs_ref >= 1))
+    d = pd.DataFrame({"chrom": v["chrom"].to_numpy()[inf], "w": v["pos"].to_numpy()[inf] // W,
+                      "other": m_ref[inf], "reads": m_dep[inf]})
+    agg = d.groupby(["chrom", "w"]).agg(informative_sites=("reads", "size"), mutant_reads=("reads", "sum"),
+                                        other_version_reads=("other", "sum")).reset_index()
+    mw = pd.DataFrame([(c, w) for c in CHROMS for w in range(-(-LENGTH[c] // W))], columns=["chrom", "w"])
+    mw = mw.merge(agg, on=["chrom", "w"], how="left").fillna(0)
+    for col in ("informative_sites", "mutant_reads", "other_version_reads"):
+        mw[col] = mw[col].astype(int)
+    mw["other_version_share"] = (mw["other_version_reads"] / mw["mutant_reads"]).where(
+        mw["informative_sites"] >= min_sites)
+    mw["smoothed_share"] = mw.groupby("chrom")["other_version_share"].transform(
+        lambda s: s.rolling(5, center=True, min_periods=3).mean())
+    mw["start"], mw["end"] = mw["w"] * W, np.minimum((mw["w"] + 1) * W, mw["chrom"].map(LENGTH))
+    mw["x"] = genome_x(mw["chrom"], (mw["start"] + mw["end"]) // 2)
+    typical = float(mw["other_version_share"].median())
+
+    def extend(d, i, ok):
+        """Grow from row i while ok(share) holds; blank windows are kept only between passing windows."""
+        lo = hi = i
+        for step in (-1, 1):
+            j, last = i, i
+            while 0 <= j + step < len(d):
+                j += step
+                s = d["_s"].iloc[j]
+                if np.isnan(s):
+                    continue
+                if not ok(s):
+                    break
+                last = j
+            lo, hi = (last, hi) if step == -1 else (lo, last)
+        return lo, hi
+
+    if mw["smoothed_share"].notna().any():
+        best = mw.loc[mw["smoothed_share"].idxmin()]
+        bc = best["chrom"]
+        d = mw[mw["chrom"] == bc].reset_index(drop=True)
+        d["_s"] = d["other_version_share"]
+        near = d[(d["w"] - best["w"]).abs() <= 2]["_s"]
+        i0 = int(near.idxmin())
+        m0 = float(d["_s"].iloc[i0])
+        c_lo, c_hi = extend(d, i0, lambda s: s <= m0 + margin)
+        # linked region: most mutant chromosomes still share one version (smoothed share < half of typical)
+        d["_s"] = d["smoothed_share"]
+        l_lo, l_hi = extend(d, i0, lambda s: s < typical / 2)
+        l_lo, l_hi = min(l_lo, c_lo), max(l_hi, c_hi)
+        other = mw[mw["chrom"] != bc].groupby("chrom")["smoothed_share"].min().dropna()
+        MAPPING = {
+            "chrom": bc, "start": int(d["start"].iloc[c_lo]), "end": int(d["end"].iloc[c_hi]),
+            "lowest_share": round(m0, 3), "typical_share": round(typical, 3),
+            "linked_start": int(d["start"].iloc[l_lo]), "linked_end": int(d["end"].iloc[l_hi]),
+            "next_chrom": other.idxmin() if len(other) else None,
+            "next_share": round(float(other.min()), 3) if len(other) else None,
+            "window_kb": W // 1000,
+        }
+        print("homozygosity mapping:", MAPPING, file=sys.stderr)
+
+    fig, axes = plt.subplots(2, 1, figsize=(13, 6.4), gridspec_kw={"height_ratios": [1, 1.25]})
+    ax = axes[0]
+    for c in CHROMS:
+        dc = mw[mw["chrom"] == c]
+        ax.plot(dc["x"], dc["smoothed_share"], color=chrom_color(dc["chrom"].iloc[:1])[0], lw=1.3)
+    ax.axhline(typical, color=INK2, lw=0.8, ls="--")
+    ax.set_ylim(0, max(0.6, typical * 1.4))
+    ax.set_ylabel("share of mutant reads\nfrom another version")
+    ax.set_title(f"Homozygosity mapping: the mutation lies where this drops to 0 "
+                 f"({W // 1000} kb windows, {W * 5 // 1_000_000:g} Mb running mean)")
+    chrom_axis(ax)
+    if MAPPING:
+        ax.annotate(f"chr{bc} {MAPPING['start'] / 1e6:.2f}–{MAPPING['end'] / 1e6:.2f} Mb",
+                    (OFFSET[bc] + (MAPPING["start"] + MAPPING["end"]) / 2, MAPPING["lowest_share"]),
+                    xytext=(10, -2), textcoords="offset points", ha="left", va="bottom", fontsize=8.5,
+                    color=INK, fontweight="bold")
+    ax = axes[1]
+    if MAPPING:
+        dc = mw[mw["chrom"] == bc]
+        ax.axvspan(MAPPING["linked_start"] / 1e6, MAPPING["linked_end"] / 1e6, color="#fde9df", lw=0,
+                   label="linked: most mutant chromosomes share one version")
+        ax.axvspan(MAPPING["start"] / 1e6, MAPPING["end"] / 1e6, color="#f6b89c", lw=0,
+                   label="best interval: no more reads from another version than sequencing errors give")
+        ax.scatter((dc["start"] + dc["end"]) / 2e6, dc["other_version_share"], s=12, color=ORANGE,
+                   linewidths=0, zorder=3, label=f"{W // 1000} kb window")
+        ax.plot((dc["start"] + dc["end"]) / 2e6, dc["smoothed_share"], color=INK, lw=1, zorder=3)
+        ax.axhline(typical, color=INK2, lw=0.8, ls="--", label="genome typical (two different copies)")
+        tc = top[top["chrom"] == bc]
+        ax.vlines(tc["pos"] / 1e6, -0.04, -0.01, color=BLUE, lw=1.2, label="priority 1–2 variant")
+        genes = tc[tc["pos"].between(MAPPING["start"], MAPPING["end"] - 1)].sort_values("pos")["label"].unique()
+        ax.text(0.01, 0.97, "Priority 1–2 genes in the best interval:\n" + (
+                    "\n".join(", ".join(genes[i:i + 4]) for i in range(0, len(genes), 4)) if len(genes) else "none"),
+                transform=ax.transAxes, ha="left", va="top", fontsize=8, color=INK,
+                bbox=dict(boxstyle="round,pad=0.4", fc="white", ec=GRID, lw=0.6), zorder=5)
+        ax.set_xlim(max(0, MAPPING["linked_start"] / 1e6 - 8), min(LENGTH[bc], MAPPING["linked_end"] + 8e6) / 1e6)
+        ax.set_ylim(-0.05, max(0.75, typical * 1.65))
+        ax.set_xlabel(f"chromosome {bc} position (Mb)")
+        ax.set_ylabel("share of mutant reads\nfrom another version")
+        ax.set_title(f"Chromosome {bc}: best interval {MAPPING['start'] / 1e6:.2f}–{MAPPING['end'] / 1e6:.2f} Mb "
+                     f"(lowest window {100 * MAPPING['lowest_share']:.1f}%)")
+        ax.grid(axis="y", color=GRID, linewidth=0.8)
+        ax.set_axisbelow(True)
+        ax.legend(frameon=False, fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=3)
+    else:
+        note(ax, "Too few informative sites for homozygosity mapping.")
+    fig.tight_layout()
+    save(fig, "homozygosity_mapping")
+    mw.drop(columns=["w", "x"])[["chrom", "start", "end", "informative_sites", "mutant_reads",
+                                 "other_version_reads", "other_version_share", "smoothed_share"]] \
+        .round(4).to_csv(out.mapping, sep="\t", index=False)
+
 win = win.merge(hzdf.drop(columns="x").rename(columns={s: f"{s}_fraction_homozygous" for s in samples}),
                 on=["chrom", "win"], how="left")
 if roh is not None:
@@ -481,8 +605,21 @@ if PEAK[0] is not None:
     in_peak = top[(top["chrom"] == pc_) & (top["pos"] >= ps_ * 1e6) & (top["pos"] < pe_ * 1e6)]
     all_in_peak = mut[(mut["priority"] > 0) & (mut["chrom"] == pc_)
                       & (mut["pos"] >= ps_ * 1e6) & (mut["pos"] < pe_ * 1e6)]
-    all_in_peak.drop(columns=["gx"]).sort_values(["priority", "pos"]).to_csv(
-        out.peak_candidates, sep="\t", index=False)
+    all_in_peak = all_in_peak.drop(columns=["gx"]).sort_values(["priority", "pos"])
+    if mw is not None:
+        # share of the mapping window each variant sits in, and whether it is in the mapped interval
+        wkey = mw.set_index(["chrom", "start"])["other_version_share"]
+        W_ = int(snakemake.params.mapping.get("window_kb", 250)) * 1000
+        all_in_peak["mapping_share"] = [wkey.get((c, p_ // W_ * W_)) for c, p_ in
+                                        zip(all_in_peak["chrom"], all_in_peak["pos"])]
+        all_in_peak["mapping"] = "outside"
+        if MAPPING:
+            same = all_in_peak["chrom"] == MAPPING["chrom"]
+            all_in_peak.loc[same & all_in_peak["pos"].between(MAPPING["linked_start"], MAPPING["linked_end"] - 1),
+                            "mapping"] = "linked"
+            all_in_peak.loc[same & all_in_peak["pos"].between(MAPPING["start"], MAPPING["end"] - 1),
+                            "mapping"] = "best interval"
+    all_in_peak.to_csv(out.peak_candidates, sep="\t", index=False)
     genome_mean = win["mutant_specific_homozygous"].mean()
     peak = {
         "found": True, "chrom": pc_, "start_mb": int(ps_), "end_mb": int(pe_),
@@ -496,5 +633,13 @@ if PEAK[0] is not None:
 if not peak["found"]:
     pd.DataFrame(columns=["priority", "chrom", "pos", "gene"]).to_csv(out.peak_candidates, sep="\t", index=False)
 peak["runs_of_homozygosity"] = ROH_PEAK
+if MAPPING:
+    # every protein-changing mutant-specific variant (any priority) inside the best interval
+    inside = mut[(mut["priority"] > 0) & (mut["chrom"] == MAPPING["chrom"])
+                 & mut["pos"].between(MAPPING["start"], MAPPING["end"] - 1)].sort_values(["priority", "pos"])
+    inside = inside.assign(label=inside["gene"].fillna(inside["gene_id"]).astype(str))
+    MAPPING["candidates"] = inside[["priority", "chrom", "pos", "label", "gene_id", "effect", "hgvs_p"]] \
+        .fillna("").to_dict("records")
+peak["homozygosity_mapping"] = MAPPING
 with open(out.peak, "w") as fh:
     json.dump(peak, fh, indent=1, default=str)
